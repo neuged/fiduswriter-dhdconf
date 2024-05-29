@@ -1,6 +1,6 @@
 
 
-export class EditorDhdconf {
+export class DhdconfEditor {
     constructor(editor) {
         this.editor = editor
     }
@@ -15,15 +15,17 @@ export class EditorDhdconf {
                 tooltip: gettext("Export the document to a TEI file."),
                 order: 5,
                 action: editor => {
-                    import("./exporter").then(({TeiExporter}) => {
-                        const exporter = new TeiExporter(
+                    import("../exporter/tei").then(({exportTEI}) => {
+                        console.log("wat", this.editor.menu)
+                        exportTEI(
+                            editor.getDoc({changes: 'acceptAllNoInsertions'}),
+                            editor.mod.db.bibDB,
+                            editor.mod.db.imageDB,
+                            editor.app.csl
                         )
-                        exporter.init();
-                    })
+                    });
                 }
             }
-
         )
     }
-
 }
