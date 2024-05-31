@@ -1,4 +1,4 @@
-
+import {addAlert} from "../../modules/common";
 
 export class DhdconfEditor {
     constructor(editor) {
@@ -15,12 +15,17 @@ export class DhdconfEditor {
                 order: 5,
                 action: editor => {
                     import("../exporter/tei").then(({exportTEI}) => {
-                        exportTEI(
-                            editor.getDoc({changes: 'acceptAllNoInsertions'}),
-                            editor.mod.db.bibDB,
-                            editor.mod.db.imageDB,
-                            editor.app.csl
-                        )
+                        try {
+                            exportTEI(
+                                editor.getDoc({changes: 'acceptAllNoInsertions'}),
+                                editor.mod.db.bibDB,
+                                editor.mod.db.imageDB,
+                                editor.app.csl
+                            );
+                            addAlert("success", gettext("Export finished"))
+                        } catch (e) {
+                            addAlert("error", `Error during export: '${e.message}'` )
+                        }
                     });
                 }
             }
