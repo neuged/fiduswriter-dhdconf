@@ -17,7 +17,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         content = self._read_template_file()
-        content["attrs"]["footnote_elements"] = settings.DHD_ARTICLE_FOOTNOTE_ELEMENTS
+        content["attrs"] = {**content["attrs"], **settings.DHD_ARTICLE_ATTRS}
         for elem in content["content"]:
             attrs = elem.get("attrs", {})
             if attrs.get("id", "") == "abstract":

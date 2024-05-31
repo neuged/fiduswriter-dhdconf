@@ -1,12 +1,23 @@
 
-DHD_ARTICLE_FOOTNOTE_ELEMENTS = [
-    "paragraph",
-    "code_block",
-    "equation",
-    "citation",
-    "cross_reference",
-    "blockquote"
-]
+DHD_ARTICLE_ATTRS = {
+    "footnote_elements": [
+        "paragraph",
+        "code_block",
+        "equation",
+        "citation",
+        "cross_reference",
+        "blockquote"
+    ],
+    "citationstyle": "chicago-author-date-de",
+    "citationstyles": [
+        "chicago-author-date-de"
+    ],
+    "language": "en-GB",
+    "languages": [
+        "en-AU", "en-CA", "en-NZ", "en-ZA", "en-GB", "en-US",
+        "de-DE", "de-AU", "de-CH"
+    ]
+}
 
 DHD_ARTICLE_ABSTRACT_ELEMENTS = [
     "paragraph",
