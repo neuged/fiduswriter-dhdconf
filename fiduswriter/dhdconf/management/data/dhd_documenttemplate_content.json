@@ -1,0 +1,104 @@
+{
+    "type": "article",
+    "attrs": {
+        "papersizes": [
+            "A4"
+        ],
+        "footnote_elements": [],
+        "template": "Standard Article",
+        "import_id": "standard-article"
+    },
+    "content": [
+        {
+            "type": "title"
+        },
+        {
+            "type": "heading_part",
+            "attrs": {
+                "title": "Subtitle",
+                "id": "subtitle",
+                "optional": "shown",
+                "initial": [
+                    {
+                        "type": "heading1",
+                        "attrs": {
+                            "id": "H6323428"
+                        }
+                    }
+                ],
+                "marks": [
+                    "strong",
+                    "em",
+                    "link"
+                ],
+                "metadata": "subtitle"
+            },
+            "content": [
+                {
+                    "type": "heading1",
+                    "attrs": {
+                        "id": "H6323428"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "contributors_part",
+            "attrs": {
+                "title": "Authors",
+                "id": "authorPart",
+                "item_title": "Author",
+                "metadata": "authors"
+            }
+        },
+        {
+            "type": "tags_part",
+            "attrs": {
+                "title": "Keywords",
+                "id": "keywords",
+                "optional": "shown",
+                "item_title": "Keyword",
+                "metadata": "keywords"
+            }
+        },
+        {
+            "type": "richtext_part",
+            "attrs": {
+                "title": "Abstract",
+                "id": "abstract",
+                "optional": "hidden",
+                "hidden": true,
+                "elements": [],
+                "marks": [
+                    "strong",
+                    "em",
+                    "link"
+                ],
+                "metadata": "abstract"
+            },
+            "content": [
+                {
+                    "type": "paragraph"
+                }
+            ]
+        },
+        {
+            "type": "richtext_part",
+            "attrs": {
+                "title": "Body",
+                "id": "body",
+                "elements": [],
+                "marks": [
+                    "strong",
+                    "em",
+                    "link"
+                ]
+            },
+            "content": [
+                {
+                    "type": "paragraph"
+                }
+            ]
+        }
+    ]
+}
