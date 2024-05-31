@@ -7,8 +7,7 @@ export class DhdconfEditor {
 
     init() {
         const exportMenu = this.editor.menu.headerbarModel.content.find(menu => menu.id === "export")
-
-        exportMenu.content.push(
+        exportMenu.content = [
             {
                 title: gettext("TEI"),
                 type: "action",
@@ -16,7 +15,6 @@ export class DhdconfEditor {
                 order: 5,
                 action: editor => {
                     import("../exporter/tei").then(({exportTEI}) => {
-                        console.log("wat", this.editor.menu)
                         exportTEI(
                             editor.getDoc({changes: 'acceptAllNoInsertions'}),
                             editor.mod.db.bibDB,
@@ -26,6 +24,6 @@ export class DhdconfEditor {
                     });
                 }
             }
-        )
+        ];
     }
 }
