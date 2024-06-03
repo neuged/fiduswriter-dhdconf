@@ -4,14 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fiduswriter-dhdconf"
-description = "A Fidus Writer plugin to connect to Conftool organizing a DHD conference."
+description = "A Fidus Writer plugin used for DHD conference submissions."
 version = "0.1.0"
 readme = "README.md"
-# TODO: License
-# license = {text = ""}
+license = {text = "AGPL-3.0-or-later"}
 authors = [
   {email = "david.neugebauer@posteo.de", name = "David Neugebauer"},
-  # TODO: Add J.G.?
 ]
 classifiers=[
   "Environment :: Web Environment",
@@ -26,6 +24,5 @@ classifiers=[
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 
-# TODO: Github Repo?
-# [project.urls]
-# repository = "https://github.com/fiduswriter/fiduswriter-pandoc"
+[project.urls]
+repository = "https://github.com/neuged/fiduswriter-dhdconf"
