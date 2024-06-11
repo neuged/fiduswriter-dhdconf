@@ -18,7 +18,7 @@ import bibliography from "./bibliography"
 
 function authors(data) {
     const tei = data.map(({firstname, lastname, institution, email}) => {
-        const name = wrap('name', `${wrap('surname', lastname)}${wrap('forename', firstname)}`)
+        const name = wrap('persName', `${wrap('surname', lastname)}${wrap('forename', firstname)}`)
         const inst = wrap('affiliation', institution)
         email = wrap('email', email)
         return wrap('author', `${name}${inst}${email}`)

@@ -14,8 +14,8 @@ test('render a single author', () => {
         institution: 'PPOE'
     }]
     expect(authors(data)).toBe(
-        '<author><name>' +
-        '<surname>H</surname><forename>Ben</forename></name>' +
+        '<author><persName>' +
+        '<surname>H</surname><forename>Ben</forename></persName>' +
         '<affiliation>PPOE</affiliation>' +
         '<email>ben@example.com</email>' +
         '</author>')
