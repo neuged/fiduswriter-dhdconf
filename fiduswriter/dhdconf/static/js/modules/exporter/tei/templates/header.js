@@ -13,9 +13,6 @@ export const header = (authors, title, date, keywords, subtitle) => `
             <p>Based on a Fidus Writer document</p>
         </sourceDesc>
     </fileDesc>
-    <revisionDesc>
-        <change when="${date}">exported from Fidus Writer</change>
-    </revisionDesc>
     <encodingDesc>
         <appInfo>
             <application ident="Fidus-Writer-TEI-Exporter" version="0.1">
@@ -28,4 +25,7 @@ export const header = (authors, title, date, keywords, subtitle) => `
             ${keywords}
         </textClass>
     </profileDesc>
+    <revisionDesc>
+        <change when="${date}">exported from Fidus Writer</change>
+    </revisionDesc>
 </teiHeader>`
