@@ -212,7 +212,7 @@ test('render a simple figure', () => {
     const imgDB = {db: {1: {image: '/media/images/stuff.png'}}}
     expect(
         convertBody(content, imgDB)
-    ).toBe('<figure><graphic url="stuff.png" /><head>Abbildung 1</head></figure>')
+    ).toBe('<figure><graphic url="images/stuff.png" /><head>Abbildung 1</head></figure>')
 })
 
 test('render a figure with caption', () => {
@@ -240,7 +240,7 @@ test('render a figure with caption', () => {
     const imgDB = {db: {1: {image: '/media/images/stuff.png'}}}
     expect(
         convertBody(content, imgDB)
-    ).toBe('<figure><graphic url="stuff.png" /><head>Abbildung 1: a caption</head></figure>')
+    ).toBe('<figure><graphic url="images/stuff.png" /><head>Abbildung 1: a caption</head></figure>')
 })
 
 test('render a simple table', () => {

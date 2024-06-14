@@ -4,5 +4,8 @@ export const config = {
 
     // Whether to show category options in the "bibliography" or "images" sections
     removeCategoryOptionsFromBibliography: true,
-    removeCategoryOptionsFromImagesOverview: true
+    removeCategoryOptionsFromImagesOverview: true,
+
+    // The path under which to expect the docx template used in the DHC export
+    dhcExporterDocxTemplateUrl: "/media/export-template-files/Classic.docx"
 }
