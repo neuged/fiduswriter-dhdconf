@@ -8,7 +8,7 @@
  */
 
 import extract, {extractTextNodes} from "./extract"
-import {tag, wrap, linkify} from "./utils"
+import {tag, wrap, linkify, linkPtr, linkRef} from "./utils"
 import {header} from "./templates/header"
 import {body} from "./templates/body"
 import {back} from "./templates/back"
@@ -44,8 +44,11 @@ function text(item) {
                 return wrap('hi', previous, {rend: 'italic'})
             } else if (current.type === 'strong') {
                 return wrap('hi', previous, {rend: 'bold'})
-            } else if (current.type === 'link') {
-                // TODO Handle links
+            } else if (current.type === 'link' && current.attrs.href) {
+                if (current.attrs.href.startsWith('#')) {
+                    return previous  // do not show internal links
+                }
+                return linkRef(current.attrs.href, previous)
             }
             return previous
         }, item.text)
@@ -189,6 +192,10 @@ function convertBody(richTextContent, imgDB, citationTexts) {
             const opening = `<div rend="DH-Heading">`
             const head = wrap('head', item.content.map(c => f(c)).join(''))
             return `${closing}${opening}${head}`
+        }
+
+        if (item.type === 'cross_reference') {
+            return item.attrs.title
         }
 
         if (item.type === 'citation') {
