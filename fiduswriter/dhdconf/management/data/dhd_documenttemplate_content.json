@@ -45,7 +45,7 @@
             "type": "contributors_part",
             "attrs": {
                 "title": "Authors",
-                "id": "authorPart",
+                "id": "authors",
                 "item_title": "Author",
                 "metadata": "authors"
             }

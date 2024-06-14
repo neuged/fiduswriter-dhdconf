@@ -30,7 +30,7 @@ class Command(BaseCommand):
         template.save()
 
     def delete_export_templates(self):
-        ExportTemplate.objects.all().delete()
+        ExportTemplate.objects.exclude(file_type="docx").delete()
 
     def handle(self, *args, **options):
         self.stdout.write("Adjusting standard article template")
