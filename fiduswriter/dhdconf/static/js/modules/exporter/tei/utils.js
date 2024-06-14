@@ -24,4 +24,18 @@ function wrap(tagName, content, attrs = {}) {
     return `<${tagName}>${content}</${tagName}>`
 }
 
-export {tag, wrap}
+function linkRef(target, text) {
+    return wrap("ref", text, { target })
+}
+
+function linkPtr(target) {
+    return tag("ptr", { target })
+}
+
+const LINK_REGEX = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+function linkify(text) {
+    return text.replace(LINK_REGEX, linkPtr);
+}
+
+
+export {tag, wrap, linkPtr, linkRef, linkify}

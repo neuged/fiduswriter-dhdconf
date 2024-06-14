@@ -4,7 +4,7 @@ import {
     extractImageIDs,
     extractKeywords,
     extractRichText,
-    extractSubtitle,
+    extractSubtitle, extractTextNodes,
     extractTitle
 } from './extract'
 
@@ -16,11 +16,13 @@ const dummyDoc = (cont) => {
     }
 }
 
+// TODO: Adjust to changed subtitle structure
 test('extract empty subtitle', () => {
     const doc = dummyDoc([{type: 'heading_part', attrs: {id: 'subtitle'}}])
     expect(extractSubtitle(doc)).toBe('')
 })
 
+// TODO: Adjust to changed subtitle structure
 test('extract simple subtitle', () => {
     const content = [{
         type: 'heading_part',
@@ -70,60 +72,7 @@ test('extract keywords', () => {
     expect(extractKeywords(doc)).toEqual(['tagA', 'tagB'])
 })
 
-test('try to extract non-existing footnotes', () => {
-    const content = [{
-        type: 'richtext_part', attrs: {id: 'body'}, content: [
-            {type: 'paragraph', content: [{type: 'text', text: 'hello'}]}
-        ]
-    }]
-    const doc = dummyDoc(content)
-    expect(extractFootnotes(doc)).toEqual([])
-})
-
-test('extract footnotes', () => {
-    const content = [{
-        type: 'richtext_part',
-        attrs: {id: 'body'},
-        content: [
-            {type: 'footnote', attrs: {
-                footnote: [{type: 'paragraph', content: [{type: 'text', text: 'foo'}]}]
-            }},
-            {type: 'footnote', attrs: {
-                footnote: [{type: 'paragraph', content: [{type: 'text', text: 'bar'}]}]
-            }}
-        ]
-    }]
-    const doc = dummyDoc(content)
-    expect(
-        extractFootnotes(doc)
-    ).toEqual([
-        [{type: 'paragraph', content: [{type: 'text', text: 'bar'}]}],
-        [{type: 'paragraph', content: [{type: 'text', text: 'foo'}]}]
-    ])
-})
-
-test('extract footnotes which are nested more deeply inside paragraph', () => {
-    const content = [{
-        type: 'richtext_part',
-        attrs: {id: 'body'},
-        content: [
-            {
-                type: 'paragraph',
-                content: [{
-                    type: 'footnote', attrs: {
-                        footnote: [{type: 'paragraph', content: [{type: 'text', text: 'foo'}]}]
-                    }
-                }]
-            }
-        ]
-    }]
-    const doc = dummyDoc(content)
-    expect(
-        extractFootnotes(doc)
-    ).toEqual([
-        [{type: 'paragraph', content: [{type: 'text', text: 'foo'}]}]
-    ])
-})
+// TODO: Test extractTextNodes
 
 test('extract richtext', () => {
     const content = [{

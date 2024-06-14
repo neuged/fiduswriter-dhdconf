@@ -1,8 +1,7 @@
 import {
     authors,
-    richText,
-    text,
-    footnotesContent
+    convertBody,
+    text
 } from './convert'
 
 
@@ -51,21 +50,21 @@ test('render bold text', () => {
 })
 
 test('render single paragraph', () => {
-    expect(richText([{
+    expect(convertBody([{
         type: 'paragraph',
         content: [{type: 'text', text: 'hello'}],
     }])).toBe('<p>hello</p>')
 })
 
 test('paragraph without content should just be a line break', () => {
-    expect(richText([{
+    expect(convertBody([{
         type: 'paragraph',
         attrs: {track: []}
     }])).toBe('<lb />')
 })
 
 test('render paragraph with multiple children', () => {
-    expect(richText([{
+    expect(convertBody([{
         type: 'paragraph',
         content: [{type: 'text', text: 'hello '}, {type: 'text', text: 'world', marks: [{type: 'em'}]}],
     }])).toBe('<p>hello <hi rend="italic">world</hi></p>')
@@ -73,7 +72,7 @@ test('render paragraph with multiple children', () => {
 
 test('render heading with a single piece of text', () => {
     expect(
-        richText([{
+        convertBody([{
             type: 'heading1',
             content: [{type: 'text', text: 'hello'}],
         }])
@@ -82,7 +81,7 @@ test('render heading with a single piece of text', () => {
 
 test('render heading with italic text', () => {
     expect(
-        richText([
+        convertBody([
             {
                 type: 'heading1',
                 content: [
@@ -96,7 +95,7 @@ test('render heading with italic text', () => {
 
 test('render heading and following paragraph', () => {
     expect(
-        richText([
+        convertBody([
             {
                 type: 'heading1',
                 content: [{type: 'text', text: 'hello'}],
@@ -111,7 +110,7 @@ test('render heading and following paragraph', () => {
 
 test('render second order heading', () => {
     expect(
-        richText([{
+        convertBody([{
             type: 'heading2',
             content: [{type: 'text', text: 'hello'}],
         }])
@@ -120,7 +119,7 @@ test('render second order heading', () => {
 
 test('render two headings', () => {
     expect(
-        richText([
+        convertBody([
             {
                 type: 'heading1',
                 content: [{type: 'text', text: 'first'}],
@@ -138,7 +137,7 @@ test('render two headings', () => {
 
 test('render consecutive headings', () => {
     expect(
-        richText([
+        convertBody([
             {type: 'heading1', content: [{type: 'text', text: 'one'}]},
             {type: 'heading1', content: [{type: 'text', text: 'another'}]},
         ])
@@ -150,7 +149,7 @@ test('render consecutive headings', () => {
 
 test('render footnotes (inside the main text)', () => {
     expect(
-        richText([{
+        convertBody([{
             type: 'footnote',
             attrs: {
                 footnote: [
@@ -163,7 +162,7 @@ test('render footnotes (inside the main text)', () => {
 
 test('consecutive footnotes (inside the main text) must be numbered', () => {
     expect(
-        richText([
+        convertBody([
             {
                 type: 'footnote',
                 attrs: {
@@ -184,27 +183,9 @@ test('consecutive footnotes (inside the main text) must be numbered', () => {
     ).toBe('<ref n="1" target="ftn1" /><ref n="2" target="ftn2" />')
 })
 
-test('render list of footnotes at the bottom of the document', () => {
-    expect(
-        footnotesContent([
-            [
-                {type: 'paragraph', content: [{type: 'text', text: 'note of the foot'}]},
-            ],
-            [
-                {type: 'paragraph', content: [{type: 'text', text: 'foot of the note'}]},
-            ],
-        ])
-    ).toBe(
-        '<div type="notes">' +
-    '<note n="1" rend="footnote text" xml:id="ftn1"><p>note of the foot</p></note>' +
-    '<note n="2" rend="footnote text" xml:id="ftn2"><p>foot of the note</p></note>' +
-    '</div>'
-    )
-})
-
 test('render equations', () => {
     expect(
-        richText([
+        convertBody([
             {
                 type: 'equation',
                 attrs: {
@@ -230,7 +211,7 @@ test('render a simple figure', () => {
     ]
     const imgDB = {db: {1: {image: '/media/images/stuff.png'}}}
     expect(
-        richText(content, imgDB)
+        convertBody(content, imgDB)
     ).toBe('<figure><graphic url="stuff.png" /><head>Abbildung 1</head></figure>')
 })
 
@@ -258,7 +239,7 @@ test('render a figure with caption', () => {
     ]
     const imgDB = {db: {1: {image: '/media/images/stuff.png'}}}
     expect(
-        richText(content, imgDB)
+        convertBody(content, imgDB)
     ).toBe('<figure><graphic url="stuff.png" /><head>Abbildung 1: a caption</head></figure>')
 })
 
@@ -293,7 +274,7 @@ test('render a simple table', () => {
                    '<row><cell><p>1</p></cell><cell><p>2</p></cell></row>' +
                    '<row><cell><p>3</p></cell><cell><p>4</p></cell></row>' +
                    '</table>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render a table with caption', () => {
@@ -330,7 +311,7 @@ test('render a table with caption', () => {
                    '<row><cell><p>1</p></cell><cell><p>2</p></cell></row>' +
                    '<row><cell><p>3</p></cell><cell><p>4</p></cell></row>' +
                    '</table>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render a table with header row', () => {
@@ -364,7 +345,7 @@ test('render a table with header row', () => {
                    '<row role="label"><cell role="label"><p>1</p></cell><cell role="label"><p>2</p></cell></row>' +
                    '<row><cell><p>3</p></cell><cell><p>4</p></cell></row>' +
                    '</table>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render a blockquote', () => {
@@ -385,7 +366,7 @@ test('render a blockquote', () => {
         }
     ]
     const expected = '<quote><p>a block quote.</p></quote>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render source code snippets', () => {
@@ -405,7 +386,7 @@ test('render source code snippets', () => {
     ]
     const expected = '<code># source code\ndef random():\n    '
                  + '# determined by fair dice roll\n    return 3</code>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render a simple unordered list', () => {
@@ -448,7 +429,7 @@ test('render a simple unordered list', () => {
                  + '<item><p>ein Listenpunkt</p></item>'
                  + '<item><p>noch einer</p></item>'
                  + '</list>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })
 
 test('render a simple ordered list', () => {
@@ -491,5 +472,5 @@ test('render a simple ordered list', () => {
                  + '<item><p>erster Listenpunkt.</p></item>'
                  + '<item><p>zweiter Listenpunkt</p></item>'
                  + '</list>'
-    expect(richText(content)).toBe(expected)
+    expect(convertBody(content)).toBe(expected)
 })

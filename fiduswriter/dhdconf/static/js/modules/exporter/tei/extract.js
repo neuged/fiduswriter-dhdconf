@@ -1,10 +1,8 @@
 /**
- * All functions in this module operate on the complete docContents object and extract only the
- * needed fields to generate a specific section of TEI.
+ * All functions in this module con operate on the complete docContents object
  *
  * @module
  */
-
 
 function extractAuthors(docContents) {
     const authorPart = docContents.content.find(part => part.type === 'contributors_part')
@@ -12,6 +10,23 @@ function extractAuthors(docContents) {
         .filter(item => item.type === 'contributor')
         .map(author => author.attrs)
     return authors
+}
+
+function extractCitations(node, citations=[]) {
+    switch (node.type) {
+    case "citation":
+        citations.push(JSON.parse(JSON.stringify(node.attrs)))
+        break
+    case "footnote":
+        node.attrs.footnote.forEach(child => extractCitations(child, citations))
+        break
+    default:
+        break
+    }
+    if (node.content) {
+        node.content.forEach(child => extractCitations(child, citations))
+    }
+    return citations;
 }
 
 /**
@@ -101,6 +116,14 @@ function extractSubtitle(docContents) {
     return subtitle || ''
 }
 
+function extractTextNodes(node, texts=[]) {
+    if (node.type === "text") {
+        texts.push(node);
+    }
+    node.content?.forEach(child => extractTextNodes(child, texts))
+    return texts;
+}
+
 /**
  * This is the main entry point of this module.
  */
@@ -112,6 +135,7 @@ function extract(docContents, _docSettings) {
     const keywords = extractKeywords(docContents)
     const richText = extractRichText(docContents)
     const subtitle = extractSubtitle(docContents)
+    const citations = extractCitations(docContents)
     const title = extractTitle(docContents)
 
     return {
@@ -121,10 +145,20 @@ function extract(docContents, _docSettings) {
         richText,
         subtitle,
         title,
+        citations,
         date: currentDate,
     }
 }
 
-/* Export of individual functions is only needed for unit testing. */
-export {extractAuthors, extractFootnotes, extractImageIDs, extractKeywords, extractRichText, extractSubtitle, extractTitle}
+export {
+    extractAuthors,
+    extractCitations,
+    extractFootnotes,
+    extractImageIDs,
+    extractKeywords,
+    extractRichText,
+    extractSubtitle,
+    extractTitle,
+    extractTextNodes
+}
 export default extract

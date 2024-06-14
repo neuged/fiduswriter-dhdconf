@@ -7,13 +7,12 @@
  * @module
  */
 
-import extract from "./extract"
-import {tag, wrap} from "./utils"
+import extract, {extractTextNodes} from "./extract"
+import {tag, wrap, linkify} from "./utils"
 import {header} from "./templates/header"
 import {body} from "./templates/body"
 import {back} from "./templates/back"
 import {TEITemplate} from "./templates"
-import bibliography from "./bibliography"
 
 
 function authors(data) {
@@ -40,27 +39,31 @@ function keywords(data) {
  */
 function text(item) {
     if (item.marks && item.marks.length) {
-        const result = item.marks.reduce((previous, current) => {
+        return item.marks.reduce((previous, current) => {
             if (current.type === 'em') {
                 return wrap('hi', previous, {rend: 'italic'})
             } else if (current.type === 'strong') {
                 return wrap('hi', previous, {rend: 'bold'})
+            } else if (current.type === 'link') {
+                // TODO Handle links
             }
             return previous
         }, item.text)
-        return result
     }
     return item.text
 }
 
 /**
- * Build a string of TEI from the content of a part of docContents
- * with type 'richtext'.
+ * Build a string of TEI from the body (type 'richtext') of a document.
+ * Returns a string representing as the body and a second string having
+ * the footnotes.
  */
-function richText(richTextContent, imgDB) {
+function convertBody(richTextContent, imgDB, citationTexts) {
     let divLevel = 0    // the number of currently open divs
     let fnCount = 0     // the number of footnotes we have encountered
-    let figCount = 0  // the number of figures we have encountered
+    let figCount = 0    // the number of figures we have encountered
+    let citeCount = 0   // the number of citations we have encountered
+    let footnotesTEI = []
 
     function f(item) {
         /* This is a base case because we have arrived at a leaf node. */
@@ -74,10 +77,13 @@ function richText(richTextContent, imgDB) {
         /* Another base case, since the actual content of the footnote
          * is only needed at the bottom of the text. */
         if (item.type === 'footnote') {
-            // This only handles the markup for footnotes inside the
-            // regular text. The actual footnotes have to be generated
-            // separately and placed at the bottom of the text.
-            fnCount++
+            fnCount += 1
+            footnotesTEI.push(wrap(
+                'note',
+                item.attrs.footnote.map(c => f(c)).join(''),
+                {n: fnCount, rend: 'footnote text', 'xml:id': `ftn${fnCount}`}
+            ))
+            // Return only the markup for footnotes inside the regular text.
             return tag('ref', {n: fnCount, target: `ftn${fnCount}`})
         }
 
@@ -185,23 +191,25 @@ function richText(richTextContent, imgDB) {
             return `${closing}${opening}${head}`
         }
 
-        // console.log(`Could not parse richtextContent of type ${item.type}`)
+        if (item.type === 'citation') {
+            return citationTexts[citeCount++]
+        }
+
         return ''
     }
 
     const result = richTextContent.map(c => f(c)).join('')
     const closing = '</div>'.repeat(divLevel)
+    const body = `${result}${closing}`
 
-    return `${result}${closing}`
+    const footnotes = wrap('div', footnotesTEI.join("\n"), {type: 'notes'})
+    return [body, footnotes]
 }
 
-function footnotesContent(footnotes) {
-    const fns = footnotes.map((fn, idx) => {
-        const i = idx + 1
-        const text = richText(fn)
-        return wrap('note', text, {n: i, rend: 'footnote text', 'xml:id': `ftn${i}`})
-    }).join('')
-    return wrap('div', fns, {type: 'notes'})
+function bibliography(bibliography) {
+    return bibliography.content.map((item) => {
+        return wrap('bibl', extractTextNodes(item).map(n => linkify(text(n))).join(''))
+    }).join('\n')
 }
 
 
@@ -210,7 +218,7 @@ function footnotesContent(footnotes) {
  * the document and the documents content object and generates a string
  * of TEI XML suitable for download.
  */
-function convert(slug, docContents, bibDB, imgDB) {
+function convert(slug, docContents, imgDB, citationsExporter) {
     const fields = extract(docContents)
 
     // All the fields used in the TEI header:
@@ -222,16 +230,17 @@ function convert(slug, docContents, bibDB, imgDB) {
     const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle)
 
     // All the fields used in the TEI body:
-    const text = richText(fields.richText, imgDB)
+    const result = convertBody(fields.richText, imgDB, citationsExporter.citationTexts)
+    const text = result[0]
     const TEIbody = body(text)
 
     // All the fields used in the TEI back:
-    const footnotes = footnotesContent(fields.footnotes)
-    const bib = bibliography(bibDB)
-    const TEIback = back(footnotes, bib)
+    const footnotes = result[1]
+    const bibItems = bibliography(citationsExporter.bibliography)
+    const TEIback = back(footnotes, citationsExporter.bibliographyHeader, bibItems)
 
     return TEITemplate(slug, TEIheader, TEIbody, TEIback)
 }
 
-export {authors, richText, text, footnotesContent}
+export {authors, convertBody, text}
 export default convert

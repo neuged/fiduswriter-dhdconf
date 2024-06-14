@@ -5,22 +5,23 @@ import {removeHidden} from "../tools/doc_content"
 import {ZipFileCreator} from "../tools/zip"
 
 import convert from './convert'
-import {extractImageIDs} from './extract'
+import {extractCitations, extractImageIDs} from './extract'
+import {TeiCitationsExporter} from "./citations";
 
 
 /*
  * Export a document as TEI XML.
  */
-export function exportTEI(doc, bibDB, imageDB, csl) {
+export async function exportTEI(doc, bibDB, imageDB, csl) {
     const slug = createSlug(doc.title)
     const fileName = `${slug}.tei.xml`
     const docContent = removeHidden(doc.content)
-    //console.log(docContent)
-    console.log(bibDB)
-    console.log(csl)
+
+    const citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
+    await citeExp.init(extractCitations(docContent))
 
     const enc = new TextEncoder()
-    const tei = enc.encode(convert(slug, docContent, bibDB, imageDB))
+    const tei = enc.encode(convert(slug, docContent, imageDB, citeExp))
 
     const images = extractImageIDs(docContent, imageDB)
     const files = images.map(id => {

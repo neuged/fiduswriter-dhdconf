@@ -1,6 +1,11 @@
-export const back = (notes, bibliography) => `
+export const back = (notes, bibliographyHead, bibliographyItems) => `
 <back>
     ${notes}
-    ${bibliography}
+    <div type="bibliogr">
+        <listBibl>
+            <head>${bibliographyHead}</head>
+            ${bibliographyItems}
+        </listBibl>
+    </div>
 </back>
 `
