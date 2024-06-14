@@ -16,13 +16,12 @@ import {TEITemplate} from "./templates"
 
 
 function authors(data) {
-    const tei = data.map(({firstname, lastname, institution, email}) => {
+    return data.map(({firstname, lastname, institution, email}) => {
         const name = wrap('persName', `${wrap('surname', lastname)}${wrap('forename', firstname)}`)
-        const inst = wrap('affiliation', institution)
-        email = wrap('email', email)
+        const inst = wrap('affiliation', institution || '')
+        email = wrap('email', email || '')
         return wrap('author', `${name}${inst}${email}`)
     }).join('\n')
-    return tei
 }
 
 function keywords(data) {
@@ -214,9 +213,10 @@ function convertBody(richTextContent, imgDB, citationTexts) {
 }
 
 function bibliography(bibliography) {
-    return bibliography.content.map((item) => {
+    const tei = bibliography?.content?.map((item) => {
         return wrap('bibl', extractTextNodes(item).map(n => linkify(text(n))).join(''))
     }).join('\n')
+    return tei || ''
 }
 
 

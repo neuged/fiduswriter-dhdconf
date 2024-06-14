@@ -5,11 +5,12 @@
  */
 
 function extractAuthors(docContents) {
-    const authorPart = docContents.content.find(part => part.type === 'contributors_part')
-    const authors = authorPart.content
-        .filter(item => item.type === 'contributor')
+    const authors = docContents.content
+        ?.find(part => part.type === 'contributors_part')
+        ?.content
+        ?.filter(item => item.type === 'contributor')
         .map(author => author.attrs)
-    return authors
+    return authors || []
 }
 
 function extractCitations(node, citations=[]) {
@@ -26,7 +27,7 @@ function extractCitations(node, citations=[]) {
     if (node.content) {
         node.content.forEach(child => extractCitations(child, citations))
     }
-    return citations;
+    return citations
 }
 
 /**
@@ -41,7 +42,7 @@ function extractFootnotes(docContents) {
     while (stack.length) {
         const curr = stack.pop()
 
-        if (curr.type !== undefined && curr.type == 'footnote') {
+        if (curr.type !== undefined && curr.type === 'footnote') {
             fns.push(curr.attrs.footnote)
         } else if (curr.content !== undefined) {
             for (const v of curr.content) {
@@ -84,11 +85,12 @@ function extractImageIDs(docContents) {
 }
 
 function extractKeywords(docContents) {
-    const kwPart = docContents.content.find(part => part.type === 'tags_part')
-    const keywords = kwPart.content
-        .filter(item => item.type === 'tag')
+    const keywords = docContents.content
+        ?.find(part => part.type === 'tags_part')
+        ?.content
+        ?.filter(item => item.type === 'tag')
         .map(kw => kw.attrs.tag)
-    return keywords
+    return keywords || []
 }
 
 function extractBody(docContents) {
@@ -98,9 +100,12 @@ function extractBody(docContents) {
 }
 
 function extractTitle(docContents) {
-    const titlePart = docContents.content.find(part => part.type === 'title')
-    const title = titlePart.content.find(item => item.type === 'text')
-    return title.text
+    const title = docContents.content
+        ?.find(part => part.type === 'title')
+        ?.content
+        ?.find(item => item.type === 'text')
+        ?.text
+    return title || ''
 }
 
 function extractSubtitle(docContents) {
@@ -111,7 +116,7 @@ function extractSubtitle(docContents) {
         ?.content
         ?.filter(item => item.type === 'text')
         .map(item => item.text)
-        .join('');
+        .join('')
     return subtitle || ''
 }
 
