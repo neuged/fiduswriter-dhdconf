@@ -237,7 +237,7 @@ function convert(slug, docContents, imgDB, citationsExporter) {
     const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle)
 
     // All the fields used in the TEI body:
-    const result = convertBody(fields.richText, imgDB, citationsExporter.citationTexts)
+    const result = convertBody(fields.body.content, imgDB, citationsExporter.citationTexts)
     const text = result[0]
     const TEIbody = body(text)
 

@@ -3,7 +3,7 @@ import {
     extractFootnotes,
     extractImageIDs,
     extractKeywords,
-    extractRichText,
+    extractBody,
     extractSubtitle, extractTextNodes,
     extractTitle
 } from './extract'
@@ -82,8 +82,8 @@ test('extract richtext', () => {
     }]
     const doc = dummyDoc(content)
     expect(
-        extractRichText(doc)
-    ).toEqual([{type: 'paragraph', content: [{type: 'text', text: 'hello'}]}])
+        extractBody(doc)
+    ).toEqual(content[0])
 })
 
 test('extract image IDs', () => {

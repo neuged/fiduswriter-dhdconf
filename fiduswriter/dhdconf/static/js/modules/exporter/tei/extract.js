@@ -34,9 +34,9 @@ function extractCitations(node, citations=[]) {
  * actual text contents. So, this returns an array of arrays.
  */
 function extractFootnotes(docContents) {
-    const body = extractRichText(docContents)
+    const body = extractBody(docContents)
     const fns = []
-    const stack = [body]
+    const stack = [body.content]
 
     while (stack.length) {
         const curr = stack.pop()
@@ -57,9 +57,9 @@ function extractFootnotes(docContents) {
 }
 
 function extractImageIDs(docContents) {
-    const richtext = extractRichText(docContents)
+    const body = extractBody(docContents)
     const images = []
-    const stack = [richtext]
+    const stack = [body.content]
 
     while (stack.length) {
         const node = stack.pop()
@@ -91,11 +91,10 @@ function extractKeywords(docContents) {
     return keywords
 }
 
-function extractRichText(docContents) {
-    const body = docContents.content.find(part => {
+function extractBody(docContents) {
+    return docContents.content.find(part => {
         return part.type === 'richtext_part' && part.attrs.id === 'body'
     })
-    return body.content
 }
 
 function extractTitle(docContents) {
@@ -133,7 +132,7 @@ function extract(docContents, _docSettings) {
     const authors = extractAuthors(docContents)
     const footnotes = extractFootnotes(docContents)
     const keywords = extractKeywords(docContents)
-    const richText = extractRichText(docContents)
+    const body = extractBody(docContents)
     const subtitle = extractSubtitle(docContents)
     const citations = extractCitations(docContents)
     const title = extractTitle(docContents)
@@ -142,7 +141,7 @@ function extract(docContents, _docSettings) {
         authors,
         footnotes,
         keywords,
-        richText,
+        body,
         subtitle,
         title,
         citations,
@@ -156,7 +155,7 @@ export {
     extractFootnotes,
     extractImageIDs,
     extractKeywords,
-    extractRichText,
+    extractBody,
     extractSubtitle,
     extractTitle,
     extractTextNodes

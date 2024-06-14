@@ -5,7 +5,7 @@ import {removeHidden} from "../tools/doc_content"
 import {ZipFileCreator} from "../tools/zip"
 
 import convert from './convert'
-import {extractCitations, extractImageIDs} from './extract'
+import {extractBody, extractCitations, extractImageIDs} from './extract'
 import {TeiCitationsExporter} from "./citations";
 
 
@@ -18,7 +18,7 @@ export async function exportTEI(doc, bibDB, imageDB, csl) {
     const docContent = removeHidden(doc.content)
 
     const citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
-    await citeExp.init(extractCitations(docContent))
+    await citeExp.init(extractCitations(extractBody(docContent)))
 
     const enc = new TextEncoder()
     const tei = enc.encode(convert(slug, docContent, imageDB, citeExp))
