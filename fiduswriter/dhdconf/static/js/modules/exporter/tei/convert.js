@@ -99,11 +99,11 @@ function convertBody(richTextContent, imgDB, citationTexts) {
             const image = item.content.find(i => i.type === 'image')?.attrs.image
             const filename = imgDB.db[image]?.image.split('/').pop()
             const caption = item.attrs.caption
-                ? item.content.find(i => i.type === 'figure_caption').content.map(c => f(c)).join('')
-                : ''
+                ? item.content.find(i => i.type === 'figure_caption').content?.map(c => f(c)).join('')
+                : null
             return wrap('figure',
                 tag('graphic', {url: `${filename}`})
-                + wrap('head', `Abbildung ${figCount}${caption ? ': ' : ''}${caption}`)
+                + wrap('head', `Abbildung ${figCount}${caption ? ': ' : ''}${caption || ''}`)
             )
         }
 
