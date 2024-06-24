@@ -16,18 +16,23 @@ const dummyDoc = (cont) => {
     }
 }
 
-// TODO: Adjust to changed subtitle structure
 test('extract empty subtitle', () => {
-    const doc = dummyDoc([{type: 'heading_part', attrs: {id: 'subtitle'}}])
+    const doc = dummyDoc([
+        {type: 'heading_part', attrs: {id: 'subtitle'}, content: [ {type: 'heading1'} ]}
+    ])
     expect(extractSubtitle(doc)).toBe('')
 })
 
-// TODO: Adjust to changed subtitle structure
 test('extract simple subtitle', () => {
     const content = [{
         type: 'heading_part',
         attrs: {id: 'subtitle'},
-        content: [{type: 'text', text: 'hello'}]}
+        content: [
+            {
+                type: 'heading1',
+                content: [{type: 'text', text: 'hello'}]
+            }
+        ]}
     ]
     const doc = dummyDoc(content)
     expect(extractSubtitle(doc)).toBe('hello')
