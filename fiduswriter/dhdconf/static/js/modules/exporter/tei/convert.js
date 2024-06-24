@@ -208,7 +208,9 @@ function convertBody(richTextContent, imgDB, citationTexts) {
     const closing = '</div>'.repeat(divLevel)
     const body = `${result}${closing}`
 
-    const footnotes = wrap('div', footnotesTEI.join("\n"), {type: 'notes'})
+    const footnotes = footnotesTEI.length
+        ? wrap('div', footnotesTEI.join("\n"), {type: 'notes'})
+        : '';
     return [body, footnotes]
 }
 
