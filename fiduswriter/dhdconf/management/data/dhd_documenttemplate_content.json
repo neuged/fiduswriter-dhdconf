@@ -65,8 +65,7 @@
             "attrs": {
                 "title": "Abstract",
                 "id": "abstract",
-                "optional": "hidden",
-                "hidden": true,
+                "optional": "shown",
                 "elements": [],
                 "marks": [
                     "strong",
