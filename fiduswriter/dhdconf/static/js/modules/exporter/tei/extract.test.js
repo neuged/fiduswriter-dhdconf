@@ -1,10 +1,10 @@
 import {
+    extractAbstract,
     extractAuthors,
-    extractFootnotes,
     extractImageIDs,
     extractKeywords,
     extractBody,
-    extractSubtitle, extractTextNodes,
+    extractSubtitle,
     extractTitle
 } from './extract'
 
@@ -79,16 +79,24 @@ test('extract keywords', () => {
 
 // TODO: Test extractTextNodes
 
-test('extract richtext', () => {
+// TODO: Test extractCitations
+
+test('extract body', () => {
     const content = [{
         type: 'richtext_part', attrs: {id: 'body'}, content: [
             {type: 'paragraph', content: [{type: 'text', text: 'hello'}]}
         ]
     }]
     const doc = dummyDoc(content)
-    expect(
-        extractBody(doc)
-    ).toEqual(content[0])
+    expect(extractBody(doc)).toStrictEqual(content[0])
+})
+
+test('extract abstract', () => {
+    const content = [{
+        type: 'richtext_part', attrs: {id: 'abstract'}, content: []
+    }]
+    const doc = dummyDoc(content)
+    expect(extractAbstract(doc)).toStrictEqual(content[0])
 })
 
 test('extract image IDs', () => {

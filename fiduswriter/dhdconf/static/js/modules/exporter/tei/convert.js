@@ -53,11 +53,10 @@ function text(item) {
 }
 
 /**
- * Build a string of TEI from the body (type 'richtext') of a document.
- * Returns a string representing as the body and a second string having
- * the footnotes.
+ * Build two strings of TEI from the 'richtext' part of a document.
+ * The first string represents the content and the second any footnotes.
  */
-function convertBody(richTextContent, imgDB, citationTexts, mathExporter) {
+function richText(richTextContent, imgDB, citationTexts, mathExporter) {
     let divLevel = 0    // the number of currently open divs
     let fnCount = 0     // the number of footnotes we have encountered
     let figCount = 0    // the number of figures we have encountered
@@ -236,25 +235,27 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const keywordsTEI = keywords(fields.keywords)
     const title = wrap('title', fields.title, {type: 'main'})
     const subtitle = wrap('title', fields.subtitle, {type: 'sub'})
-    const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle)
+
+    const abstractWords = abstractText(fields.abstract).split(/\s/)
+    const [abstract, _] = richText(fields.abstract.content)
+
+    const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle, abstract)
 
     // All the fields used in the TEI body:
-    const result = convertBody(
+    const [text, footnotes] = richText(
         fields.body.content,
         imgDB,
         citationsExporter.citationTexts,
         mathExporter
     )
-    const text = result[0]
     const TEIbody = body(text)
 
     // All the fields used in the TEI back:
-    const footnotes = result[1]
     const bibItems = bibliography(citationsExporter.bibliography)
     const TEIback = back(footnotes, citationsExporter.bibliographyHeader, bibItems)
 
     return TEITemplate(slug, TEIheader, TEIbody, TEIback)
 }
 
-export {authors, convertBody, text}
+export {authors, richText, text}
 export default convert

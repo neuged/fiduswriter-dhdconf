@@ -99,6 +99,12 @@ function extractBody(docContents) {
     })
 }
 
+function extractAbstract(docContents) {
+    return docContents.content.find(part => {
+        return part.type === 'richtext_part' && part.attrs.id === 'abstract'
+    })
+}
+
 function extractTitle(docContents) {
     const title = docContents.content
         ?.find(part => part.type === 'title')
@@ -134,6 +140,7 @@ function extractTextNodes(node, texts=[]) {
 function extract(docContents, _docSettings) {
     const currentDate = new Date().toISOString()
 
+    const abstract = extractAbstract(docContents)
     const authors = extractAuthors(docContents)
     const footnotes = extractFootnotes(docContents)
     const keywords = extractKeywords(docContents)
@@ -143,6 +150,7 @@ function extract(docContents, _docSettings) {
     const title = extractTitle(docContents)
 
     return {
+        abstract,
         authors,
         footnotes,
         keywords,
@@ -155,6 +163,7 @@ function extract(docContents, _docSettings) {
 }
 
 export {
+    extractAbstract,
     extractAuthors,
     extractCitations,
     extractFootnotes,
