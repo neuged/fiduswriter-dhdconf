@@ -7,6 +7,7 @@ import {ZipFileCreator} from "../tools/zip"
 import convert from './convert'
 import {extractBody, extractCitations, extractImageIDs} from './extract'
 import {TeiCitationsExporter} from "./citations";
+import {TeiExporterMath} from "./math";
 
 
 export class TEIExporter {
@@ -19,6 +20,7 @@ export class TEIExporter {
 
         this.slug = createSlug(doc.title)
         this.citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
+        this.mathExp = new TeiExporterMath()
 
         this.docContent = false
         this.textFiles = []
@@ -35,13 +37,15 @@ export class TEIExporter {
         this.docContent = removeHidden(this.doc.content)
 
         await this.citeExp.init(extractCitations(extractBody(this.docContent)))
+        await this.mathExp.init()
 
         const enc = new TextEncoder()
         const tei = enc.encode(convert(
             this.slug,
             this.docContent,
             this.imageDB,
-            this.citeExp
+            this.citeExp,
+            this.mathExp
         ))
         this.textFiles = [{filename: `${this.slug}.tei.xml`, contents: tei}]
 

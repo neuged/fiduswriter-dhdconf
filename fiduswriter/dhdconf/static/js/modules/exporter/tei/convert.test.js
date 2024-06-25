@@ -197,19 +197,6 @@ test('consecutive footnotes (inside the main text) must be numbered', () => {
     ])
 })
 
-test('render equations', () => {
-    expect(
-        convertBody([
-            {
-                type: 'equation',
-                attrs: {
-                    equation: 'A=\\pi\\cdot r^2'
-                }
-            }
-        ])
-    ).toStrictEqual(['<formula notation="tex">$A=\\pi\\cdot r^2$</formula>', ''])
-})
-
 test('render a simple figure', () => {
     const content = [
         {

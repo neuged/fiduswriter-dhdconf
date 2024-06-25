@@ -1,6 +1,3 @@
-// import {escapeText} from "../../common"
-// import {FIG_CATS} from "../../schema/i18n"
-
 /**
  * All functions in this module take a blob of data and return a string of TEI XML markup.
  *
@@ -60,7 +57,7 @@ function text(item) {
  * Returns a string representing as the body and a second string having
  * the footnotes.
  */
-function convertBody(richTextContent, imgDB, citationTexts) {
+function convertBody(richTextContent, imgDB, citationTexts, mathExporter) {
     let divLevel = 0    // the number of currently open divs
     let fnCount = 0     // the number of footnotes we have encountered
     let figCount = 0    // the number of figures we have encountered
@@ -72,8 +69,11 @@ function convertBody(richTextContent, imgDB, citationTexts) {
         if (item.type === 'text') {
             return text(item)
         }
-        if (item.type === 'equation') {
-            return wrap('formula', `$${item.attrs.equation}$`, {notation: 'tex'})
+
+        if (item.type === 'equation' && item.attrs?.equation) {
+            return wrap("formula",
+                mathExporter.latexToMathML(item.attrs.equation)
+            )
         }
 
         /* Another base case, since the actual content of the footnote
@@ -227,7 +227,7 @@ function bibliography(bibliography) {
  * the document and the documents content object and generates a string
  * of TEI XML suitable for download.
  */
-function convert(slug, docContents, imgDB, citationsExporter) {
+function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const fields = extract(docContents)
 
     // All the fields used in the TEI header:
@@ -239,7 +239,12 @@ function convert(slug, docContents, imgDB, citationsExporter) {
     const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle)
 
     // All the fields used in the TEI body:
-    const result = convertBody(fields.body.content, imgDB, citationsExporter.citationTexts)
+    const result = convertBody(
+        fields.body.content,
+        imgDB,
+        citationsExporter.citationTexts,
+        mathExporter
+    )
     const text = result[0]
     const TEIbody = body(text)
 
