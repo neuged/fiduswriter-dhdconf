@@ -6,6 +6,9 @@ export const config = {
     removeCategoryOptionsFromBibliography: true,
     removeCategoryOptionsFromImagesOverview: true,
 
-    // The path under which to expect the docx template used in the DHC export
-    dhcExporterDocxTemplateUrl: "/media/export-template-files/Classic.docx"
+    // The path at which to expect the docx template used in the DHC export
+    dhcExporterDocxTemplateUrl: "/media/export-template-files/Classic.docx",
+
+    // Checks used before exporting
+    teiExportMaxWordsInAbstract: 200,
 }

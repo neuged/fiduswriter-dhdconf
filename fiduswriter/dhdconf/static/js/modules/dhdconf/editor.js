@@ -1,6 +1,20 @@
 import {addAlert} from "../../modules/common"
 
 import {config} from "./config";
+import {DocumentCheckFailed} from "../exporter/tei/checks";
+
+function showSucces() {
+    addAlert("success", gettext("Export finished"))
+}
+
+function showError(e) {
+    if (e instanceof DocumentCheckFailed) {
+        addAlert("warning", `Check failed: ${e.message}`)
+    } else {
+        addAlert("error", `Export error: '${e.message}'`)
+        console.error(e)
+    }
+}
 
 export class DhdconfEditor {
     constructor(editor) {
@@ -26,13 +40,7 @@ export class DhdconfEditor {
                             editor.docInfo.updated,
                             editor.mod.documentTemplate.documentStyles
                         )
-                        exporter.init().then(
-                            () => addAlert("success", gettext("Export finished")),
-                            (e) => {
-                                addAlert("error", `Export error: '${e.message}'`)
-                                console.error(e)
-                            }
-                        )
+                        exporter.init().then(showSucces, showError)
                     })
                 }
             },
@@ -50,13 +58,7 @@ export class DhdconfEditor {
                             editor.app.csl,
                             editor.docInfo.updated,
                         )
-                        exporter.init().then(
-                            () => addAlert("success", gettext("Export finished")),
-                            (e) => {
-                                addAlert("error", `Export error: '${e.message}'`)
-                                console.error(e)
-                            }
-                        )
+                        exporter.init().then(showSucces, showError)
                     });
                 }
             },
@@ -75,13 +77,7 @@ export class DhdconfEditor {
                             editor.docInfo.updated,
                             editor.mod.documentTemplate.documentStyles,
                             config.dhcExporterDocxTemplateUrl
-                        ).then(
-                            () => addAlert("success", gettext("Export finished")),
-                            (e) => {
-                                addAlert("error", `Export error: '${e.message}'`)
-                                console.error(e)
-                            }
-                        )
+                        ).then(showSucces, showError)
                     })
                 }
             }

@@ -5,11 +5,13 @@
  */
 
 import extract, {extractTextNodes} from "./extract"
-import {tag, wrap, linkify, linkPtr, linkRef} from "./utils"
+import {tag, wrap, linkify, linkRef} from "./utils"
 import {header} from "./templates/header"
 import {body} from "./templates/body"
 import {back} from "./templates/back"
 import {TEITemplate} from "./templates"
+import {checkAbstractWords, runChecks} from "./checks";
+
 
 
 function authors(data) {
@@ -221,6 +223,8 @@ function bibliography(bibliography) {
 }
 
 
+
+
 /**
  * This is the main entry point of this module. It takes the title-slug of
  * the document and the documents content object and generates a string
@@ -228,6 +232,7 @@ function bibliography(bibliography) {
  */
 function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const fields = extract(docContents)
+    runChecks(fields)
 
     // All the fields used in the TEI header:
     const authorsTEI = authors(fields.authors)
@@ -236,7 +241,6 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const title = wrap('title', fields.title, {type: 'main'})
     const subtitle = wrap('title', fields.subtitle, {type: 'sub'})
 
-    const abstractWords = abstractText(fields.abstract).split(/\s/)
     const [abstract, _] = richText(fields.abstract.content)
 
     const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle, abstract)
