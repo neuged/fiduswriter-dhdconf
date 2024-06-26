@@ -49,3 +49,8 @@ test('linkify preserves trailing punctuation on doi', () => {
     expect(linkify('doi:10.1000/182, post'))
         .toBe('<ref target="https://doi.org/10.1000/182">doi:10.1000/182</ref>, post')
 })
+
+test('linkify gracefully handles dois given as links', () => {
+    expect(linkify('doi:https://doi.org/10.1000/182'))
+        .toBe('doi:<ptr target="https://doi.org/10.1000/182" />')
+})

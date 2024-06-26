@@ -33,7 +33,7 @@ function linkPtr(target) {
 }
 
 const LINK_REGEX = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
-const DOI_REGEX = /\bdoi:([^\s]+)/
+const DOI_REGEX = /doi:(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i  // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
 const TRAILING = /[.,]$/
 function linkify(text) {
     const linkified = text.replace(LINK_REGEX, linkPtr);
