@@ -5,8 +5,7 @@ DHD_ARTICLE_ATTRS = {
         "code_block",
         "equation",
         "citation",
-        "cross_reference",
-        "blockquote"
+        "cross_reference"
     ],
     "footnote_marks": [
         "strong",
