@@ -8,6 +8,15 @@ DHD_ARTICLE_ATTRS = {
         "cross_reference",
         "blockquote"
     ],
+    "footnote_marks": [
+        "strong",
+        "em",
+        "link"
+    ],
+    "papersize": "A4",
+    "papersizes": [
+        "A4"
+    ],
     "citationstyle": "chicago-author-date-de",
     "citationstyles": [
         "chicago-author-date-de"
@@ -27,6 +36,7 @@ DHD_ARTICLE_ATTRS = {
 DHD_ARTICLE_ABSTRACT_ELEMENTS = [
     "paragraph",
 ]
+DHD_ARTICLE_ABSTRACT_MARKS = []
 
 DHD_ARTICLE_BODY_ELEMENTS = [
     "paragraph",
@@ -42,4 +52,9 @@ DHD_ARTICLE_BODY_ELEMENTS = [
     "blockquote",
     "footnote",
     "table"
+]
+DHD_ARTICLE_BODY_MARKS = [
+    "strong",
+    "em",
+    "link"
 ]

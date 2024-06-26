@@ -22,8 +22,10 @@ class Command(BaseCommand):
             attrs = elem.get("attrs", {})
             if attrs.get("id", "") == "abstract":
                 elem["attrs"]["elements"] = settings.DHD_ARTICLE_ABSTRACT_ELEMENTS
+                elem["attrs"]["marks"] = settings.DHD_ARTICLE_ABSTRACT_MARKS
             elif attrs.get("id", "") == "body":
                 elem["attrs"]["elements"] = settings.DHD_ARTICLE_BODY_ELEMENTS
+                elem["attrs"]["marks"] = settings.DHD_ARTICLE_BODY_MARKS
 
         template = DocumentTemplate.objects.get(import_id='standard-article')
         template.content = content

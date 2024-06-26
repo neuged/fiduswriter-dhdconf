@@ -1,9 +1,6 @@
 {
     "type": "article",
     "attrs": {
-        "papersizes": [
-            "A4"
-        ],
         "template": "Standard Article",
         "import_id": "standard-article"
     },
@@ -27,8 +24,7 @@
                 ],
                 "marks": [
                     "strong",
-                    "em",
-                    "link"
+                    "em"
                 ],
                 "metadata": "subtitle"
             },
@@ -67,11 +63,7 @@
                 "id": "abstract",
                 "optional": "shown",
                 "elements": [],
-                "marks": [
-                    "strong",
-                    "em",
-                    "link"
-                ],
+                "marks": [],
                 "metadata": "abstract"
             },
             "content": [
@@ -86,11 +78,7 @@
                 "title": "Body",
                 "id": "body",
                 "elements": [],
-                "marks": [
-                    "strong",
-                    "em",
-                    "link"
-                ]
+                "marks": []
             },
             "content": [
                 {
