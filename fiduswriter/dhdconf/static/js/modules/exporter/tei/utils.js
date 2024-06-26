@@ -33,9 +33,18 @@ function linkPtr(target) {
 }
 
 const LINK_REGEX = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig
+const DOI_REGEX = /\bdoi:([^\s]+)/
+const TRAILING = /[.,]$/
 function linkify(text) {
-    return text.replace(LINK_REGEX, linkPtr);
+    const linkified = text.replace(LINK_REGEX, linkPtr);
+    return linkified.replace(DOI_REGEX, (substring, doiGroup) => {
+        const match = doiGroup.match(TRAILING)
+        if (match) {
+            return linkRef(`https://doi.org/${doiGroup.replace(TRAILING, '')}`, substring.replace(TRAILING, '')) + match[0]
+        } else {
+            return linkRef(`https://doi.org/${doiGroup}`, substring)
+        }
+    })
 }
-
 
 export {tag, wrap, linkPtr, linkRef, linkify}
