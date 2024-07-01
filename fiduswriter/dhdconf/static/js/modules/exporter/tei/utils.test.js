@@ -1,4 +1,4 @@
-import {tag, wrap, linkify, linkRef, linkPtr} from "./utils"
+import {tag, wrap, linkify, linkRef, linkPtr, wrapText} from "./utils"
 
 
 test('create empty <br /> tag', () => {
@@ -11,6 +11,10 @@ test('create empty ref tag with attributes', () => {
 
 test('wrap text in p tag', () => {
     expect(wrap('p', 'hello')).toBe('<p>hello</p>')
+})
+
+test('wrapText escapes xml', () => {
+    expect(wrapText('p', '<p/>')).toBe('<p>&lt;p/&gt;</p>')
 })
 
 test('wrap with attributes', () => {

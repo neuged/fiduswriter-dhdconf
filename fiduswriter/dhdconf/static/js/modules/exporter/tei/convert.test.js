@@ -1,5 +1,5 @@
 import {
-    authors,
+    authors, keywords,
     richText,
     text
 } from './convert'
@@ -10,14 +10,26 @@ test('render a single author', () => {
         firstname: 'Ben',
         lastname: 'H',
         email: 'ben@example.com',
-        institution: 'PPOE'
+        institution: 'ABC & XYZ'
     }]
     expect(authors(data)).toBe(
-        '<author><persName>' +
-        '<surname>H</surname><forename>Ben</forename></persName>' +
-        '<affiliation>PPOE</affiliation>' +
+        '<author>'+
+        '<persName><surname>H</surname><forename>Ben</forename></persName>' +
+        '<affiliation>ABC &amp; XYZ</affiliation>' +
         '<email>ben@example.com</email>' +
         '</author>')
+})
+
+test('render keywords', () => {
+    const data = ["abc", "  d  e  f  ", "x&y", "the <ref/> tag"]
+    expect(keywords(data)).toBe(
+        '<keywords n="keywords" scheme="ConfTool">' +
+        '<term>abc</term>\n' +
+        '<term>  d  e  f  </term>\n' +
+        '<term>x&amp;y</term>\n' +
+        '<term>the &lt;ref/&gt; tag</term>' +
+        '</keywords>'
+    )
 })
 
 test('render text-only node', () => {
@@ -28,6 +40,16 @@ test('render text-only node', () => {
         })
     ).toBe('hello')
 })
+
+test('render text with escaped xml', () => {
+    expect(
+        text({
+            type: 'text',
+            text: '<ref target="t">Q & A</ref>',
+        })
+    ).toBe('&lt;ref target="t"&gt;Q &amp; A&lt;/ref&gt;')
+})
+
 
 test('render italic text', () => {
     expect(
@@ -77,6 +99,15 @@ test('render heading with a single piece of text', () => {
             content: [{type: 'text', text: 'hello'}],
         }])
     ).toStrictEqual(['<div rend="DH-Heading"><head>hello</head></div>', ''])
+})
+
+test('render heading with an xml escape', () => {
+    expect(
+        richText([{
+            type: 'heading1',
+            content: [{type: 'text', text: 'hello <tags/>'}],
+        }])
+    ).toStrictEqual(['<div rend="DH-Heading"><head>hello &lt;tags/&gt;</head></div>', ''])
 })
 
 test('render heading with italic text', () => {

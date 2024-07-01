@@ -5,27 +5,29 @@
  */
 
 import extract, {extractTextNodes} from "./extract"
-import {tag, wrap, linkify, linkRef} from "./utils"
+import {tag, wrap, wrapText, linkify, linkRef, escapeXmlText} from "./utils"
 import {header} from "./templates/header"
 import {body} from "./templates/body"
 import {back} from "./templates/back"
 import {TEITemplate} from "./templates"
-import {checkAbstractWords, runChecks} from "./checks";
-
+import {runChecks} from "./checks";
 
 
 function authors(data) {
     return data.map(({firstname, lastname, institution, email}) => {
-        const name = wrap('persName', `${wrap('surname', lastname)}${wrap('forename', firstname)}`)
-        const inst = wrap('affiliation', institution || '')
-        email = wrap('email', email || '')
+        const name = wrap(
+            'persName',
+            `${wrapText('surname', lastname)}${wrapText('forename', firstname)}`
+        )
+        const inst = wrapText('affiliation', institution || '')
+        email = wrapText('email', email || '')
         return wrap('author', `${name}${inst}${email}`)
     }).join('\n')
 }
 
 function keywords(data) {
     if (data.length) {
-        const kws = data.map(kw => wrap('term', kw)).join('\n')
+        const kws = data.map(kw => wrapText('term', kw)).join('\n')
         return wrap('keywords', kws, {n: 'keywords', scheme: 'ConfTool'})
     }
     return ''
@@ -49,9 +51,9 @@ function text(item) {
                 return linkRef(current.attrs.href, previous)
             }
             return previous
-        }, item.text)
+        }, escapeXmlText(item.text))
     }
-    return item.text
+    return escapeXmlText(item.text)
 }
 
 /**
@@ -232,14 +234,15 @@ function bibliography(bibliography) {
  */
 function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const fields = extract(docContents)
+
     runChecks(fields)
 
     // All the fields used in the TEI header:
     const authorsTEI = authors(fields.authors)
     const date = fields.date
     const keywordsTEI = keywords(fields.keywords)
-    const title = wrap('title', fields.title, {type: 'main'})
-    const subtitle = wrap('title', fields.subtitle, {type: 'sub'})
+    const title = wrapText('title', fields.title, {type: 'main'})
+    const subtitle = wrapText('title', fields.subtitle, {type: 'sub'})
 
     const [abstract, _] = richText(fields.abstract.content)
 
@@ -261,5 +264,5 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     return TEITemplate(slug, TEIheader, TEIbody, TEIback)
 }
 
-export {authors, richText, text}
+export {authors, keywords, richText, text}
 export default convert

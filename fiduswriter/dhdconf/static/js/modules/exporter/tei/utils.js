@@ -24,6 +24,13 @@ function wrap(tagName, content, attrs = {}) {
     return `<${tagName}>${content}</${tagName}>`
 }
 
+/**
+ * Convenience function to wrap elements where only text is expected
+ */
+function wrapText(tagName, content, attrs = {}) {
+    return wrap(tagName, escapeXmlText(content), attrs)
+}
+
 function linkRef(target, text) {
     return wrap("ref", text, { target })
 }
@@ -47,4 +54,15 @@ function linkify(text) {
     })
 }
 
-export {tag, wrap, linkPtr, linkRef, linkify}
+function escapeXmlText(text) {
+    // NOTE: Only usable for XML text nodes as single and double-quotes are not escaped
+    return text.replace(/[<>&]/g, function (c) {
+        switch (c) {
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '&': return '&amp;';
+        }
+    });
+}
+
+export {tag, wrap, wrapText, linkPtr, linkRef, linkify, escapeXmlText}
