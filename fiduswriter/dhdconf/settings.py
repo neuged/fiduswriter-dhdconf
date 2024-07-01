@@ -2,7 +2,6 @@
 DHD_ARTICLE_ATTRS = {
     "footnote_elements": [
         "paragraph",
-        "code_block",
         "equation",
         "citation",
         "cross_reference"
@@ -50,7 +49,8 @@ DHD_ARTICLE_BODY_ELEMENTS = [
     "cross_reference",
     "blockquote",
     "footnote",
-    "table"
+    "table",
+    "code_block"
 ]
 DHD_ARTICLE_BODY_MARKS = [
     "strong",
