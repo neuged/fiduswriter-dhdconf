@@ -411,9 +411,6 @@ test('render source code snippets', () => {
     const content = [
         {
             "type": "code_block",
-            "attrs": {
-                "track": []
-            },
             "content": [
                 {
                     "type": "text",
@@ -424,6 +421,30 @@ test('render source code snippets', () => {
     ]
     const expected = '<code># source code\ndef random():\n    '
                  + '# determined by fair dice roll\n    return 3</code>'
+    expect(richText(content)).toStrictEqual([expected, ''])
+})
+
+test('code block contains only character data and no formatting', () => {
+    const content = [
+        {
+            "type": "code_block",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Code block with text "
+                },{
+                    "type": "text",
+                    "marks": [{ "type": "strong" }],
+                    "text": "in bold"
+                },
+                {
+                    "type": "text",
+                    "text": " and a <tag/>"
+                }
+            ]
+        }
+    ]
+    const expected = '<code>Code block with text in bold and a &lt;tag/&gt;</code>'
     expect(richText(content)).toStrictEqual([expected, ''])
 })
 

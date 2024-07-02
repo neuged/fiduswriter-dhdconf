@@ -4,6 +4,7 @@
  * @module
  */
 
+import {textContent} from "../tools/doc_content";
 import extract, {extractTextNodes} from "./extract"
 import {tag, wrap, wrapText, linkify, linkRef, escapeXmlText} from "./utils"
 import {header} from "./templates/header"
@@ -148,7 +149,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
         }
 
         if (item.type === 'code_block') {
-            return wrap('code', item.content.map(c => f(c)).join(''))
+            return wrapText('code', textContent(item))
         }
 
         if (item.type === 'ordered_list') {
