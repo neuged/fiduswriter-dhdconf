@@ -19,6 +19,7 @@ function showError(e) {
 export class DhdconfEditor {
     constructor(editor) {
         this.editor = editor
+
     }
 
     init() {
@@ -68,6 +69,10 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to a DHC archive"),
                 order: 3,
                 action: editor => {
+                    if (navigator.vendor === "Apple Computer, Inc.") {
+                        this.editor.mod.documentTemplate.showSafariErrorMessage()
+                        return
+                    }
                     import("../exporter/dhc").then(({exportDHC}) => {
                         exportDHC(
                             editor.getDoc({changes: 'acceptAllNoInsertions'}),
