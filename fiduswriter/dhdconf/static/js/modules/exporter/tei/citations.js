@@ -31,7 +31,7 @@ export class TeiCitationsExporter {
     }
 
     get citationTexts() {
-        return this.fm?.citationTexts || [];
+        return this.fm?.citationTexts || []
     }
 
     get bibliography() {

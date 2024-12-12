@@ -6,14 +6,14 @@
 
 function extractAuthors(docContents) {
     const authors = docContents.content
-        ?.find(part => part.type === 'contributors_part')
+        ?.find(part => part.type === "contributors_part")
         ?.content
-        ?.filter(item => item.type === 'contributor')
+        ?.filter(item => item.type === "contributor")
         .map(author => author.attrs)
     return authors || []
 }
 
-function extractCitations(node, citations=[]) {
+function extractCitations(node, citations = []) {
     switch (node.type) {
     case "citation":
         citations.push(JSON.parse(JSON.stringify(node.attrs)))
@@ -42,7 +42,7 @@ function extractFootnotes(docContents) {
     while (stack.length) {
         const curr = stack.pop()
 
-        if (curr.type !== undefined && curr.type === 'footnote') {
+        if (curr.type !== undefined && curr.type === "footnote") {
             fns.push(curr.attrs.footnote)
         } else if (curr.content !== undefined) {
             for (const v of curr.content) {
@@ -64,9 +64,9 @@ function extractImageIDs(docContents) {
 
     while (stack.length) {
         const node = stack.pop()
-        if (node.type === 'figure') {
+        if (node.type === "figure") {
             const ids = node.content
-                .filter(it => it.type === 'image')
+                .filter(it => it.type === "image")
                 .map(it => it.attrs.image)
             for (const n of ids) {
                 images.push(n)
@@ -86,52 +86,52 @@ function extractImageIDs(docContents) {
 
 function extractKeywords(docContents) {
     const keywords = docContents.content
-        ?.find(part => part.type === 'tags_part')
+        ?.find(part => part.type === "tags_part")
         ?.content
-        ?.filter(item => item.type === 'tag')
+        ?.filter(item => item.type === "tag")
         .map(kw => kw.attrs.tag)
     return keywords || []
 }
 
 function extractBody(docContents) {
     return docContents.content.find(part => {
-        return part.type === 'richtext_part' && part.attrs.id === 'body'
+        return part.type === "richtext_part" && part.attrs.id === "body"
     })
 }
 
 function extractAbstract(docContents) {
     return docContents.content.find(part => {
-        return part.type === 'richtext_part' && part.attrs.id === 'abstract'
+        return part.type === "richtext_part" && part.attrs.id === "abstract"
     })
 }
 
 function extractTitle(docContents) {
     const title = docContents.content
-        ?.find(part => part.type === 'title')
+        ?.find(part => part.type === "title")
         ?.content
-        ?.find(item => item.type === 'text')
+        ?.find(item => item.type === "text")
         ?.text
-    return title || ''
+    return title || ""
 }
 
 function extractSubtitle(docContents) {
     const subtitle = docContents.content
-        ?.find(part => part.type === 'heading_part' && part.attrs.id === 'subtitle')
+        ?.find(part => part.type === "heading_part" && part.attrs.id === "subtitle")
         ?.content
-        ?.find(part => part.type === 'heading1')
+        ?.find(part => part.type === "heading1")
         ?.content
-        ?.filter(item => item.type === 'text')
+        ?.filter(item => item.type === "text")
         .map(item => item.text)
-        .join('')
-    return subtitle || ''
+        .join("")
+    return subtitle || ""
 }
 
-function extractTextNodes(node, texts=[]) {
+function extractTextNodes(node, texts = []) {
     if (node.type === "text") {
-        texts.push(node);
+        texts.push(node)
     }
     node.content?.forEach(child => extractTextNodes(child, texts))
-    return texts;
+    return texts
 }
 
 /**

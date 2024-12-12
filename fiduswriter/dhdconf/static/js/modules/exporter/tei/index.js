@@ -4,10 +4,10 @@ import {createSlug} from "../tools/file"
 import {removeHidden} from "../tools/doc_content"
 import {ZipFileCreator} from "../tools/zip"
 
-import convert from './convert'
-import {extractBody, extractCitations, extractImageIDs} from './extract'
-import {TeiCitationsExporter} from "./citations";
-import {TeiExporterMath} from "./math";
+import convert from "./convert"
+import {extractBody, extractCitations, extractImageIDs} from "./extract"
+import {TeiCitationsExporter} from "./citations"
+import {TeiExporterMath} from "./math"
 
 
 export class TEIExporter {
@@ -53,7 +53,7 @@ export class TEIExporter {
         this.httpFiles = images.map(id => {
             const entry = this.imageDB.db[id]
             return {
-                filename: `images/${entry.image.split('/').pop()}`,
+                filename: `images/${entry.image.split("/").pop()}`,
                 url: entry.image
             }
         })

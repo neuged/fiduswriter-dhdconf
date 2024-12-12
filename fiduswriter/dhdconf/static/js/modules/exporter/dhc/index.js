@@ -8,7 +8,7 @@ import {TEIExporter} from "../tei"
 
 class HtmlExporterWithoutDownload extends HTMLExporter {
     download(blob) {
-        return blob;
+        return blob
     }
 }
 
@@ -54,7 +54,7 @@ export async function exportDHC(doc, bibDB, imageDB, csl, updated, documentStyle
     const docxBlob = await docxExporter.init()
 
     const slug = teiExporter.slug
-    const docxFile = { filename: `${slug}.docx`, contents: docxBlob }
+    const docxFile = {filename: `${slug}.docx`, contents: docxBlob}
     const htmlFile = htmlExporter.textFiles.find((i) => i.filename === "document.html")
     htmlFile.filename = `${slug}.html`
 
@@ -66,6 +66,6 @@ export async function exportDHC(doc, bibDB, imageDB, csl, updated, documentStyle
         updated
     )
     zipFile.init().then(blob => {
-        download(blob, `${teiExporter.slug}.dhc`, 'application/zip')
+        download(blob, `${teiExporter.slug}.dhc`, "application/zip")
     })
 }

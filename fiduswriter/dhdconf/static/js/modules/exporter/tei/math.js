@@ -2,8 +2,8 @@
 /* cf. exporter/docx/math.js */
 export class TeiExporterMath {
 
-    constructor(exporter) {
-        this.mathLive = null;
+    constructor() {
+        this.mathLive = null
     }
 
     init() {

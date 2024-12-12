@@ -1,7 +1,7 @@
 import {addAlert} from "../../modules/common"
 
-import {config} from "./config";
-import {DocumentCheckFailed} from "../exporter/tei/checks";
+import {config} from "./config"
+import {DocumentCheckFailed} from "../exporter/tei/checks"
 
 function showSucces() {
     addAlert("success", gettext("Export finished"))
@@ -53,14 +53,14 @@ export class DhdconfEditor {
                 action: editor => {
                     import("../exporter/tei").then(({TEIExporter}) => {
                         const exporter = new TEIExporter(
-                            editor.getDoc({changes: 'acceptAllNoInsertions'}),
+                            editor.getDoc({changes: "acceptAllNoInsertions"}),
                             editor.mod.db.bibDB,
                             editor.mod.db.imageDB,
                             editor.app.csl,
                             editor.docInfo.updated,
                         )
                         exporter.init().then(showSucces, showError)
-                    });
+                    })
                 }
             },
             {
@@ -75,7 +75,7 @@ export class DhdconfEditor {
                     }
                     import("../exporter/dhc").then(({exportDHC}) => {
                         exportDHC(
-                            editor.getDoc({changes: 'acceptAllNoInsertions'}),
+                            editor.getDoc({changes: "acceptAllNoInsertions"}),
                             editor.mod.db.bibDB,
                             editor.mod.db.imageDB,
                             editor.app.csl,
