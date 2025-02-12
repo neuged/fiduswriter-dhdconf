@@ -1,17 +1,27 @@
 
 import {config} from "./config"
+import {activateWait, deactivateWait, addAlert, postJson} from "../common"
 
 
-function removeFromArray(array, predicate) {
-    const idx = array.findIndex((i) => predicate(i))
+function removeMenuItem(items, predicate) {
+    const idx = items.findIndex(predicate)
     if (idx >= 0) {
-        array.splice(idx, 1)
+        items.splice(idx, 1)
     }
 }
 
+function hideMenuElement(items, predicate) {
+    // Some menu items (ids: cat_selector, new_document) are expected to exist by other
+    // parts of fiduswriter. Since we cannot remove them, we set an invalid type
+    // which renders an empty tag (see common/overview_menu.js, dhdconf.css)
+    items.filter(predicate).forEach((item) => {
+        item.type = "hidden_overview_menu_entry"
+    })
+}
+
 function removeCategoriesFromMenu(menu) {
-    removeFromArray(menu, (entry) => entry.id === "cat_selector")
-    removeFromArray(menu, (entry) => entry.title === gettext("Edit Categories"))
+    hideMenuElement(menu, (entry) => entry.id === "cat_selector")
+    removeMenuItem(menu, (entry) => entry.title === gettext("Edit Categories"))
 }
 
 
@@ -35,19 +45,10 @@ export class DhdconfImagesOverview {
     init() {
         if (config.removeCategoryOptionsFromImagesOverview) {
             removeCategoriesFromMenu(this.overview.menu.model.content)
-
-            // Removal of category selection throws an error in image_overview, so we add a dummy
-            // TODO: Find a better way to prevent that error than this hack
-            this.overview.menu.model.content.push({
-                id: "cat_selector",
-                content: [],
-                open: false,
-                order: 99,
-                type: "invalid_type"
-            })
         }
     }
 }
+
 
 export class DhdconfDocumentsOverview {
     constructor(overview) {
@@ -55,11 +56,56 @@ export class DhdconfDocumentsOverview {
     }
 
     init() {
+        const content = this.overview.menu.model.content
         if (config.removeFolderCreationOption) {
-            removeFromArray(
-                this.overview.menu.model.content,
-                (entry) => entry.title === gettext("Create new folder")
-            )
+            removeMenuItem(content, (entry) => entry.title === gettext("Create new folder"))
         }
+        if (config.removeDocumenCreationOptions) {
+            removeMenuItem(content, (entry) => entry.title === gettext("Upload FIDUS document"))
+            hideMenuElement(content, (entry) => entry.id === "new_document")
+            // the "New document" button gets recreated after plugin intialization so
+            // we activate a bit of custom css to actually hide it
+            // (see: documents/overview/index.js, dhdconf.css)
+            document.body.dataset.hideNewDocumentOption = "true"
+        }
+
+        this.overview.menu.model.content.push({
+            id: "conftool_sync",
+            type: "button",
+            title: gettext("Conftool: Synchronise now"),
+            action: overview => {
+                activateWait(false, gettext("Importing user data and verified emails"))
+                return postJson("api/dhdconf/refresh_conftool_user/")
+                    .then(response => {
+                        this.addResponseAlert(response)
+                        activateWait(false, gettext("Importing submitted papers"))
+                        return postJson("api/dhdconf/refresh_conftool_papers/")
+                    })
+                    .then(response => {
+                        this.addResponseAlert(response)
+                        activateWait(false, gettext("Fetching documents"))
+                        return overview.getDocumentListData()
+                    })
+                    .finally(() => {
+                        deactivateWait()
+                    })
+            },
+            order: 1,
+        })
+    }
+
+    addResponseAlert(response) {
+        let alertType = "error"
+        let message = response.json?.message
+
+        if (response.status === 200) {
+            alertType = "success"
+        } else {
+            if (response.json?.requestId) {
+                message = `${message} (ID: ${response.json?.requestId})`
+            }
+            console.warn(message)
+        }
+        addAlert(alertType, message)
     }
 }

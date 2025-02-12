@@ -1,8 +1,6 @@
 {
     "type": "article",
     "attrs": {
-        "template": "Standard Article",
-        "import_id": "standard-article"
     },
     "content": [
         {
@@ -43,7 +41,8 @@
                 "title": "Authors",
                 "id": "authors",
                 "item_title": "Author",
-                "metadata": "authors"
+                "metadata": "authors",
+                "locking": "fixed"
             }
         },
         {
@@ -53,7 +52,8 @@
                 "id": "keywords",
                 "optional": "shown",
                 "item_title": "Keyword",
-                "metadata": "keywords"
+                "metadata": "keywords",
+                "locking": "fixed"
             }
         },
         {
@@ -64,7 +64,8 @@
                 "optional": "shown",
                 "elements": [],
                 "marks": [],
-                "metadata": "abstract"
+                "metadata": "abstract",
+                "locking": "fixed"
             },
             "content": [
                 {

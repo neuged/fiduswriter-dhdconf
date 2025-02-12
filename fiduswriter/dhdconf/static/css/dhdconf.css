@@ -1,0 +1,9 @@
+.fw-overview-menu .hidden_overview_menu_entry {
+    display: none;
+    visibility: hidden;
+}
+
+body[data-hide-new-document-option='true'] .fw-overview-menu-item.new_document {
+    display: none;
+    visibility: hidden;
+}

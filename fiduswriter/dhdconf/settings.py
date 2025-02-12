@@ -1,5 +1,13 @@
+import os
 
+CONFTOOL_URL = os.environ.get('CONFTOOL_URL')
+CONFTOOL_APIPASS = os.environ.get('CONFTOOL_APIPASS')
+
+DHD_ARTICLE_TEMPLATE_ID = "standard-article"
+DHD_ARTICLE_TEMPLATE_TITLE = "DHd Article"
 DHD_ARTICLE_ATTRS = {
+    "template": DHD_ARTICLE_TEMPLATE_TITLE,
+    "import_id": DHD_ARTICLE_TEMPLATE_ID,
     "footnote_elements": [
         "paragraph",
         "equation",

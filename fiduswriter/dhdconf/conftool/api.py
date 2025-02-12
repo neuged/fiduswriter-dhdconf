@@ -104,6 +104,7 @@ class LoginResponse(ConftoolResponse):
 @dataclass
 class UserInfoResponse(ConftoolResponse):
     person_id: int
+    username: str
     name: str
     firstname: str
     email: str
@@ -112,6 +113,7 @@ class UserInfoResponse(ConftoolResponse):
     def from_xml(cls, element: ET.Element) -> "UserInfoResponse":
         return cls(
             person_id=int(_t(element, "personID")),
+            username=_t(element, "username"),
             name=_t(element, "name"),
             firstname=_t(element, "firstname"),
             email=_t(element, "email"),
@@ -121,6 +123,7 @@ class UserInfoResponse(ConftoolResponse):
 @dataclass
 class ExportUserResponse(ConftoolResponse):
     person_id: int
+    username: str
     email: str
     email_validated: bool
     email2: str = ""
@@ -130,6 +133,7 @@ class ExportUserResponse(ConftoolResponse):
     def from_xml(cls, element: ET.Element) -> "ExportUserResponse":
         result = cls(
             person_id=_int(element, "personID"),
+            username=_t(element, "username"),
             email=_t(element, "email"),
             email2=_t(element, "email2", ""),
             email_validated=_bool(element, "email_validated"),
@@ -160,6 +164,14 @@ class PaperAuthor:
             idx += 1
         return result
 
+    def firstname(self) -> str:
+        if (split := self.name.split(",", maxsplit=1)) and len(split) == 2:
+            return split[1].strip()
+        return ""
+
+    def lastname(self):
+        return self.name.split(",", maxsplit=1)[0].strip()
+
 
 @dataclass
 class ExportPaperResponse(ConftoolResponse):
@@ -178,7 +190,7 @@ class ExportPaperResponse(ConftoolResponse):
             submitting_author_id=_int(element, "submitting_author_ID"),
             title=_t(element, "title"),
             abstract=_t(element, "abstract", ""),
-            keywords=_list(element, "keyword"),
+            keywords=_list(element, "keywords"),
             topics=_list(element, "topics"),
             authors=PaperAuthor.list_from_xml(element)
         )

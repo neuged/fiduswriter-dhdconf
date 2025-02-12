@@ -1,8 +1,16 @@
-# TODO: Needed?
-# from django.urls import re_path
-#
-# from . import views
-#
+from django.urls import path
+
+from . import views
+
 urlpatterns = [
-    # re_path("^export/$", views.export, name="export"),
+    path(
+        "refresh_conftool_papers/",
+        views.refresh_conftool_papers,
+        name="refresh_conftool_papers"
+    ),
+    path(
+        "refresh_conftool_user/",
+        views.refresh_conftool_user,
+        name="refresh_conftool_user"
+    ),
 ]
