@@ -9,8 +9,6 @@ from dhdconf.conftool.importing import import_user_info
 from dhdconf.models import ConftoolUser, ImportLog
 from dhdconf.conftool.util import import_log_error
 
-from dhdconf import settings
-
 
 class ConftoolBackend(BaseBackend):
 

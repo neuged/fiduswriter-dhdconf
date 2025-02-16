@@ -1,9 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 from base.decorators import ajax_required
-from dhdconf import settings
 from dhdconf.conftool.api import ConftoolClient
 from dhdconf.conftool.importing import import_paper, import_emails, import_user_info
 from dhdconf.conftool.util import import_log_error, import_log

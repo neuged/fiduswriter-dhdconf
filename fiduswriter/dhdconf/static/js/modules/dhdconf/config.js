@@ -1,3 +1,4 @@
+// TODO: Make this configurable in our app_settings.py, cf. base/weback.config.template.js
 export const config = {
     // Whether to show "Create new folder" in the folder document overview
     removeFolderCreationOption: true,

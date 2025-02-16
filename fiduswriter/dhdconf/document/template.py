@@ -1,9 +1,9 @@
 import json
 import os
 
+from django.conf import settings
 from django.db import transaction
 
-from dhdconf import settings
 from document.models import DocumentTemplate
 
 
