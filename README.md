@@ -26,11 +26,19 @@ AUTHENTICATION_BACKENDS = [
 ]
 ```
 
-This plugin further assumes that all non-admin users will login with their conftool credentials and email verification is handled on the confttol side. The following settings reflect these assumptions.
+This plugin further assumes that all non-admin users will login with their conftool credentials and email verification is handled on the confttol side. The following settings reflect this. Setting these to different values is not recommended.
 
 ```py
 PASSWORD_LOGIN = True
 REGISTRATION_OPEN = False
 SOCIALACCOUNT_OPEN = False
 ACCOUNT_EMAIL_VERIFICATION = "none"
+```
+
+Add a middleware setting:
+
+```py
+MIDDLEWARE = [
+    "dhdconf.middleware.RequestBlockingMiddleware"
+]
 ```
