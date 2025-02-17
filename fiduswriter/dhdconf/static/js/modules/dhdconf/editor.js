@@ -24,8 +24,9 @@ export class DhdconfEditor {
     }
 
     init() {
-        const exportMenu = this.editor.menu.headerbarModel.content.find(menu => menu.id === "export")
+        const menus = this.editor.menu.headerbarModel.content
 
+        const exportMenu = menus.find(menu => menu.id === "export")
         exportMenu.content = [
             {
                 title: gettext("HTML"),
@@ -86,5 +87,15 @@ export class DhdconfEditor {
                 }
             }
         ]
+
+        if (config.removeUniversalActionsFromTrackChangesMenu) {
+            const changesMenu = menus.find(menu => menu.title === gettext("Track changes"))
+            changesMenu.content = changesMenu.content.filter(item => {
+                return !(
+                    item.title === gettext("Accept all") ||
+                    item.title === gettext("Reject all")
+                )
+            })
+        }
     }
 }

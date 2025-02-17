@@ -10,6 +10,9 @@ export const config = {
     removeCategoryOptionsFromBibliography: true,
     removeCategoryOptionsFromImagesOverview: true,
 
+    // Whether to remove "Accept All", "Reject All" from the change tracking menu
+    removeUniversalActionsFromTrackChangesMenu: true,
+
     // The path at which to expect the docx template used in the DHC export
     dhcExporterDocxTemplateUrl: "/media/export-template-files/Classic.docx",
 
