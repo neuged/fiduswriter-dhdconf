@@ -2,11 +2,11 @@ import download from "downloadjs"
 
 import {ZipFileCreator} from "../tools/zip"
 
-import {HTMLExporter} from "../html2"
+import {DhdConfHtmlExporter} from "../../dhdconf/exporter"
 import {DocxExporter} from "../docx"
 import {TEIExporter} from "../tei"
 
-class HtmlExporterWithoutDownload extends HTMLExporter {
+class HtmlExporterWithoutDownload extends DhdConfHtmlExporter {
     download(blob) {
         return blob
     }

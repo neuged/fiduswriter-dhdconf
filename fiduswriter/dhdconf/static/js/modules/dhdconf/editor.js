@@ -1,6 +1,7 @@
 import {addAlert} from "../../modules/common"
 
 import {config} from "./config"
+import {DhdConfHtmlExporter} from "./exporter"
 import {DocumentCheckFailed} from "../exporter/tei/checks"
 
 function showSucces() {
@@ -32,17 +33,15 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to an HTML file."),
                 order: 1,
                 action: editor => {
-                    import("../exporter/html2").then(({HTMLExporter}) => {
-                        const exporter = new HTMLExporter(
-                            editor.getDoc({changes: "acceptAllNoInsertions"}),
-                            editor.mod.db.bibDB,
-                            editor.mod.db.imageDB,
-                            editor.app.csl,
-                            editor.docInfo.updated,
-                            editor.mod.documentTemplate.documentStyles
-                        )
-                        exporter.init().then(showSucces, showError)
-                    })
+                    const exporter = new DhdConfHtmlExporter(
+                        editor.getDoc({changes: "acceptAllNoInsertions"}),
+                        editor.mod.db.bibDB,
+                        editor.mod.db.imageDB,
+                        editor.app.csl,
+                        editor.docInfo.updated,
+                        editor.mod.documentTemplate.documentStyles
+                    )
+                    exporter.init().then(showSucces, showError)
                 }
             },
             {
