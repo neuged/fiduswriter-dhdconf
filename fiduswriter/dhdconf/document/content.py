@@ -6,12 +6,15 @@ from document.models import Document
 
 class DhdDocumentContentUpdate:
 
+    ORCID_ID_UNKNOWN = "<ORCID: N/A>"
+
     def __init__(self):
         self.title = ""
         self.abstract = ""
         self.topics = []
         self.keywords = []
         self.contributors = []
+        self.orcid_ids = []
 
     def set_title(self, title: str):
         self.title = title
@@ -31,8 +34,8 @@ class DhdDocumentContentUpdate:
             lastname=lastname,
             email=email,
             institution=institution,
-            _orcid=orcid  # prefix orcid because it is not part of the frontend data model, but see fiduswriter#1280
         ).items() if value})
+        self.orcid_ids.append(orcid if orcid else self.ORCID_ID_UNKNOWN)
 
     @classmethod
     def _update_part(cls, parts: list, part_type: str, part_id: str=None, content=None):
@@ -60,6 +63,7 @@ class DhdDocumentContentUpdate:
         contributors = [
             {"type": "contributor", "attrs": c} for c in self.contributors
         ]
+        orcid_ids = [{"type": "tag", "attrs": {"tag": i }} for i in self.orcid_ids]
         title = [{"type": "text", "text": self.title}]
         abstract = [
             {"type": "paragraph", "content": [{"type": "text", "text": self.abstract}]}
@@ -69,6 +73,7 @@ class DhdDocumentContentUpdate:
                 parts = document.content.get("content", list())
                 self._update_part(parts, "title", content=title)
                 self._update_part(parts, "tags_part", "keywords", keywords)
+                self._update_part(parts, "tags_part", "orcidIds", orcid_ids)
                 self._update_part(parts, "contributors_part", content=contributors)
                 self._update_part(parts, "richtext_part", "abstract", abstract)
                 document.content["content"] = parts

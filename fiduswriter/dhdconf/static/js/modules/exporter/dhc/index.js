@@ -2,7 +2,7 @@ import download from "downloadjs"
 
 import {ZipFileCreator} from "../tools/zip"
 
-import {DhdConfHtmlExporter, NoCommentsDocxExporter} from "../../dhdconf/exporter"
+import {DhdConfHtmlExporter, DhdConfDocxExporter} from "../../dhdconf/exporter"
 import {TEIExporter} from "../tei"
 
 class HtmlExporterWithoutDownload extends DhdConfHtmlExporter {
@@ -11,7 +11,7 @@ class HtmlExporterWithoutDownload extends DhdConfHtmlExporter {
     }
 }
 
-class DocxExporterWithoutDownload extends NoCommentsDocxExporter {
+class DocxExporterWithoutDownload extends DhdConfDocxExporter {
     download(blob) {
         return blob
     }

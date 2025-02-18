@@ -14,15 +14,20 @@ import {TEITemplate} from "./templates"
 import {runChecks} from "./checks"
 
 
-function authors(data) {
-    return data.map(({firstname, lastname, institution, email}) => {
+function authors(data, orcidIds) {
+    return data.map(({firstname, lastname, institution, email}, idx) => {
         const name = wrap(
             "persName",
             `${wrapText("surname", lastname)}${wrapText("forename", firstname)}`
         )
         const inst = wrapText("affiliation", institution || "")
-        email = wrapText("email", email || "")
-        return wrap("author", `${name}${inst}${email}`)
+        const mail = wrapText("email", email || "")
+
+        const attrs = {}
+        if (idx < orcidIds.length && orcidIds[idx]) {
+            attrs["ref"] = `https://orcid.org/${orcidIds[idx]}`
+        }
+        return wrap("author", `${name}${inst}${mail}`, attrs)
     }).join("\n")
 }
 
@@ -237,7 +242,7 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     runChecks(fields)
 
     // All the fields used in the TEI header:
-    const authorsTEI = authors(fields.authors)
+    const authorsTEI = authors(fields.authors, fields.orcidIds)
     const date = fields.date
     const keywordsTEI = keywords(fields.keywords)
     const title = wrapText("title", fields.title, {type: "main"})

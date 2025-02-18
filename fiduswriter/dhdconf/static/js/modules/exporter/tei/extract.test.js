@@ -3,6 +3,7 @@ import {
     extractAuthors,
     extractImageIDs,
     extractKeywords,
+    extractOrcidIds,
     extractBody,
     extractSubtitle,
     extractTitle
@@ -75,6 +76,19 @@ test("extract keywords", () => {
     }]
     const doc = dummyDoc(content)
     expect(extractKeywords(doc)).toEqual(["tagA", "tagB"])
+})
+
+test("extract orcidIds", () => {
+    const content = [{
+        type: "tags_part", attrs: {id: "orcidIds"}, content: [
+            {type: "tag", attrs: {tag: "not an orcidId"}},
+            {type: "tag", attrs: {tag: ""}},
+            {type: "tag", attrs: {tag: "0000-0002-2771-9344"}},
+            {type: "tag", attrs: {tag: "<ORCID: N/A>"}},
+        ]
+    }]
+    const doc = dummyDoc(content)
+    expect(extractOrcidIds(doc)).toEqual(["", "", "0000-0002-2771-9344", ""])
 })
 
 // TODO: Test extractTextNodes

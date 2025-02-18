@@ -1,7 +1,7 @@
 import {addAlert} from "../../modules/common"
 
 import {config} from "./config"
-import {DhdConfHtmlExporter, NoCommentsDocxExporter} from "./exporter"
+import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
 import {DocumentCheckFailed} from "../exporter/tei/checks"
 
 function showSucces() {
@@ -64,7 +64,27 @@ export class DhdconfEditor {
                 }
             },
             {
-                title: "DHC (TEI + HTML + DOCX)",
+                title: gettext("DOCX"),
+                type: "action",
+                tooltip: gettext("Export the document to a DOCX file"),
+                order: 4,
+                action: editor => {
+                    if (navigator.vendor === "Apple Computer, Inc.") {
+                        this.editor.mod.documentTemplate.showSafariErrorMessage()
+                        return
+                    }
+                    const docxExporter = new DhdConfDocxExporter(
+                        editor.getDoc({changes: "acceptAllNoInsertions"}),
+                        config.dhcExporterDocxTemplateUrl,
+                        editor.mod.db.bibDB,
+                        editor.mod.db.imageDB,
+                        editor.app.csl,
+                    )
+                    docxExporter.init().then(showSucces, showError)
+                }
+            },
+            {
+                title: gettext("DHC (HTML + TEI + DOCX)"),
                 type: "action",
                 tooltip: gettext("Export the document to a DHC archive"),
                 order: 3,
@@ -86,26 +106,6 @@ export class DhdconfEditor {
                     })
                 }
             },
-            {
-                title: gettext("DOCX (without comments)"),
-                type: "action",
-                tooltip: gettext("Export the document to docx without comments"),
-                order: 4,
-                action: editor => {
-                    if (navigator.vendor === "Apple Computer, Inc.") {
-                        this.editor.mod.documentTemplate.showSafariErrorMessage()
-                        return
-                    }
-                    const docxExporter = new NoCommentsDocxExporter(
-                        editor.getDoc({changes: "acceptAllNoInsertions"}),
-                        config.dhcExporterDocxTemplateUrl,
-                        editor.mod.db.bibDB,
-                        editor.mod.db.imageDB,
-                        editor.app.csl,
-                    )
-                    docxExporter.init().then(showSucces, showError)
-                }
-            }
         ]
 
         if (config.removeUniversalActionsFromTrackChangesMenu) {

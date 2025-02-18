@@ -14,7 +14,7 @@ export const config = {
     removeUniversalActionsFromTrackChangesMenu: true,
 
     // The path at which to expect the docx template used in the DHC export
-    dhcExporterDocxTemplateUrl: "/media/export-template-files/Classic.docx",
+    dhcExporterDocxTemplateUrl: "/static/export-template-files/dhdconf.docx",
 
     // Checks used before exporting
     teiExportMaxWordsInAbstract: 200,

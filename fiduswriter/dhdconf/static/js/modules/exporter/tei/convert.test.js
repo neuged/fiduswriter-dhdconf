@@ -6,18 +6,24 @@ import {
 
 
 test("render a single author", () => {
-    const data = [{
-        firstname: "Ben",
-        lastname: "H",
-        email: "ben@example.com",
-        institution: "ABC & XYZ"
-    }]
-    expect(authors(data)).toBe(
+    const data = [
+        {firstname: "Alex", lastname: "A", email: "a@example.com", institution: "ABC"},
+        {firstname: "Bob", lastname: "B", email: "b@example.com", institution: "DEF"},
+    ]
+    const orcidIds = ["", "0000-0002-2771-9344"]
+    expect(authors(data, orcidIds)).toBe(
         "<author>" +
-        "<persName><surname>H</surname><forename>Ben</forename></persName>" +
-        "<affiliation>ABC &amp; XYZ</affiliation>" +
-        "<email>ben@example.com</email>" +
-        "</author>")
+        "<persName><surname>A</surname><forename>Alex</forename></persName>" +
+        "<affiliation>ABC</affiliation>" +
+        "<email>a@example.com</email>" +
+        "</author>" +
+        "\n" +
+        '<author ref="https://orcid.org/0000-0002-2771-9344">' +
+        "<persName><surname>B</surname><forename>Bob</forename></persName>" +
+        "<affiliation>DEF</affiliation>" +
+        "<email>b@example.com</email>" +
+        "</author>"
+    )
 })
 
 test("render keywords", () => {
