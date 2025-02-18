@@ -1,7 +1,7 @@
 import {addAlert} from "../../modules/common"
 
 import {config} from "./config"
-import {DhdConfHtmlExporter} from "./exporter"
+import {DhdConfHtmlExporter, NoCommentsDocxExporter} from "./exporter"
 import {DocumentCheckFailed} from "../exporter/tei/checks"
 
 function showSucces() {
@@ -84,6 +84,26 @@ export class DhdconfEditor {
                             config.dhcExporterDocxTemplateUrl
                         ).then(showSucces, showError)
                     })
+                }
+            },
+            {
+                title: gettext("DOCX (without comments)"),
+                type: "action",
+                tooltip: gettext("Export the document to docx without comments"),
+                order: 4,
+                action: editor => {
+                    if (navigator.vendor === "Apple Computer, Inc.") {
+                        this.editor.mod.documentTemplate.showSafariErrorMessage()
+                        return
+                    }
+                    const docxExporter = new NoCommentsDocxExporter(
+                        editor.getDoc({changes: "acceptAllNoInsertions"}),
+                        config.dhcExporterDocxTemplateUrl,
+                        editor.mod.db.bibDB,
+                        editor.mod.db.imageDB,
+                        editor.app.csl,
+                    )
+                    docxExporter.init().then(showSucces, showError)
                 }
             }
         ]
