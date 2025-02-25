@@ -1,6 +1,3 @@
-import logging
-
-
 from django.contrib.auth.backends import BaseBackend
 from django.conf import settings
 
@@ -39,9 +36,10 @@ class ConftoolBackend(BaseBackend):
                 except Exception as e:
                     import_log_error(ImportLog.ErrorType.FETCH_USERINFO, e, request)
                     raise e
-            return user
+            return user.user_ptr
         else:
             return None
 
     def get_user(self, user_id):
-        return ConftoolUser.objects.filter(id=user_id).first()
+        user = ConftoolUser.objects.filter(id=user_id).first()
+        return user.user_ptr if user else None
