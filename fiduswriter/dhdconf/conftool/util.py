@@ -13,7 +13,7 @@ def import_log(request=None, paper=None, **kwargs) -> ImportLog:
         setattr(request, 'import_log_id', ImportLog.generate_request_id())
     log = ImportLog(
         request_id=request.import_log_id if request else None,
-        user=request.user if request  and isinstance(request.user, UserModel) else None,
+        user=request.user if request and isinstance(request.user, UserModel) else None,
         path=request.path if request else None,
         conftool_paper_id=paper.paper_id if paper else None,
         **kwargs

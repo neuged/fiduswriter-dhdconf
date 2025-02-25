@@ -43,8 +43,8 @@ class ImportLog(models.Model):
         IMPORT_EMAILS = "IE", "Import User Emails"
         IMPORT_PAPER = "IP", "Import Paper"
 
-    request_id = models.CharField(max_length=REQUEST_ID_LENGTH, db_index=True)
-    path = models.CharField(max_length=80, db_index=True)
+    request_id = models.CharField(max_length=REQUEST_ID_LENGTH, db_index=True, blank=True, null=True)
+    path = models.CharField(max_length=80, db_index=True, blank=True, null=True)
     success = models.BooleanField(default=False, db_index=True)
     error_type = models.CharField(max_length=2, choices=ErrorType.choices, blank=True)
     user = models.ForeignKey(UserModel, blank=True, null=True, on_delete=models.CASCADE)

@@ -12,6 +12,7 @@ from dhdconf.document.content import DhdDocumentContentUpdate
 from dhdconf.models import ConftoolUser, ConftoolEmail, ConftoolDocument, ConftoolUserInvite, ConftoolAccessRight
 
 
+@transaction.atomic
 def import_user_info(user: ConftoolUser, info: UserInfoResponse):
     user_field(user, "first_name", info.firstname)
     user_field(user, "last_name", info.name)

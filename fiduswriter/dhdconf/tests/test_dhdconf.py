@@ -47,6 +47,7 @@ def _mock_user_info(a, b):
 def _mock_user_export(a, b):
     return ExportUserResponse(
         person_id=123,
+        username='username',
         email='user@example.com',
         email_validated=True,
     )
@@ -93,6 +94,7 @@ class ImportEmailAddressTest(TestCase):
         self.user = _user_factory()
         self.data = ExportUserResponse(
             person_id=123,
+            username="username",
             email="c1@example.com",
             email2="c2@example.com",
             email_validated=True,
