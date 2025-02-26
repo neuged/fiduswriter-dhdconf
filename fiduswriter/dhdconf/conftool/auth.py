@@ -16,7 +16,7 @@ class ConftoolBackend(BaseBackend):
         )
         super().__init__()
 
-    def authenticate(self, request, username=None, password=None):
+    def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             response = self.client.login(username, password)
         except ConftoolLoginFailedException:
@@ -27,7 +27,7 @@ class ConftoolBackend(BaseBackend):
                 user = ConftoolUser(conftool_id=response.id)
                 user.set_unusable_password()
                 try:
-                    info = self.client.user_info(username)
+                    info = self.client.user_info(response.username)
                     try:
                         import_user_info(user, info)
                     except Exception as e:

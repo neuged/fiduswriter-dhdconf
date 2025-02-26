@@ -269,11 +269,11 @@ class ConftoolClient:
                         if parent:
                             parent.remove(elem)
 
-    def login(self, username, password) -> LoginResponse:
+    def login(self, username_or_email, password) -> LoginResponse:
         response = self._request_xml(dict(
             page="remoteLogin",
             command="login",
-            user=username,
+            user=username_or_email,
             password=password,
         ))
         return LoginResponse.from_xml(response)
