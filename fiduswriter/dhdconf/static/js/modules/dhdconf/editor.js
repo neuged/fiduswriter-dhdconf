@@ -3,6 +3,7 @@ import {addAlert} from "../../modules/common"
 import {config} from "./config"
 import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
 import {DocumentCheckFailed} from "../exporter/tei/checks"
+import {injectCitationStyle} from "./citationstyle";
 
 function showSucces() {
     addAlert("success", gettext("Export finished"))
@@ -23,7 +24,11 @@ export class DhdconfEditor {
 
     }
 
-    init() {
+    async init() {
+        // if the citation style was not injected already (app.js) we need to inject it
+        // here and blockingly for it to take effect before the bibliography is rendered
+        await injectCitationStyle(this.editor?.app?.csl)
+
         const menus = this.editor.menu.headerbarModel.content
 
         const exportMenu = menus.find(menu => menu.id === "export")
@@ -75,7 +80,7 @@ export class DhdconfEditor {
                     }
                     const docxExporter = new DhdConfDocxExporter(
                         editor.getDoc({changes: "acceptAllNoInsertions"}),
-                        config.dhcExporterDocxTemplateUrl,
+                        staticUrl(config.docxTemplateLocation),
                         editor.mod.db.bibDB,
                         editor.mod.db.imageDB,
                         editor.app.csl,
