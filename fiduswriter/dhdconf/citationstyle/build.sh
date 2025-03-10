@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="$(dirname $0)"
-TARGET="fiduswriter/dhdconf/static/assets/dhdconf.csljson"
+TARGET="static/assets/dhdconf.csljson"
 
 set -e
 
