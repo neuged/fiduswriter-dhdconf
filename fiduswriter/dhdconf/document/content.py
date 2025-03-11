@@ -11,7 +11,6 @@ class DhdDocumentContentUpdate:
     def __init__(self):
         self.title = ""
         self.abstract = ""
-        self.topics = []
         self.keywords = []
         self.contributors = []
         self.orcid_ids = []
@@ -21,9 +20,6 @@ class DhdDocumentContentUpdate:
 
     def set_abstract(self, abstract: str):
         self.abstract = abstract
-
-    def set_topics(self, topics: list[str]):
-        self.topics = topics
 
     def set_keywords(self, keywords: list[str]):
         self.keywords = keywords
@@ -41,28 +37,22 @@ class DhdDocumentContentUpdate:
     def _update_part(cls, parts: list, part_type: str, part_id: str=None, content=None):
         for part in parts:
             try:
-                applicable = (
+                if (
                     content
                     and (part["type"] == part_type)
                     and (part_id is None or part["attrs"]["id"] == part_id)
-                )
+                ):
+                    part["content"] = content
+                    break
             except AttributeError:
                 pass
-            if applicable:
-                part["content"] = content
-                break
+
 
     def set_on(self, document=None, pk=None):
         if pk is None:
             pk = document.pk
-        keywords = [
-            {"type": "tag", "attrs": {"tag": kw}}
-            for kw
-            in sorted([*self.keywords, *self.topics])
-        ]
-        contributors = [
-            {"type": "contributor", "attrs": c} for c in self.contributors
-        ]
+        keywords = [{"type": "tag", "attrs": {"tag": i}} for i in sorted(self.keywords)]
+        contributors = [{"type": "contributor", "attrs": i} for i in self.contributors]
         orcid_ids = [{"type": "tag", "attrs": {"tag": i }} for i in self.orcid_ids]
         title = [{"type": "text", "text": self.title}]
         abstract = [

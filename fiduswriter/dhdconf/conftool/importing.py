@@ -70,8 +70,9 @@ def import_paper(data: ExportPaperResponse):
 
     content = DhdDocumentContentUpdate()
     content.set_title(data.title)
-    content.set_keywords(data.keywords)
-    content.set_topics(data.topics)
+    content.set_keywords(
+        [i for i in [data.contribution_type, *data.keywords, *data.topics] if i]
+    )
     content.set_abstract(data.abstract)
     for author in data.authors:
         content.add_contributor(

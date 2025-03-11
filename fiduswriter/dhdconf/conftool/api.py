@@ -179,6 +179,7 @@ class ExportPaperResponse(ConftoolResponse):
     submitting_author_id: int
     title: str
     abstract: str
+    contribution_type: str
     keywords: List[str]
     topics: List[str]
     authors: List[PaperAuthor]
@@ -189,6 +190,7 @@ class ExportPaperResponse(ConftoolResponse):
             paper_id=_int(element, "paperID"),
             submitting_author_id=_int(element, "submitting_author_ID"),
             title=_t(element, "title"),
+            contribution_type=_t(element, "contribution_type", ""),
             abstract=_t(element, "abstract", ""),
             keywords=_list(element, "keywords"),
             topics=_list(element, "topics"),
