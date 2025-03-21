@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fiduswriter-dhdconf"
 description = "A Fidus Writer plugin used for DHD conference submissions."
-version = "0.2.3"
+version = "0.2.4"
 readme = "README.md"
 license = {text = "AGPL-3.0-or-later"}
 authors = [

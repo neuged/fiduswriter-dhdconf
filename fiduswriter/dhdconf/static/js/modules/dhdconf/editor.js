@@ -106,7 +106,7 @@ export class DhdconfEditor {
                             editor.app.csl,
                             editor.docInfo.updated,
                             editor.mod.documentTemplate.documentStyles,
-                            config.dhcExporterDocxTemplateUrl
+                            staticUrl(config.docxTemplateLocation)
                         ).then(showSucces, showError)
                     })
                 }
