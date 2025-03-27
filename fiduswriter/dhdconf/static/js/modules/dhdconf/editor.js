@@ -36,7 +36,7 @@ export class DhdconfEditor {
             {
                 title: gettext("HTML"),
                 type: "action",
-                tooltip: gettext("Export the document to an HTML file."),
+                tooltip: gettext("Export the document to an HTML file"),
                 order: 1,
                 action: editor => {
                     const exporter = new DhdConfHtmlExporter(
@@ -53,7 +53,7 @@ export class DhdconfEditor {
             {
                 title: gettext("TEI"),
                 type: "action",
-                tooltip: gettext("Export the document to a TEI file."),
+                tooltip: gettext("Export the document to a TEI file"),
                 order: 2,
                 action: editor => {
                     import("../exporter/tei").then(({TEIExporter}) => {

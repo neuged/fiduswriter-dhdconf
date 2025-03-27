@@ -72,7 +72,7 @@ export class DhdconfDocumentsOverview {
         this.overview.menu.model.content.push({
             id: "conftool_sync",
             type: "button",
-            title: gettext("Conftool: Synchronise now"),
+            title: gettext("ConfTool: Synchronise"),
             action: overview => {
                 activateWait(false, gettext("Importing user data and verified emails"))
                 let unvalidatedEmails = []

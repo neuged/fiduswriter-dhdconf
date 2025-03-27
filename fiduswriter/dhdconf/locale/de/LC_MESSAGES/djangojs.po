@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-27 17:07+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/js/modules/dhdconf/editor.js:9
+msgid "Export finished"
+msgstr "Export beendet"
+
+#: static/js/modules/dhdconf/editor.js:37
+msgid "HTML"
+msgstr "HTML"
+
+#: static/js/modules/dhdconf/editor.js:39
+msgid "Export the document to an HTML file"
+msgstr "Dokument als HTML-Datei exportieren"
+
+#: static/js/modules/dhdconf/editor.js:54
+msgid "TEI"
+msgstr "TEI"
+
+#: static/js/modules/dhdconf/editor.js:56
+msgid "Export the document to a TEI file"
+msgstr "Dokument als TEI-Datei exportieren"
+
+#: static/js/modules/dhdconf/editor.js:74
+msgid "Export the document to a DOCX file"
+msgstr "Dokument als DOCX-Datei exportieren"
+
+#: static/js/modules/dhdconf/editor.js:92
+msgid "DHC (HTML + TEI + DOCX)"
+msgstr "DHC (HTML + TEI + DOCX)"
+
+#: static/js/modules/dhdconf/editor.js:94
+msgid "Export the document to a DHC archive"
+msgstr "Dokument als DHC Archiv exportieren"
+
+#: static/js/modules/dhdconf/overviews.js:75
+msgid "ConfTool: Synchronise"
+msgstr "ConfTool: Synchronisieren"
+
+#: static/js/modules/dhdconf/overviews.js:77
+msgid "Importing user data and verified emails"
+msgstr "Importiere Nutzerdaten und verifizierte Emails"
+
+#: static/js/modules/dhdconf/overviews.js:83
+msgid "Importing submissions"
+msgstr "Importiere Einreichungen"
+
+#: static/js/modules/dhdconf/overviews.js:88
+msgid "Fetching documents"
+msgstr "Suche Dokumente"
+
+#: static/js/modules/dhdconf/overviews.js:120
+msgid "is not validated with ConfTool."
+msgstr "ist nicht im ConfTool validiert."
+
+#: static/js/modules/dhdconf/overviews.js:121
+msgid "Connected submissions might not be shown."
+msgstr "Eventuell verknüpfte Einreichungen werden nicht angezeigt."

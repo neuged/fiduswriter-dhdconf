@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.utils.translation import gettext_lazy as _
 
 from base.decorators import ajax_required
 from dhdconf.conftool.api import ConftoolClient
@@ -31,12 +32,12 @@ def _conftool_user(request):
 
 
 class UserMessage:
-    OK_NO_PAPERS = "No paper submissions to import"
-    OK_ALL_PAPERS = "Imported submitted papers"
-    ERROR_SOME_PAPERS = "Some papers could not be imported correctly"
-    ERROR_EXPORTING_PAPERS = "Unable to retrieve papers from conftool"
-    OK_USERDATA = "Imported user data"
-    ERROR_USERDATA = "Could not retrieve or import all user data"
+    OK_NO_PAPERS = _("No submissions to import")
+    OK_ALL_PAPERS = _("Imported submissions")
+    ERROR_SOME_PAPERS = _("Some submissions could not be imported correctly")
+    ERROR_EXPORTING_PAPERS = _("Unable to retrieve submissions from conftool")
+    OK_USERDATA = _("Imported user data")
+    ERROR_USERDATA = _("Could not retrieve or import all user data")
 
 
 @login_required
