@@ -74,21 +74,23 @@ export class DhdconfDocumentsOverview {
             id: "conftool_sync",
             type: "button",
             title: gettext("ConfTool: Synchronise"),
-            action: overview => {
-                activateWait(false, gettext("Importing user data and verified emails"))
+            action: () => {
                 let unvalidatedEmails = []
-                return postJson("api/dhdconf/refresh_conftool_user/")
-                    .then(response => {
-                        this.addResponseAlert(response)
-                        unvalidatedEmails = response.json?.unvalidatedEmails
-                        activateWait(false, gettext("Importing submissions"))
-                        return postJson("api/dhdconf/refresh_conftool_papers/")
+                return this.refreshUser()
+                    .then(response => response.json)
+                    .then(data => {
+                        this.showSuccess(data)
+                        unvalidatedEmails = data.unvalidatedEmails
+                        return this.refreshSubmissions()
                     })
-                    .then(response => {
-                        this.addResponseAlert(response)
-                        activateWait(false, gettext("Fetching documents"))
-                        return overview.getDocumentListData()
+                    .then(response => response.json)
+                    .then(data => {
+                        this.showSuccess(data)
+                        return this.refreshDocuments()
                     })
+                    .catch(
+                        response => response.json().then(data => this.showError(data))
+                    )
                     .finally(() => {
                         this.addUnvalidatedEmailsAlert(unvalidatedEmails)
                         deactivateWait()
@@ -98,19 +100,31 @@ export class DhdconfDocumentsOverview {
         })
     }
 
-    addResponseAlert(response) {
-        let alertType = "error"
-        let message = response.json?.message
+    refreshUser() {
+        activateWait(false, gettext("Importing user data and verified emails"))
+        return postJson("api/dhdconf/refresh_conftool_user/")
+    }
 
-        if (response.status === 200) {
-            alertType = "success"
-        } else {
-            if (response.json?.requestId) {
-                message = `${message} (ID: ${response.json?.requestId})`
-            }
-            console.warn(message)
-        }
-        addAlert(alertType, message)
+    refreshSubmissions() {
+        activateWait(false, gettext("Importing submissions"))
+        return postJson("api/dhdconf/refresh_conftool_papers/")
+    }
+
+    refreshDocuments() {
+        activateWait(false, gettext("Fetching documents"))
+        return this.overview.getDocumentListData()
+    }
+
+    showSuccess(data) {
+        addAlert("success", data.message)
+    }
+
+    showError(data) {
+        let message = "Unknown error"
+        if (data?.message) message = data.message
+        if (data?.requestId) message += ` (${data.requestId})`
+        console.warn(message)
+        addAlert("error", message)
     }
 
     addUnvalidatedEmailsAlert(emails) {
