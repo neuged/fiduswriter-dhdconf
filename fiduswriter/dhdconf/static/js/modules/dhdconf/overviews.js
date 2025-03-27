@@ -62,6 +62,7 @@ export class DhdconfDocumentsOverview {
         }
         if (config.removeDocumenCreationOptions) {
             removeMenuItem(content, (entry) => entry.title === gettext("Upload FIDUS document"))
+            removeMenuItem(content, (entry) => entry.title === gettext("Import document"))
             hideMenuElement(content, (entry) => entry.id === "new_document")
             // the "New document" button gets recreated after plugin intialization so
             // we activate a bit of custom css to actually hide it
