@@ -111,10 +111,19 @@ def refresh_conftool_user(request):
         if ok:
             import_log(request, success=True)
             message = UserMessage.OK_USERDATA
+            unvalidated_emails = [i for i in [
+                user_data.email if not user_data.email_validated else "",
+                user_data.email2 if not user_data.email2_validated else "",
+            ] if i]
         else:
             message = UserMessage.ERROR_USERDATA
+            unvalidated_emails = []
         return JsonResponse(
-            data=dict(requestId=request.import_log_id, message=message),
+            data=dict(
+                requestId=request.import_log_id,
+                message=message,
+                unvalidatedEmails=unvalidated_emails,
+            ),
             status=200 if ok else 500
         )
     else:

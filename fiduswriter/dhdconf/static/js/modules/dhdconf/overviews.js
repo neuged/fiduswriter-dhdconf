@@ -75,10 +75,12 @@ export class DhdconfDocumentsOverview {
             title: gettext("Conftool: Synchronise now"),
             action: overview => {
                 activateWait(false, gettext("Importing user data and verified emails"))
+                let unvalidatedEmails = []
                 return postJson("api/dhdconf/refresh_conftool_user/")
                     .then(response => {
                         this.addResponseAlert(response)
-                        activateWait(false, gettext("Importing submitted papers"))
+                        unvalidatedEmails = response.json?.unvalidatedEmails
+                        activateWait(false, gettext("Importing submissions"))
                         return postJson("api/dhdconf/refresh_conftool_papers/")
                     })
                     .then(response => {
@@ -87,6 +89,7 @@ export class DhdconfDocumentsOverview {
                         return overview.getDocumentListData()
                     })
                     .finally(() => {
+                        this.addUnvalidatedEmailsAlert(unvalidatedEmails)
                         deactivateWait()
                     })
             },
@@ -107,5 +110,17 @@ export class DhdconfDocumentsOverview {
             console.warn(message)
         }
         addAlert(alertType, message)
+    }
+
+    addUnvalidatedEmailsAlert(emails) {
+        if (emails) {
+            emails.forEach(email => addAlert("warning", [
+                    gettext("Email"),
+                    `"${email}"`,
+                    gettext("is not validated with ConfTool."),
+                    gettext("Connected submissions might not be shown.")
+                ].join(" ")
+            ))
+        }
     }
 }
