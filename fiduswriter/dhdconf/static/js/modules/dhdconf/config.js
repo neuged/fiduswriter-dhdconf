@@ -16,6 +16,9 @@ export const config = {
     // The static path at which to expect the docx template used in the DHC export
     docxTemplateLocation: "assets/dhdconf.docx",
 
+    // Whether to remove comments from the docx export
+    docxRemoveComments: true,
+
     // Checks used before exporting
     teiExportMaxWordsInAbstract: 200,
 
