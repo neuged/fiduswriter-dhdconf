@@ -23,6 +23,9 @@ classifiers=[
   "Topic :: Internet :: WWW/HTTP",
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
+dependencies=[
+  "requests~=2.3"
+]
 
 [project.urls]
 repository = "https://github.com/neuged/fiduswriter-dhdconf"
