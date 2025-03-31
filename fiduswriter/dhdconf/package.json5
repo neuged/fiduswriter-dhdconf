@@ -1,0 +1,8 @@
+{
+  "dependencies": {},
+  "devDependencies": {
+    "eslint-plugin-jest": "^27.1.7",
+    "babel-jest": "^29.0.3",
+    "jest":"^29.0.3"
+  }
+}
