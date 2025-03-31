@@ -11,7 +11,9 @@ class DhdDocumentContentUpdate:
     def __init__(self):
         self.title = ""
         self.abstract = ""
+        self.contribution_type = ""
         self.keywords = []
+        self.topics = []
         self.contributors = []
         self.orcid_ids = []
 
@@ -21,8 +23,14 @@ class DhdDocumentContentUpdate:
     def set_abstract(self, abstract: str):
         self.abstract = abstract
 
+    def set_contribution_type(self, contribution_type: str):
+        self.contribution_type = contribution_type
+
     def set_keywords(self, keywords: list[str]):
         self.keywords = keywords
+
+    def set_topics(self, topics: list[str]):
+        self.topics = topics
 
     def add_contributor(self, firstname, lastname, email, institution, orcid):
         self.contributors.append({key: value for key, value in dict(
@@ -51,7 +59,9 @@ class DhdDocumentContentUpdate:
     def set_on(self, document=None, pk=None):
         if pk is None:
             pk = document.pk
+        ctype = [{"type": "tag", "attrs": {"tag": self.contribution_type}}]
         keywords = [{"type": "tag", "attrs": {"tag": i}} for i in sorted(self.keywords)]
+        topics = [{"type": "tag", "attrs": {"tag": i}} for i in sorted(self.topics)]
         contributors = [{"type": "contributor", "attrs": i} for i in self.contributors]
         orcid_ids = [{"type": "tag", "attrs": {"tag": i }} for i in self.orcid_ids]
         title = [{"type": "text", "text": self.title}]
@@ -62,7 +72,9 @@ class DhdDocumentContentUpdate:
             if document := Document.objects.select_for_update().filter(pk=pk).first():
                 parts = document.content.get("content", list())
                 self._update_part(parts, "title", content=title)
+                self._update_part(parts, "tags_part", "contributionTypes", ctype)
                 self._update_part(parts, "tags_part", "keywords", keywords)
+                self._update_part(parts, "tags_part", "topics", topics)
                 self._update_part(parts, "tags_part", "orcidIds", orcid_ids)
                 self._update_part(parts, "contributors_part", content=contributors)
                 self._update_part(parts, "richtext_part", "abstract", abstract)

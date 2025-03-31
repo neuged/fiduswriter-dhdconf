@@ -28,8 +28,8 @@ test("render a single author", () => {
 
 test("render keywords", () => {
     const data = ["abc", "  d  e  f  ", "x&y", "the <ref/> tag"]
-    expect(keywords(data)).toBe(
-        "<keywords n=\"keywords\" scheme=\"ConfTool\">" +
+    expect(keywords(data, "topics")).toBe(
+        "<keywords scheme=\"ConfTool\" n=\"topics\">" +
         "<term>abc</term>\n" +
         "<term>  d  e  f  </term>\n" +
         "<term>x&amp;y</term>\n" +

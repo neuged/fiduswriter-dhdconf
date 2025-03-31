@@ -84,21 +84,17 @@ function extractImageIDs(docContents) {
     return images
 }
 
-function extractKeywords(docContents) {
-    const keywords = docContents.content
-        ?.find(part => part.type === "tags_part" && part.attrs?.id === "keywords")
+function extractTagList(docContents, id) {
+    const tags = docContents.content
+        ?.find(part => part.type === "tags_part" && part.attrs?.id === id)
         ?.content
         ?.filter(item => item.type === "tag")
         .map(kw => kw.attrs.tag)
-    return keywords || []
+    return tags || []
 }
 
 function extractOrcidIds(docContents) {
-    const orcidIds = docContents.content
-        ?.find(part => part.type === "tags_part" && part.attrs.id === "orcidIds")
-        ?.content
-        ?.filter(item => item.type === "tag")
-        .map(kw => kw.attrs.tag)
+    const orcidIds = extractTagList(docContents, "orcidIds")
         .map(s => s?.match(/^\d{4}-\d{4}-\d{4}-\d{3}[0-9X]{1}$/) ? s : "")
     return orcidIds || []
 }
@@ -153,7 +149,11 @@ function extract(docContents, _docSettings) {
     const abstract = extractAbstract(docContents)
     const authors = extractAuthors(docContents)
     const footnotes = extractFootnotes(docContents)
-    const keywords = extractKeywords(docContents)
+    const tags = {
+        contributionTypes: extractTagList(docContents, "contributionTypes"),
+        keywords: extractTagList(docContents, "keywords"),
+        topics: extractTagList(docContents, "topics")
+    }
     const orcidIds = extractOrcidIds(docContents)
     const body = extractBody(docContents)
     const subtitle = extractSubtitle(docContents)
@@ -164,7 +164,7 @@ function extract(docContents, _docSettings) {
         abstract,
         authors,
         footnotes,
-        keywords,
+        tags,
         orcidIds,
         body,
         subtitle,
@@ -180,7 +180,7 @@ export {
     extractCitations,
     extractFootnotes,
     extractImageIDs,
-    extractKeywords,
+    extractTagList,
     extractOrcidIds,
     extractBody,
     extractSubtitle,

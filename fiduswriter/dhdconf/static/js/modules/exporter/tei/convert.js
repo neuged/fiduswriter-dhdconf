@@ -31,10 +31,10 @@ function authors(data, orcidIds) {
     }).join("\n")
 }
 
-function keywords(data) {
+function keywords(data, n="keywords") {
     if (data.length) {
         const kws = data.map(kw => wrapText("term", kw)).join("\n")
-        return wrap("keywords", kws, {n: "keywords", scheme: "ConfTool"})
+        return wrap("keywords", kws, {scheme: "ConfTool", n: n})
     }
     return ""
 }
@@ -244,7 +244,13 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     // All the fields used in the TEI header:
     const authorsTEI = authors(fields.authors, fields.orcidIds)
     const date = fields.date
-    const keywordsTEI = keywords(fields.keywords)
+    console.log("D", fields.tags)
+    const keywordsTEI = [
+        keywords(["Paper"], "category"),
+        keywords(fields.tags.contributionTypes, "subcategory"),
+        keywords(fields.tags.keywords, "keywords"),
+        keywords(fields.tags.topics, "topics"),
+    ].join("\n")
     const title = wrapText("title", fields.title, {type: "main"})
     const subtitle = wrapText("title", fields.subtitle, {type: "sub"})
 

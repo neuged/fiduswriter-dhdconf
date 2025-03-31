@@ -47,6 +47,24 @@
         {
             "type": "tags_part",
             "attrs": {
+                "title": "ORCID IDs",
+                "id": "orcidIds",
+                "item_title": "ORCID ID",
+                "locking": "fixed"
+            }
+        },
+        {
+            "type": "tags_part",
+            "attrs": {
+                "title": "Contribution Types",
+                "id": "contributionTypes",
+                "item_title": "Contribution Type",
+                "locking": "fixed"
+            }
+        },
+        {
+            "type": "tags_part",
+            "attrs": {
                 "title": "Keywords",
                 "id": "keywords",
                 "item_title": "Keyword",
@@ -57,9 +75,9 @@
         {
             "type": "tags_part",
             "attrs": {
-                "title": "ORCID IDs",
-                "id": "orcidIds",
-                "item_title": "ORCID ID",
+                "title": "Topics",
+                "id": "topics",
+                "item_title": "Topic",
                 "locking": "fixed"
             }
         },

@@ -2,7 +2,7 @@ import {
     extractAbstract,
     extractAuthors,
     extractImageIDs,
-    extractKeywords,
+    extractTagList,
     extractOrcidIds,
     extractBody,
     extractSubtitle,
@@ -75,7 +75,7 @@ test("extract keywords", () => {
         ]
     }]
     const doc = dummyDoc(content)
-    expect(extractKeywords(doc)).toEqual(["tagA", "tagB"])
+    expect(extractTagList(doc, "keywords")).toEqual(["tagA", "tagB"])
 })
 
 test("extract orcidIds", () => {
