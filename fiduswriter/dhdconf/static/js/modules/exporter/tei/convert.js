@@ -170,7 +170,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
                 .join("")
             // Note that earlier versions of the TEI guidelines recommended
             // <list type="numbered"> instead.
-            return wrap("list", items, {rend: "ordered"})
+            return wrap("list", items, {type: "ordered"})
         }
         if (item.type === "bullet_list") {
             const items = item.content.filter(c => c.type === "list_item")
@@ -181,7 +181,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
                 .join("")
             // Note that earlier versions of the TEI guidelines recommended
             // <list type="bulleted"> instead.
-            return wrap("list", items, {rend: "bulleted"})
+            return wrap("list", items, {type: "unordered"})
         }
         if (item.type === "list_item") {
             // Do nothing, already handled in 'bullet_list' or 'ordered_list'.

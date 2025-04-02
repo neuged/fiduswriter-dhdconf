@@ -525,7 +525,7 @@ test("render a simple unordered list", () => {
             ]
         }
     ]
-    const expected = "<list rend=\"bulleted\">"
+    const expected = "<list type=\"unordered\">"
                  + "<item><p>ein Listenpunkt</p></item>"
                  + "<item><p>noch einer</p></item>"
                  + "</list>"
@@ -568,7 +568,7 @@ test("render a simple ordered list", () => {
             ]
         }
     ]
-    const expected = "<list rend=\"ordered\">"
+    const expected = "<list type=\"ordered\">"
                  + "<item><p>erster Listenpunkt.</p></item>"
                  + "<item><p>zweiter Listenpunkt</p></item>"
                  + "</list>"
