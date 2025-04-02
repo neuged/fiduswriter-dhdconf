@@ -196,7 +196,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
             // or the same as the preceding heading, we need to close our previous div(s).
             const closing = (order <= divLevel) ? "</div>".repeat(divLevel + 1 - order) : ""
             divLevel = order
-            const opening = "<div rend=\"DH-Heading\">"
+            const opening = `<div type="${divLevel}" rend="DH-Heading${divLevel}">`
             const head = wrap("head", item.content.map(c => f(c)).join(""))
             return `${closing}${opening}${head}`
         }
