@@ -240,7 +240,6 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter, sett
 
     // All the fields used in the TEI header:
     const authorsTEI = authors(fields.authors, fields.orcidIds)
-    const date = fields.date
     const keywordsTEI = [
         keywords(["Paper"], "category"),
         keywords(fields.tags.contributionTypes, "subcategory"),
@@ -255,7 +254,6 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter, sett
     const TEIheader = header(
         authorsTEI,
         title,
-        date,
         keywordsTEI,
         subtitle,
         abstract,

@@ -1,4 +1,4 @@
-export const header = (authors, title, date, keywords, subtitle, abstract, publicationStmt) => `
+export const header = (authors, title, keywords, subtitle, abstract, publicationStmt) => `
 <teiHeader>
     <fileDesc>
         <titleStmt>
@@ -28,7 +28,4 @@ export const header = (authors, title, date, keywords, subtitle, abstract, publi
             ${abstract}
         </abstract>
     </profileDesc>
-    <revisionDesc>
-        <change when="${date}">exported from Fidus Writer</change>
-    </revisionDesc>
 </teiHeader>`
