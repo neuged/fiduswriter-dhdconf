@@ -2,7 +2,6 @@ import {addAlert} from "../../modules/common"
 
 import {config} from "./config"
 import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
-import {DocumentCheckFailed} from "../exporter/tei/checks"
 import {injectCitationStyle} from "./citationstyle";
 
 function showSucces() {
@@ -10,12 +9,8 @@ function showSucces() {
 }
 
 function showError(e) {
-    if (e instanceof DocumentCheckFailed) {
-        addAlert("warning", `Check failed: ${e.message}`)
-    } else {
-        addAlert("error", `Export error: '${e.message}'`)
-        console.error(e)
-    }
+    addAlert("error", `Export error: '${e.message}'`)
+    console.error(e)
 }
 
 export class DhdconfEditor {

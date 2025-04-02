@@ -11,7 +11,6 @@ import {header} from "./templates/header"
 import {body} from "./templates/body"
 import {back} from "./templates/back"
 import {TEITemplate} from "./templates"
-import {runChecks} from "./checks"
 
 
 function authors(data, orcidIds) {
@@ -239,12 +238,9 @@ function bibliography(bibliography) {
 function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
     const fields = extract(docContents)
 
-    runChecks(fields)
-
     // All the fields used in the TEI header:
     const authorsTEI = authors(fields.authors, fields.orcidIds)
     const date = fields.date
-    console.log("D", fields.tags)
     const keywordsTEI = [
         keywords(["Paper"], "category"),
         keywords(fields.tags.contributionTypes, "subcategory"),

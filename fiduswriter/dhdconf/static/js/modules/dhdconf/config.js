@@ -19,9 +19,6 @@ export const config = {
     // Whether to remove comments from the docx export
     docxRemoveComments: true,
 
-    // Checks used before exporting
-    teiExportMaxWordsInAbstract: 200,
-
     // The static path to our citation style definition and which style to override
     citationStyleLocation: "assets/dhdconf.csljson",
     citationStyleKey: "chicago-author-date-de",
