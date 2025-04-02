@@ -9,9 +9,8 @@ import {extractBody, extractCitations, extractImageIDs} from "./extract"
 import {TeiCitationsExporter} from "./citations"
 import {TeiExporterMath} from "./math"
 
-
 export class TEIExporter {
-    constructor(doc, bibDB, imageDB, csl, updated) {
+    constructor(doc, bibDB, imageDB, csl, updated, settings={}) {
         this.doc = doc
         this.bibDB = bibDB
         this.imageDB = imageDB
@@ -21,6 +20,8 @@ export class TEIExporter {
         this.slug = createSlug(doc.title)
         this.citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
         this.mathExp = new TeiExporterMath()
+
+        this.settings = settings
 
         this.docContent = false
         this.textFiles = []
@@ -45,7 +46,8 @@ export class TEIExporter {
             this.docContent,
             this.imageDB,
             this.citeExp,
-            this.mathExp
+            this.mathExp,
+            this.settings
         ))
         this.textFiles = [{filename: `${this.slug}.tei.xml`, contents: tei}]
 

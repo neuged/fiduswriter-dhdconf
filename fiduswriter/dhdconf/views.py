@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.utils.translation import gettext_lazy as _
 
 from base.decorators import ajax_required
@@ -130,3 +130,13 @@ def refresh_conftool_user(request):
     else:
         return JsonResponse([], status=400)
 
+
+@login_required
+@ajax_required
+@require_GET
+def tei_export_settings(request):
+    return JsonResponse(
+        data=dict(
+            publicationStmt=settings.TEI_EXPORT_PUBLICATION_STATEMENT
+        )
+    )

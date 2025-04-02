@@ -23,7 +23,7 @@ class TEIExporterWithoutDownload extends TEIExporter {
     }
 }
 
-export async function exportDHC(doc, bibDB, imageDB, csl, updated, documentStyles, docxTemplateUrl) {
+export async function exportDHC(doc, bibDB, imageDB, csl, updated, documentStyles, docxTemplateUrl, teiSettings) {
 
     const htmlExporter = new HtmlExporterWithoutDownload(
         doc,
@@ -46,6 +46,7 @@ export async function exportDHC(doc, bibDB, imageDB, csl, updated, documentStyle
         imageDB,
         csl,
         updated,
+        teiSettings
     )
 
     await htmlExporter.init()

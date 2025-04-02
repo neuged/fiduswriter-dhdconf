@@ -2,7 +2,6 @@ import pretty from "pretty"
 
 import {HTMLExporter} from "../exporter/html"
 import {DOCXExporter} from "../exporter/docx";
-import {descendantNodes} from "../exporter/tools/doc_content"
 import {config} from "./config";
 
 

@@ -69,3 +69,7 @@ DHD_ARTICLE_BODY_MARKS = [
     "em",
     "link"
 ]
+
+TEI_EXPORT_PUBLICATION_STATEMENT = """
+    <publisher>Test: Fidus Writer</publisher>
+"""

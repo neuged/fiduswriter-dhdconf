@@ -1,4 +1,4 @@
-import {addAlert} from "../../modules/common"
+import {addAlert, getJson} from "../../modules/common"
 
 import {config} from "./config"
 import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
@@ -52,14 +52,17 @@ export class DhdconfEditor {
                 order: 2,
                 action: editor => {
                     import("../exporter/tei").then(({TEIExporter}) => {
-                        const exporter = new TEIExporter(
-                            editor.getDoc({changes: "acceptAllNoInsertions"}),
-                            editor.mod.db.bibDB,
-                            editor.mod.db.imageDB,
-                            editor.app.csl,
-                            editor.docInfo.updated,
-                        )
-                        exporter.init().then(showSucces, showError)
+                        getJson("/api/dhdconf/tei_export_settings").then(settings => {
+                            const exporter = new TEIExporter(
+                                editor.getDoc({changes: "acceptAllNoInsertions"}),
+                                editor.mod.db.bibDB,
+                                editor.mod.db.imageDB,
+                                editor.app.csl,
+                                editor.docInfo.updated,
+                                settings
+                            )
+                            exporter.init().then(showSucces, showError)
+                        })
                     })
                 }
             },
@@ -94,15 +97,18 @@ export class DhdconfEditor {
                         return
                     }
                     import("../exporter/dhc").then(({exportDHC}) => {
-                        exportDHC(
-                            editor.getDoc({changes: "acceptAllNoInsertions"}),
-                            editor.mod.db.bibDB,
-                            editor.mod.db.imageDB,
-                            editor.app.csl,
-                            editor.docInfo.updated,
-                            editor.mod.documentTemplate.documentStyles,
-                            staticUrl(config.docxTemplateLocation)
-                        ).then(showSucces, showError)
+                        getJson("/api/dhdconf/tei_export_settings").then(teiSettings => {
+                            exportDHC(
+                                editor.getDoc({changes: "acceptAllNoInsertions"}),
+                                editor.mod.db.bibDB,
+                                editor.mod.db.imageDB,
+                                editor.app.csl,
+                                editor.docInfo.updated,
+                                editor.mod.documentTemplate.documentStyles,
+                                staticUrl(config.docxTemplateLocation),
+                                teiSettings
+                            ).then(showSucces, showError)
+                        })
                     })
                 }
             },

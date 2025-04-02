@@ -1,5 +1,4 @@
 import {ensureCSS} from "../common"
-import {config} from "./config";
 import {injectCitationStyle} from "./citationstyle";
 
 export class DhdconfApp {

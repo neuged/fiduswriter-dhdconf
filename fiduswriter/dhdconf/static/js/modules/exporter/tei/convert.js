@@ -235,7 +235,7 @@ function bibliography(bibliography) {
  * the document and the documents content object and generates a string
  * of TEI XML suitable for download.
  */
-function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
+function convert(slug, docContents, imgDB, citationsExporter, mathExporter, settings) {
     const fields = extract(docContents)
 
     // All the fields used in the TEI header:
@@ -252,7 +252,15 @@ function convert(slug, docContents, imgDB, citationsExporter, mathExporter) {
 
     const [abstract,] = richText(fields.abstract.content)
 
-    const TEIheader = header(authorsTEI, title, date, keywordsTEI, subtitle, abstract)
+    const TEIheader = header(
+        authorsTEI,
+        title,
+        date,
+        keywordsTEI,
+        subtitle,
+        abstract,
+        settings.publicationStmt
+    )
 
     // All the fields used in the TEI body:
     const [text, footnotes] = richText(

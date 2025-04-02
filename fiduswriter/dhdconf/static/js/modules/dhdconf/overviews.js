@@ -1,7 +1,5 @@
-
-import {config} from "./config"
 import {activateWait, deactivateWait, addAlert, postJson} from "../common"
-
+import {config} from "./config"
 
 function removeMenuItem(items, predicate) {
     const idx = items.findIndex(predicate)
@@ -102,12 +100,12 @@ export class DhdconfDocumentsOverview {
 
     refreshUser() {
         activateWait(false, gettext("Importing user data and verified emails"))
-        return postJson("api/dhdconf/refresh_conftool_user/")
+        return postJson("/api/dhdconf/refresh_conftool_user/")
     }
 
     refreshSubmissions() {
         activateWait(false, gettext("Importing submissions"))
-        return postJson("api/dhdconf/refresh_conftool_papers/")
+        return postJson("/api/dhdconf/refresh_conftool_papers/")
     }
 
     refreshDocuments() {
