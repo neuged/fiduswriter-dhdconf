@@ -108,10 +108,10 @@ class ImportEmailAddressTest(TestCase):
         addr1, addr2 = self.user.emailaddress_set.order_by("email").all()
         self.assertEqual(addr1.email, "c1@example.com")
         self.assertEqual(addr2.email, "c2@example.com")
-        self.assertEquals(addr1.verified, True)
-        self.assertEquals(addr2.verified, False)
-        self.assertEquals(addr1.primary, True)
-        self.assertEquals(addr2.primary, False)
+        self.assertEqual(addr1.verified, True)
+        self.assertEqual(addr2.verified, False)
+        self.assertEqual(addr1.primary, True)
+        self.assertEqual(addr2.primary, False)
 
     def test_reimporting_changed_emails(self):
         import_emails(self.data)
@@ -120,10 +120,10 @@ class ImportEmailAddressTest(TestCase):
         addr2, addr3 = self.user.emailaddress_set.order_by("email").all()
         self.assertEqual(addr2.email, "c2@example.com")
         self.assertEqual(addr3.email, "c3@example.com")
-        self.assertEquals(addr2.verified, True)
-        self.assertEquals(addr3.verified, True)
-        self.assertEquals(addr2.primary, False)
-        self.assertEquals(addr3.primary, True)
+        self.assertEqual(addr2.verified, True)
+        self.assertEqual(addr3.verified, True)
+        self.assertEqual(addr2.primary, False)
+        self.assertEqual(addr3.primary, True)
 
     def test_importing_missing_emails(self):
         import_emails(replace(self.data, email2=""))
@@ -157,6 +157,7 @@ class ImportPaperTest(TestCase):
             topics=["t1", "t2"],
             keywords=["k1", "k2"],
             abstract="the\npaper\nabstract\n",
+            contribution_type="Presentation",
             authors=[
                 PaperAuthor(
                     name="Jones, Alex",
