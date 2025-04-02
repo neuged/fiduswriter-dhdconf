@@ -18,10 +18,11 @@ test("render a single author", () => {
         "<email>a@example.com</email>" +
         "</author>" +
         "\n" +
-        '<author ref="https://orcid.org/0000-0002-2771-9344">' +
+        '<author>' +
         "<persName><surname>B</surname><forename>Bob</forename></persName>" +
         "<affiliation>DEF</affiliation>" +
         "<email>b@example.com</email>" +
+        '<idno type="ORCID">0000-0002-2771-9344</idno>' +
         "</author>"
     )
 })

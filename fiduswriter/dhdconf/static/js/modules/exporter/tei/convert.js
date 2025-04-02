@@ -23,11 +23,11 @@ function authors(data, orcidIds) {
         const inst = wrapText("affiliation", institution || "")
         const mail = wrapText("email", email || "")
 
-        const attrs = {}
+        const contents = [name, inst, mail]
         if (idx < orcidIds.length && orcidIds[idx]) {
-            attrs["ref"] = `https://orcid.org/${orcidIds[idx]}`
+            contents.push(wrapText("idno", orcidIds[idx], {type: "ORCID"}))
         }
-        return wrap("author", `${name}${inst}${mail}`, attrs)
+        return wrap("author", contents.join(""))
     }).join("\n")
 }
 
