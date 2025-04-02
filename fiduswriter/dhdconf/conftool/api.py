@@ -157,7 +157,7 @@ class PaperAuthor:
         while name := _t(element, field.format(idx, "name"), ""):
             result.append(PaperAuthor(
                 name=name,
-                organization=_t(element, field.format(idx, "organization"), ""),
+                organization=_t(element, field.format(idx, "organisation"), ""),
                 email=_t(element, field.format(idx, "email"), ""),
                 orcid=_t(element, field.format(idx, "orcid"), ""),
             ))
