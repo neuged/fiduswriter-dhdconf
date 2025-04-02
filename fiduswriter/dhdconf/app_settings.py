@@ -60,7 +60,6 @@ DHD_ARTICLE_BODY_ELEMENTS = [
     "equation",
     "citation",
     "cross_reference",
-    "blockquote",
     "footnote",
     "table",
     "code_block"
