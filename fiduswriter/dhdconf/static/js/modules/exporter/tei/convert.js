@@ -130,12 +130,17 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
             const tableBody = item.content.find(it => it.type === "table_body").content
             const tableTEI = tableBody.map(row => {
                 const rowTEI = row.content.map(it => {
+                    const attrs = {}
                     if (it.type === "table_header") {
-                        return wrap("cell", it.content.map(c => f(c)).join(""), {role: "label"})
-                    } else if (it.type === "table_cell") {
-                        return wrap("cell", it.content.map(c => f(c)).join(""))
+                        attrs.role = "label"
                     }
-                    return ""
+                    if (it.attrs?.rowspan > 1) {
+                        attrs.rows = it.attrs.rowspan
+                    }
+                    if (it.attrs?.colspan > 1) {
+                        attrs.cols = it.attrs.colspan
+                    }
+                    return wrap("cell", it.content.map(c => f(c)).join(""), attrs)
                 }).join("")
                 const isLabel = row.content.filter(c => c.type === "table_header").length === row.content.length
                 return isLabel ? wrap("row", rowTEI, {role: "label"}) : wrap("row", rowTEI)

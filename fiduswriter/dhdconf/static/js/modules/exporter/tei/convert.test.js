@@ -393,6 +393,40 @@ test("render a table with header row", () => {
     expect(richText(content)).toStrictEqual([expected, ""])
 })
 
+test("render a table with colspan and rowspan", () => {
+    const content = [
+                {
+            type: "table",
+            attrs: {caption: false},
+            content: [
+                {type: "table_body", content: [
+                    {type: "table_row", content: [
+                        {type: "table_cell", attrs: {colspan: 2}, content: [{type: "paragraph", content: [
+                            {type: "text", text: "1,2"}
+                        ]}]},
+                        {type: "table_cell", attrs: {rowspan: 2}, content: [{type: "paragraph", content: [
+                            {type: "text", text: "3,6"}
+                        ]}]}
+                    ]},
+                    {type: "table_row", content: [
+                        {type: "table_cell", attrs: {}, content: [{type: "paragraph", content: [
+                            {type: "text", text: "4"}
+                        ]}]},
+                        {type: "table_cell", attrs: {}, content: [{type: "paragraph", content: [
+                            {type: "text", text: "5"}
+                        ]}]}
+                    ]}
+                ]}
+            ]
+        }
+    ]
+    const expected = '<table>' +
+        '<row><cell cols="2"><p>1,2</p></cell><cell rows="2"><p>3,6</p></cell></row>' +
+        '<row><cell><p>4</p></cell><cell><p>5</p></cell></row>' +
+        '</table>'
+    expect(richText(content)).toStrictEqual([expected, ""])
+})
+
 test("render a blockquote", () => {
     const content = [
         {
