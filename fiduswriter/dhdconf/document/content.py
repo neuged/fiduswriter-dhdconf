@@ -52,7 +52,7 @@ class DhdDocumentContentUpdate:
                 ):
                     part["content"] = content
                     break
-            except AttributeError:
+            except (KeyError, AttributeError):
                 pass
 
 
@@ -65,13 +65,18 @@ class DhdDocumentContentUpdate:
         contributors = [{"type": "contributor", "attrs": i} for i in self.contributors]
         orcid_ids = [{"type": "tag", "attrs": {"tag": i }} for i in self.orcid_ids]
         title = [{"type": "text", "text": self.title}]
+        visible_title = [
+            {"type": "heading1", "content": [{"type": "text", "text": self.title}]}
+        ]
         abstract = [
             {"type": "paragraph", "content": [{"type": "text", "text": self.abstract}]}
         ]
+
         with transaction.atomic():
             if document := Document.objects.select_for_update().filter(pk=pk).first():
                 parts = document.content.get("content", list())
                 self._update_part(parts, "title", content=title)
+                self._update_part(parts, "heading_part", "visibleTitle", visible_title)
                 self._update_part(parts, "tags_part", "contributionTypes", ctype)
                 self._update_part(parts, "tags_part", "keywords", keywords)
                 self._update_part(parts, "tags_part", "topics", topics)

@@ -9,15 +9,26 @@
         {
             "type": "heading_part",
             "attrs": {
+                "title": "Title",
+                "id": "visibleTitle",
+                "locking": "fixed"
+            }
+        },
+        {
+            "type": "heading_part",
+            "attrs": {
                 "title": "Subtitle",
                 "id": "subtitle",
                 "initial": [
                     {
-                        "type": "heading1",
+                        "type": "heading2",
                         "attrs": {
                             "id": "H6323428"
                         }
                     }
+                ],
+                "elements": [
+                    "heading2"
                 ],
                 "marks": [
                     "strong",
@@ -27,7 +38,7 @@
             },
             "content": [
                 {
-                    "type": "heading1",
+                    "type": "heading2",
                     "attrs": {
                         "id": "H6323428"
                     }

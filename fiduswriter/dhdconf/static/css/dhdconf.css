@@ -7,3 +7,30 @@ body[data-hide-new-document-option='true'] .fw-overview-menu-item.new_document {
     display: none;
     visibility: hidden;
 }
+
+/* Hide the editable title in favor of a locked version */
+.doc-title {
+    display: none;
+    visibility: hidden;
+}
+
+/*
+  Document style overrides for headings
+  Styles "ACM" and "Springer" produce a weird effect where a h2 is bigger than an h1
+  We override here with !important. Long-term we could use a custom document style.
+*/
+.doc-heading_part > h1,
+.doc-heading_part > h2,
+.doc-heading_part > h3 {
+    line-height: 1.2em !important;
+}
+.doc-heading_part > h1 {
+    font-family: 'Source Sans Pro', 'sans-serif' !important;
+    font-size: 2.4rem !important;
+}
+.doc-heading_part > h2 {
+    font-size: 2rem !important;
+}
+.doc-heading_part > h3 {
+    font-size: 1.7rem !important;
+}
