@@ -25,6 +25,7 @@ def import_user_info(user: ConftoolUser, info: UserInfoResponse):
 def import_emails(data: ExportUserResponse):
     if not (user := ConftoolUser.objects.filter(conftool_id=data.person_id).first()):
         return
+    user = user.user_ptr
     addresses = []
     for email, validated in [
         (data.email, data.email_validated),
@@ -115,5 +116,9 @@ def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):
             rights="write"
         )
         rights.append(access_right.pk)
-    ConftoolUserInvite.objects.filter(email__in=emails).exclude(pk__in=invites).delete()
+    # only leave those invites and access rights we just set up
+    others = ConftoolUserInvite.objects.filter(email__in=emails).exclude(pk__in=invites)
+    for invite in others:
+        invite.userinvite_ptr.document_rights.clear()
+        invite.delete()
     ConftoolAccessRight.objects.filter(document=document).exclude(pk__in=rights).delete()
