@@ -16,13 +16,14 @@ function showError(e) {
 export class DhdconfEditor {
     constructor(editor) {
         this.editor = editor
-
     }
 
     async init() {
         // if the citation style was not injected already (app.js) we need to inject it
         // here and blockingly for it to take effect before the bibliography is rendered
         await injectCitationStyle(this.editor?.app?.csl)
+
+        this.editor.pathEditable = false
 
         const menus = this.editor.menu.headerbarModel.content
 

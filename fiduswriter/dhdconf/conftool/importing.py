@@ -64,6 +64,7 @@ def import_paper(data: ExportPaperResponse):
         document = ConftoolDocument(conftool_id=data.paper_id, template=template)
         document.content = deepcopy(template.content)
     document.title = data.title
+    document.path = ""
     document.owner = ConftoolUser.objects.filter(
         conftool_id=data.submitting_author_id
     ).first()
