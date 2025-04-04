@@ -64,13 +64,20 @@ class DhdDocumentContentUpdate:
         topics = [{"type": "tag", "attrs": {"tag": i}} for i in sorted(self.topics)]
         contributors = [{"type": "contributor", "attrs": i} for i in self.contributors]
         orcid_ids = [{"type": "tag", "attrs": {"tag": i }} for i in self.orcid_ids]
-        title = [{"type": "text", "text": self.title}]
-        visible_title = [
-            {"type": "heading1", "content": [{"type": "text", "text": self.title}]}
-        ]
-        abstract = [
-            {"type": "paragraph", "content": [{"type": "text", "text": self.abstract}]}
-        ]
+        title = []
+        visible_title = []
+        abstract = []
+        if self.title:
+            title = [{"type": "text", "text": self.title}]
+            visible_title = [
+                {"type": "heading1", "content": [{"type": "text", "text": self.title}]}
+            ]
+        if self.abstract:
+            abstract = [
+                {"type": "paragraph", "content": [
+                    {"type": "text", "text": self.abstract}
+                ]}
+            ]
 
         with transaction.atomic():
             if document := Document.objects.select_for_update().filter(pk=pk).first():
