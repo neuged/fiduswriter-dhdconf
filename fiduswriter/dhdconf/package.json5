@@ -1,5 +1,8 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "@rspack/core": "~1.2.3",
+    "@rspack/cli": "~1.2.3"
+  },
   "devDependencies": {
     "eslint-plugin-jest": "^27.1.7",
     "babel-jest": "^29.0.3",
