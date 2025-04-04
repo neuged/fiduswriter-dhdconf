@@ -3,7 +3,7 @@ export const config = {
     // Whether to show "Create new folder" in the folder document overview
     removeFolderCreationOption: true,
 
-    // Whehter to show document creation and import options to the users
+    // Whether to show document creation and import options to the users
     removeDocumenCreationOptions: true,
 
     // Whether to show category options in the "bibliography" or "images" sections
@@ -12,6 +12,9 @@ export const config = {
 
     // Whether to remove "Accept All", "Reject All" from the change tracking menu
     removeUniversalActionsFromTrackChangesMenu: true,
+
+    // Whether to hide the Bibliography menu from the main menu
+    hideBibliographyMenu: true,
 
     // The static path at which to expect the docx template used in the DHC export
     docxTemplateLocation: "assets/dhdconf.docx",
