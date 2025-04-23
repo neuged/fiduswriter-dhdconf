@@ -15,11 +15,6 @@ from dhdconf.models import ConftoolUser, ConftoolEmail, ConftoolDocument
 from user.models import User
 
 
-# TODO
-# see https://github.com/fiduswriter/fiduswriter-pandoc/blob/main/fiduswriter/pandoc/tests/
-# for mocking requests see: https://stackoverflow.com/a/65437794/1879728
-
-
 def _user_factory() -> ConftoolUser:
     return ConftoolUser.objects.create(
         username="username",

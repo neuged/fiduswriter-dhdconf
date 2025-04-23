@@ -89,6 +89,7 @@ def import_paper(data: ExportPaperResponse):
         document.save()
         content.set_on(document)
         _synchronize_access_rights(document, [author.email for author in data.authors])
+    return document
 
 
 def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):

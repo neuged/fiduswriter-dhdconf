@@ -19,9 +19,10 @@ function hideMenuElement(items, predicate) {
 
 function removeCategoriesFromMenu(menu) {
     hideMenuElement(menu, (entry) => entry.id === "cat_selector")
-    removeMenuItem(menu, (entry) => entry.title === gettext("Edit Categories"))
+    removeMenuItem(menu, (entry) =>
+        [gettext("Edit Categories"), gettext("Edit categories")].includes(entry.title)
+    )
 }
-
 
 export class DhdconfBibliographyOverview {
     constructor(overview) {
