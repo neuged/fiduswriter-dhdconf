@@ -144,6 +144,8 @@ function extractTextNodes(node, texts = []) {
  * This is the main entry point of this module.
  */
 function extract(docContents, _docSettings) {
+    const currentDate = new Date().toISOString()
+
     const abstract = extractAbstract(docContents)
     const authors = extractAuthors(docContents)
     const footnotes = extractFootnotes(docContents)
@@ -168,6 +170,7 @@ function extract(docContents, _docSettings) {
         subtitle,
         title,
         citations,
+        date: currentDate,
     }
 }
 
