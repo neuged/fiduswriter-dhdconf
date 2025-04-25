@@ -47,9 +47,11 @@ function linkify(text) {
     return linkified.replace(DOI_REGEX, (substring, doiGroup) => {
         const match = doiGroup.match(TRAILING)
         if (match) {
-            return linkRef(`https://doi.org/${doiGroup.replace(TRAILING, "")}`, substring.replace(TRAILING, "")) + match[0]
+            const url = `https://doi.org/${doiGroup.replace(TRAILING, "")}`
+            return linkRef(url, url) + match[0]
         } else {
-            return linkRef(`https://doi.org/${doiGroup}`, substring)
+            const url = `https://doi.org/${doiGroup}`
+            return linkRef(url, url)
         }
     })
 }

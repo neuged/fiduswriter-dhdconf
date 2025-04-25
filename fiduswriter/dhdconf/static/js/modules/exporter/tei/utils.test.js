@@ -46,12 +46,12 @@ test("linkify preserves trailing punctuation", () => {
 
 test("linkify transforms doi", () => {
     expect(linkify("pre doi:10.1000/182 post"))
-        .toBe("pre <ref target=\"https://doi.org/10.1000/182\">doi:10.1000/182</ref> post")
+        .toBe("pre <ref target=\"https://doi.org/10.1000/182\">https://doi.org/10.1000/182</ref> post")
 })
 
 test("linkify preserves trailing punctuation on doi", () => {
     expect(linkify("doi:10.1000/182, post"))
-        .toBe("<ref target=\"https://doi.org/10.1000/182\">doi:10.1000/182</ref>, post")
+        .toBe("<ref target=\"https://doi.org/10.1000/182\">https://doi.org/10.1000/182</ref>, post")
 })
 
 test("linkify gracefully handles dois given as links", () => {
