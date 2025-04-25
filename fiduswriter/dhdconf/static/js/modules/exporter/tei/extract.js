@@ -95,7 +95,7 @@ function extractTagList(docContents, id) {
 
 function extractOrcidIds(docContents) {
     const orcidIds = extractTagList(docContents, "orcidIds")
-        .map(s => s?.match(/^\d{4}-\d{4}-\d{4}-\d{3}[0-9X]{1}$/) ? s : "")
+        .map(s => s?.match(/^\d{4}-\S+$/) ? s : "")
     return orcidIds || []
 }
 

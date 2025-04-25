@@ -84,11 +84,18 @@ test("extract orcidIds", () => {
             {type: "tag", attrs: {tag: "not an orcidId"}},
             {type: "tag", attrs: {tag: ""}},
             {type: "tag", attrs: {tag: "0000-0002-2771-9344"}},
+            {type: "tag", attrs: {tag: "0123-this-is-fine"}},
             {type: "tag", attrs: {tag: "<ORCID: N/A>"}},
         ]
     }]
     const doc = dummyDoc(content)
-    expect(extractOrcidIds(doc)).toEqual(["", "", "0000-0002-2771-9344", ""])
+    expect(extractOrcidIds(doc)).toEqual([
+        "",
+        "",
+        "0000-0002-2771-9344",
+        "0123-this-is-fine",
+        ""
+    ])
 })
 
 // TODO: Test extractTextNodes
