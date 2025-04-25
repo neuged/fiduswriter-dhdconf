@@ -76,7 +76,7 @@ def refresh_conftool_papers(request):
             status=200 if ok else 500
         )
     else:
-        return JsonResponse([], status=400)
+        return JsonResponse({}, status=404)
 
 
 @login_required
@@ -128,7 +128,7 @@ def refresh_conftool_user(request):
             status=200 if ok else 500
         )
     else:
-        return JsonResponse([], status=400)
+        return JsonResponse({}, status=404)
 
 
 @login_required
