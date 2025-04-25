@@ -2,8 +2,10 @@ export const header = (authors, title, keywords, subtitle, abstract, publication
 <teiHeader>
     <fileDesc>
         <titleStmt>
-            ${title}
-            ${subtitle}
+            <title type="full">
+                ${title}
+                ${subtitle}
+            </title>
             ${authors}
         </titleStmt>
         <publicationStmt>
