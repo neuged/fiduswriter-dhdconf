@@ -31,17 +31,17 @@ test("link ptr", () => {
 
 test("linkify http", () => {
     expect(linkify("pre http://example.com/123 post"))
-        .toBe("pre <ptr target=\"http://example.com/123\" /> post")
+        .toBe("pre <ref target=\"http://example.com/123\">http://example.com/123</ref> post")
 })
 
 test("linkify https", () => {
     expect(linkify("pre https://example.com/123 post"))
-        .toBe("pre <ptr target=\"https://example.com/123\" /> post")
+        .toBe("pre <ref target=\"https://example.com/123\">https://example.com/123</ref> post")
 })
 
 test("linkify preserves trailing punctuation", () => {
     expect(linkify("https://example.com/123."))
-        .toBe("<ptr target=\"https://example.com/123\" />.")
+        .toBe("<ref target=\"https://example.com/123\">https://example.com/123</ref>.")
 })
 
 test("linkify transforms doi", () => {
@@ -56,5 +56,5 @@ test("linkify preserves trailing punctuation on doi", () => {
 
 test("linkify gracefully handles dois given as links", () => {
     expect(linkify("doi:https://doi.org/10.1000/182"))
-        .toBe("doi:<ptr target=\"https://doi.org/10.1000/182\" />")
+        .toBe("doi:<ref target=\"https://doi.org/10.1000/182\">https://doi.org/10.1000/182</ref>")
 })

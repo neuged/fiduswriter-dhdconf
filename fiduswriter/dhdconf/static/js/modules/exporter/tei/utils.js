@@ -43,7 +43,7 @@ const LINK_REGEX = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+
 const DOI_REGEX = /doi:(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i  // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
 const TRAILING = /[.,]$/
 function linkify(text) {
-    const linkified = text.replace(LINK_REGEX, linkPtr)
+    const linkified = text.replace(LINK_REGEX, (url) => linkRef(url, url))
     return linkified.replace(DOI_REGEX, (substring, doiGroup) => {
         const match = doiGroup.match(TRAILING)
         if (match) {
