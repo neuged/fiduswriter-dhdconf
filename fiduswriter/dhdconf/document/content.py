@@ -80,8 +80,8 @@ class DhdDocumentContentUpdate:
             ]
 
         with transaction.atomic():
-            if document := Document.objects.select_for_update().filter(pk=pk).first():
-                parts = document.content.get("content", list())
+            if locked := Document.objects.select_for_update().filter(pk=pk).first():
+                parts = locked.content.get("content", list())
                 self._update_part(parts, "title", content=title)
                 self._update_part(parts, "heading_part", "visibleTitle", visible_title)
                 self._update_part(parts, "tags_part", "contributionTypes", ctype)
@@ -90,5 +90,7 @@ class DhdDocumentContentUpdate:
                 self._update_part(parts, "tags_part", "orcidIds", orcid_ids)
                 self._update_part(parts, "contributors_part", content=contributors)
                 self._update_part(parts, "richtext_part", "abstract", abstract)
-                document.content["content"] = parts
-                document.save()
+                locked.content["content"] = parts
+                locked.save()
+        if document:
+            document.refresh_from_db(fields=('content',))
