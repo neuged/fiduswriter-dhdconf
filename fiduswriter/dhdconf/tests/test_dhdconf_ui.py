@@ -41,9 +41,9 @@ class DhdconfViewsTest(SeleniumHelper, ChannelsLiveServerTestCase):
         self.document =  import_paper(ExportPaperResponse(
             paper_id=100,
             submitting_author_id=100,
-            title="Test Paper",
+            title="Test Title",
             abstract="Test Abstract",
-            contribution_type="Contribution",
+            contribution_type="Test Contribution",
             keywords=["key1", "key2"],
             topics=["topic1", "topic2"],
             authors=[PaperAuthor(
@@ -164,6 +164,25 @@ class DhdconfViewsTest(SeleniumHelper, ChannelsLiveServerTestCase):
             "Share option should not be present in File menu"
         )
         file_menu.click()
+
+        # Document fields
+        for text in [
+            "Test Title",
+            "Test Abstract",
+            "Test Contribution",
+            "key1",
+            "key2",
+            "topic1",
+            "topic2",
+            "Test Author",
+            "Test University",
+            "test@example.com",
+            "0000-0002-2771-9344"
+        ]:
+            WebDriverWait(self.driver, timeout=0).until(
+                EC.text_to_be_present_in_element((By.ID, "editor-content"), text),
+                f"Editor should contain text: '{text}'"
+            )
 
         # Visit export options
         def click_export(text):
