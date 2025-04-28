@@ -6,6 +6,9 @@ export const config = {
     // Whether to show document creation and import options to the users
     removeDocumenCreationOptions: true,
 
+    // Whether to remove options related to document sharing
+    removeDocumentSharingOptions: true,
+
     // Whether to show category options in the "bibliography" or "images" sections
     removeCategoryOptionsFromBibliography: true,
     removeCategoryOptionsFromImagesOverview: true,

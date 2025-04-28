@@ -31,6 +31,13 @@ class RequestBlockingMiddleware:
         "BLOCK_BIBLIO_CATEGORIES" : [
             bibliography.views.save_category,
             bibliography.views.delete_category
+        ],
+        "BLOCK_DOCUMENT_SHARING": [
+            document.views.save_access_rights,
+            user.views.invites_add,
+            user.views.invite,
+            user.views.invites_accept,
+            user.views.invites_decline,
         ]
     }
 

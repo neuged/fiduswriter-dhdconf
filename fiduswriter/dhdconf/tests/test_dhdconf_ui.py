@@ -37,6 +37,7 @@ class DhdconfViewsTest(SeleniumHelper, ChannelsLiveServerTestCase):
             conftool_id=100,
             synchronized=django.utils.timezone.now()
         )
+
         self.document =  import_paper(ExportPaperResponse(
             paper_id=100,
             submitting_author_id=100,
@@ -57,6 +58,7 @@ class DhdconfViewsTest(SeleniumHelper, ChannelsLiveServerTestCase):
         )
         self.document.owner = self.user
         self.document.save()
+
 
     def tearDown(self):
         self.assertEqual([], self.verificationErrors)
@@ -148,6 +150,20 @@ class DhdconfViewsTest(SeleniumHelper, ChannelsLiveServerTestCase):
         self.assertEqual(
             len(list_items), 1, "Only one option should be present in track changes"
         )
+        track_changes.click()
+
+        # config.removeDocumentSharingOptions
+        file_menu = WebDriverWait(self.driver, self.wait_time).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//span[contains(@class, 'header-nav-item') and contains(., 'File')]")
+            ),
+        )
+        file_menu.click()
+        self.assertAbsence(
+            (By.XPATH, "//span[contains(@class, 'fw-pulldown-item') and contains(., 'Share')]"),
+            "Share option should not be present in File menu"
+        )
+        file_menu.click()
 
         # Visit export options
         def click_export(text):

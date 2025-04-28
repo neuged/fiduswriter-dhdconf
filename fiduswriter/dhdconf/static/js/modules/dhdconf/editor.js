@@ -124,5 +124,12 @@ export class DhdconfEditor {
                 )
             })
         }
+
+        if (config.removeDocumentSharingOptions) {
+            const fileMenu = menus.find(menu => menu.title === gettext("File"))
+            fileMenu.content = fileMenu.content.filter(item => {
+                return item.title !== gettext("Share")
+            })
+        }
     }
 }
