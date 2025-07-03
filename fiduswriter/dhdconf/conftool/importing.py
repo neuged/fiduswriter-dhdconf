@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import List
 
 import django.utils.timezone
 from allauth.account.models import EmailAddress
@@ -33,6 +34,7 @@ def import_emails(data: ExportUserResponse):
     ]:
         if not email:
             continue
+        email = email.lower()
         address = (
             ConftoolEmail.objects.filter(email=email, user=user).first()
             or ConftoolEmail(email=email, user=user)
@@ -50,7 +52,7 @@ def import_emails(data: ExportUserResponse):
         _accept_invites(user, [a.email for a in addresses if a.verified])
 
 
-def _accept_invites(user, verified_emails):
+def _accept_invites(user, verified_emails: List[str]):
     for cui in ConftoolUserInvite.objects.filter(email__in=verified_emails):
         cui.to = user
         cui.save()
@@ -95,7 +97,8 @@ def import_paper(data: ExportPaperResponse):
 def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):
     rights = []
     invites = []
-    for email in [email for email in emails if email]:
+    emails = [email.lower() for email in emails if email]
+    for email in emails:
         if local := EmailAddress.objects.filter(email=email, verified=True).first():
             holder = local.user
             holder_type = ContentType.objects.get(app_label="user", model="user")
