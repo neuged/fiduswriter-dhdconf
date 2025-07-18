@@ -78,7 +78,7 @@ export class DhdconfEditor {
                         return
                     }
                     const docxExporter = new DhdConfDocxExporter(
-                        editor.getDoc({changes: "acceptAllNoInsertions"}),
+                        editor.getDoc(),
                         staticUrl(config.docxTemplateLocation),
                         editor.mod.db.bibDB,
                         editor.mod.db.imageDB,
@@ -99,16 +99,17 @@ export class DhdconfEditor {
                     }
                     import("../exporter/dhc").then(({exportDHC}) => {
                         getJson("/api/dhdconf/tei_export_settings").then(teiSettings => {
-                            exportDHC(
-                                editor.getDoc({changes: "acceptAllNoInsertions"}),
-                                editor.mod.db.bibDB,
-                                editor.mod.db.imageDB,
-                                editor.app.csl,
-                                editor.docInfo.updated,
-                                editor.mod.documentTemplate.documentStyles,
-                                staticUrl(config.docxTemplateLocation),
-                                teiSettings
-                            ).then(showSucces, showError)
+                            exportDHC({
+                                doc: editor.getDoc({changes: "acceptAllNoInsertions"}),
+                                docForDocx: editor.getDoc(),
+                                bibDB: editor.mod.db.bibDB,
+                                imageDB: editor.mod.db.imageDB,
+                                csl: editor.app.csl,
+                                updated: editor.docInfo.updated,
+                                documentStyles: editor.mod.documentTemplate.documentStyles,
+                                docxTemplateUrl: staticUrl(config.docxTemplateLocation),
+                                teiSettings: teiSettings
+                            }).then(showSucces, showError)
                         })
                     })
                 }
