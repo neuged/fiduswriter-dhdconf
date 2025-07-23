@@ -28,10 +28,16 @@ def import_emails(data: ExportUserResponse):
         return
     user = user.user_ptr
     addresses = []
-    for email, validated in [
-        (data.email, data.email_validated),
-        (data.email2, data.email2_validated)
-    ]:
+    # Special case: If the user entered the same email twice in different casing in
+    # conftool we will only create one lowercased email
+    if data.email and data.email2 and data.email.lower() == data.email2.lower():
+        emails = [(data.email, data.email_validated or data.email2_validated)]
+    else:
+        emails = [
+            (data.email, data.email_validated), (data.email2, data.email2_validated)
+        ]
+
+    for email, validated in emails:
         if not email:
             continue
         email = email.lower()
