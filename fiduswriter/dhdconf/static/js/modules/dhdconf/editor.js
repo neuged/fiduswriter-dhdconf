@@ -73,10 +73,6 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to a DOCX file"),
                 order: 4,
                 action: editor => {
-                    if (navigator.vendor === "Apple Computer, Inc.") {
-                        this.editor.mod.documentTemplate.showSafariErrorMessage()
-                        return
-                    }
                     const docxExporter = new DhdConfDocxExporter(
                         editor.getDoc(),
                         staticUrl(config.docxTemplateLocation),
@@ -93,10 +89,6 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to a DHC archive"),
                 order: 3,
                 action: editor => {
-                    if (navigator.vendor === "Apple Computer, Inc.") {
-                        this.editor.mod.documentTemplate.showSafariErrorMessage()
-                        return
-                    }
                     import("../exporter/dhc").then(({exportDHC}) => {
                         getJson("/api/dhdconf/tei_export_settings").then(teiSettings => {
                             exportDHC({
