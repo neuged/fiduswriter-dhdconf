@@ -200,7 +200,10 @@ class ExportPaperResponse(ConftoolResponse):
 
 class ConftoolClient:
 
-    _HEADERS = { "User-Agent": "fiduswriter-dhdconf-plugin ConftoolClient 0.1" }
+    _HEADERS = {
+        "User-Agent": "fiduswriter-dhdconf-plugin ConftoolClient 0.1",
+        "Accept-Language": "de"
+    }
 
     def __init__(self, service_url: str, secret: str):
         self.service_url = service_url
