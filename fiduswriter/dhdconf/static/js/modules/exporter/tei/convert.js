@@ -196,13 +196,18 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
         }
 
         if (item.type.startsWith("heading")) {
-            const order = parseInt(item.type.slice(-1))
+            // heading without content: Do nothing (probably an artifact from pasting)
+            const content = item.content?.map(c => f(c))?.join("")
+            if (!content) {
+                return ""
+            }
             // Whenever the new heading is of a higher order (i.e. the number is smaller)
             // or the same as the preceding heading, we need to close our previous div(s).
+            const order = parseInt(item.type.slice(-1))
             const closing = (order <= divLevel) ? "</div>".repeat(divLevel + 1 - order) : ""
             divLevel = order
             const opening = `<div type="div${divLevel}" rend="DH-Heading${divLevel}">`
-            const head = wrap("head", item.content.map(c => f(c)).join(""))
+            const head = wrap("head", content)
             return `${closing}${opening}${head}`
         }
 
