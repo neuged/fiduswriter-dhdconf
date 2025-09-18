@@ -70,7 +70,20 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
     let fnCount = 0     // the number of footnotes we have encountered
     let figCount = 0    // the number of figures we have encountered
     let citeCount = 0   // the number of citations we have encountered
+    const headingCounts = [0, 0, 0, 0, 0, 0, 0, 0]  // For heading prefixes (1.1,…)
     const footnotesTEI = []
+
+    function nextHeadingPrefix(atLevel) {
+        const level = parseInt(atLevel) - 1
+        if (isNaN(level) || level < 0 || level >= headingCounts.length) {
+            return ""
+        }
+        headingCounts[level] += 1
+        for (let idx = level + 1; idx < headingCounts.length; idx++) {
+            headingCounts[idx] = 0;
+        }
+        return headingCounts.slice(0, level+1).join(".") + (level === 0 ? ". " : " ")
+    }
 
     function f(item) {
         /* This is a base case because we have arrived at a leaf node. */
@@ -207,7 +220,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
             const closing = (order <= divLevel) ? "</div>".repeat(divLevel + 1 - order) : ""
             divLevel = order
             const opening = `<div type="div${divLevel}" rend="DH-Heading${divLevel}">`
-            const head = wrap("head", content)
+            const head = wrap("head", nextHeadingPrefix(divLevel) + content)
             return `${closing}${opening}${head}`
         }
 

@@ -105,7 +105,7 @@ test("render heading with a single piece of text", () => {
             type: "heading1",
             content: [{type: "text", text: "hello"}],
         }])
-    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>hello</head></div>', ""])
+    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>1. hello</head></div>', ""])
 })
 
 test("render heading with an xml escape", () => {
@@ -114,7 +114,7 @@ test("render heading with an xml escape", () => {
             type: "heading1",
             content: [{type: "text", text: "hello <tags/>"}],
         }])
-    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>hello &lt;tags/&gt;</head></div>', ""])
+    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>1. hello &lt;tags/&gt;</head></div>', ""])
 })
 
 test("render heading with italic text", () => {
@@ -129,7 +129,7 @@ test("render heading with italic text", () => {
             },
         ])
     ).toStrictEqual([
-        '<div type="div1" rend="DH-Heading1"><head>hello <hi rend="italic">world</hi></head></div>',
+        '<div type="div1" rend="DH-Heading1"><head>1. hello <hi rend="italic">world</hi></head></div>',
         ""
     ])
 })
@@ -146,7 +146,7 @@ test("render heading and following paragraph", () => {
                 content: [{type: "text", text: "world"}],
             },
         ])
-    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>hello</head><p>world</p></div>', ""])
+    ).toStrictEqual(['<div type="div1" rend="DH-Heading1"><head>1. hello</head><p>world</p></div>', ""])
 })
 
 test("render second order heading", () => {
@@ -155,7 +155,7 @@ test("render second order heading", () => {
             type: "heading2",
             content: [{type: "text", text: "hello"}],
         }])
-    ).toStrictEqual(['<div type="div2" rend="DH-Heading2"><head>hello</head></div></div>', ""])
+    ).toStrictEqual(['<div type="div2" rend="DH-Heading2"><head>0.1 hello</head></div></div>', ""])
 })
 
 test("render two headings", () => {
@@ -171,11 +171,12 @@ test("render two headings", () => {
             },
         ])
     ).toStrictEqual([
-        '<div type="div1" rend="DH-Heading1"><head>first</head>' +
-        '<div type="div2" rend="DH-Heading2"><head>second</head></div></div>',
+        '<div type="div1" rend="DH-Heading1"><head>1. first</head>' +
+        '<div type="div2" rend="DH-Heading2"><head>1.1 second</head></div></div>',
         ""
     ])
 })
+
 
 test("render consecutive headings", () => {
     expect(
@@ -184,11 +185,52 @@ test("render consecutive headings", () => {
             {type: "heading1", content: [{type: "text", text: "another"}]},
         ])
     ).toStrictEqual([
-        '<div type="div1" rend="DH-Heading1"><head>one</head></div>' +
-        '<div type="div1" rend="DH-Heading1"><head>another</head></div>',
+        '<div type="div1" rend="DH-Heading1"><head>1. one</head></div>' +
+        '<div type="div1" rend="DH-Heading1"><head>2. another</head></div>',
         ""
     ])
 })
+
+
+test("consecutive headings should be correctly numbered", () => {
+    expect(
+        richText([
+            {
+                type: "heading1",
+                content: [{type: "text", text: "first"}],
+            },
+            {
+                type: "heading2",
+                content: [{type: "text", text: "second"}],
+            },
+            {
+                type: "heading3",
+                content: [{type: "text", text: "third"}],
+            },
+            {
+                type: "heading1",
+                content: [{type: "text", text: "first"}],
+            },
+            {
+                type: "heading2",
+                content: [{type: "text", text: "second"}],
+            },
+            {
+                type: "heading3",
+                content: [{type: "text", text: "third"}],
+            },
+        ])
+    ).toStrictEqual([
+        '<div type="div1" rend="DH-Heading1"><head>1. first</head>' +
+        '<div type="div2" rend="DH-Heading2"><head>1.1 second</head>' +
+        '<div type="div3" rend="DH-Heading3"><head>1.1.1 third</head></div></div></div>' +
+        '<div type="div1" rend="DH-Heading1"><head>2. first</head>' +
+        '<div type="div2" rend="DH-Heading2"><head>2.1 second</head>' +
+        '<div type="div3" rend="DH-Heading3"><head>2.1.1 third</head></div></div></div>',
+        ""
+    ])
+})
+
 
 test("render footnotes (inside the main text)", () => {
     expect(
