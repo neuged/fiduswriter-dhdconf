@@ -11,8 +11,29 @@
             "attrs": {
                 "title": "Title",
                 "id": "visibleTitle",
-                "locking": "fixed"
-            }
+                "locking": "fixed",
+                "elements": [
+                    "heading1"
+                ],
+                "marks": [
+                    "strong",
+                    "em"
+                ]
+            },
+            "content": [
+                {
+                    "type": "heading1",
+                    "attrs": {
+                        "id": "H2203977"
+                    },
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Überschrift"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "type": "heading_part",
