@@ -31,7 +31,8 @@ DHD_ARTICLE_ATTRS = {
     ],
     "citationstyle": "chicago-author-date-de",
     "citationstyles": [
-        "chicago-author-date-de"
+        "chicago-author-date-16th-edition",
+        "chicago-author-date-de",
     ],
     "language": "de-DE",
     "languages": [
