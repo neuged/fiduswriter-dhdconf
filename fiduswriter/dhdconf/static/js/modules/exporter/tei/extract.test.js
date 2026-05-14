@@ -19,7 +19,7 @@ const dummyDoc = (cont) => {
 
 test("extract empty subtitle", () => {
     const doc = dummyDoc([
-        {type: "heading_part", attrs: {id: "subtitle"}, content: [{type: "heading1"}]}
+        {type: "heading_part", attrs: {id: "subtitle"}, content: [{type: "heading2"}]}
     ])
     expect(extractSubtitle(doc)).toBe("")
 })
@@ -30,7 +30,7 @@ test("extract simple subtitle", () => {
         attrs: {id: "subtitle"},
         content: [
             {
-                type: "heading1",
+                type: "heading2",
                 content: [{type: "text", text: "hello"}]
             }
         ]}
