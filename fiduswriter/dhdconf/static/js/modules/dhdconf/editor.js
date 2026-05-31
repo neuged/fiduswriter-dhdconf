@@ -1,8 +1,9 @@
 import {addAlert, getJson} from "../../modules/common"
 
+import {citationLanguagePlugin} from "../editor/state_plugins/citation_language"
 import {config} from "./config"
 import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
-import {injectCitationStyle} from "./citationstyle";
+import {injectCitationStyle} from "./citationstyle"
 
 function showSucces() {
     addAlert("success", gettext("Export finished"))
@@ -15,6 +16,7 @@ function showError(e) {
 
 export class DhdconfEditor {
     constructor(editor) {
+        editor.statePlugins.unshift([citationLanguagePlugin])
         this.editor = editor
     }
 
