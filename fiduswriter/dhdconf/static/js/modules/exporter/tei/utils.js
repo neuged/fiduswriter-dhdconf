@@ -1,6 +1,7 @@
 /**
  * Create a string of an empty XML tag.
  */
+
 function tag(tagName, attrs = {}) {
     if (Object.keys(attrs).length) {
         const attributes = Object.entries(attrs)
@@ -32,18 +33,19 @@ function wrapText(tagName, content, attrs = {}) {
 }
 
 function linkRef(target, text) {
-    return wrap("ref", text, {target})
+    return wrap("ref", text, { target })
 }
 
 function linkPtr(target) {
-    return tag("ptr", {target})
+    return tag("ptr", { target })
 }
 
-const LINK_REGEX = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
-const DOI_REGEX = /doi:(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i  // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
+const LINK_REGEX =
+    /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi
+const DOI_REGEX = /doi:(10\.\d{4,9}\/[-._;()/:A-Z0-9]+)/i // https://www.crossref.org/blog/dois-and-matching-regular-expressions/
 const TRAILING = /[.,]$/
 function linkify(text) {
-    const linkified = text.replace(LINK_REGEX, (url) => linkRef(url, url))
+    const linkified = text.replace(LINK_REGEX, url => linkRef(url, url))
     return linkified.replace(DOI_REGEX, (substring, doiGroup) => {
         const match = doiGroup.match(TRAILING)
         if (match) {
@@ -58,13 +60,16 @@ function linkify(text) {
 
 function escapeXmlText(text) {
     // NOTE: Only usable for XML text nodes as single and double-quotes are not escaped
-    return text.replace(/[<>&]/g, function(c) {
+    return text.replace(/[<>&]/g, function (c) {
         switch (c) {
-        case "<": return "&lt;"
-        case ">": return "&gt;"
-        case "&": return "&amp;"
+            case "<":
+                return "&lt;"
+            case ">":
+                return "&gt;"
+            case "&":
+                return "&amp;"
         }
     })
 }
 
-export {tag, wrap, wrapText, linkPtr, linkRef, linkify, escapeXmlText}
+export { tag, wrap, wrapText, linkPtr, linkRef, linkify, escapeXmlText }

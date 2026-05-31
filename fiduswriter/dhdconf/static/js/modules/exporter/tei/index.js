@@ -1,23 +1,33 @@
 import download from "downloadjs"
 
-import {createSlug} from "../tools/file"
-import {removeHidden} from "../tools/doc_content"
-import {ZipFileCreator} from "../tools/zip"
+import { createSlug, createSlugLastName } from "../tools/file"
+import { removeHidden } from "../tools/doc_content"
+import { ZipFileCreator } from "../tools/zip"
 
 import convert from "./convert"
-import {extractBody, extractCitations, extractImageIDs} from "./extract"
-import {TeiCitationsExporter} from "./citations"
-import {TeiExporterMath} from "./math"
+import {
+    extractBody,
+    extractCitations,
+    extractImageIDs,
+    extractAuthors,
+} from "./extract"
+import { TeiCitationsExporter } from "./citations"
+import { TeiExporterMath } from "./math"
 
 export class TEIExporter {
-    constructor(doc, bibDB, imageDB, csl, updated, settings={}) {
+    constructor(doc, bibDB, imageDB, csl, updated, settings = {}) {
         this.doc = doc
         this.bibDB = bibDB
         this.imageDB = imageDB
         this.csl = csl
         this.updated = updated
 
-        this.slug = createSlug(doc.title)
+        // we have to create the slug with the first author!
+        this.lastNameSlug = createSlugLastName(
+            extractAuthors(this.doc.content)[0].lastname,
+        )
+
+        this.slug = this.lastNameSlug + "-" + createSlug(doc.title)
         this.citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
         this.mathExp = new TeiExporterMath()
 
@@ -29,9 +39,7 @@ export class TEIExporter {
     }
 
     init() {
-        return this.process().then(
-            () => this.createZip()
-        )
+        return this.process().then(() => this.createZip())
     }
 
     async process() {
@@ -41,22 +49,24 @@ export class TEIExporter {
         await this.mathExp.init()
 
         const enc = new TextEncoder()
-        const tei = enc.encode(convert(
-            this.slug,
-            this.docContent,
-            this.imageDB,
-            this.citeExp,
-            this.mathExp,
-            this.settings
-        ))
-        this.textFiles = [{filename: `${this.slug}.tei.xml`, contents: tei}]
+        const tei = enc.encode(
+            convert(
+                this.slug,
+                this.docContent,
+                this.imageDB,
+                this.citeExp,
+                this.mathExp,
+                this.settings,
+            ),
+        )
+        this.textFiles = [{ filename: `${this.slug}.tei.xml`, contents: tei }]
 
         const images = extractImageIDs(this.docContent, this.imageDB)
         this.httpFiles = images.map(id => {
             const entry = this.imageDB.db[id]
             return {
                 filename: `images/${entry.image.split("/").pop()}`,
-                url: entry.image
+                url: entry.image,
             }
         })
     }
@@ -67,11 +77,9 @@ export class TEIExporter {
             this.httpFiles,
             undefined,
             undefined,
-            this.updated
+            this.updated,
         )
-        return zipper.init().then(
-            blob => this.download(blob)
-        )
+        return zipper.init().then(blob => this.download(blob))
     }
 
     download(blob) {

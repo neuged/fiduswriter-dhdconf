@@ -1,3 +1,27 @@
 .tag ~ .tag::before {
     content: " \2013  ";
 }
+
+.doc-title {
+    display: none;
+    visibility: hidden;
+}
+
+/* We can not get rid in the code of his div! */
+div > .doc-orcidIds {
+    display: none;
+    visibility: hidden;
+}
+
+.affiliation > div {
+    display: inline;
+}
+
+/* Footnote paragraphs got a <p>... */
+.footnote > p {
+    display: inline;
+}
+
+span .lastname {
+    font-weight: bold;
+}

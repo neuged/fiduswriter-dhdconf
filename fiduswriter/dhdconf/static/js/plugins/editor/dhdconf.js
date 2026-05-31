@@ -1,1 +1,1 @@
-export {DhdconfEditor} from "../../modules/dhdconf/editor"
+export { DhdconfEditor } from "../../modules/dhdconf/editor"

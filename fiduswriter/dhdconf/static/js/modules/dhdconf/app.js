@@ -1,5 +1,5 @@
-import {ensureCSS} from "../common"
-import {injectCitationStyle} from "./citationstyle";
+import { ensureCSS } from "../common"
+import { injectCitationStyle } from "./citationstyle"
 
 export class DhdconfApp {
     constructor(app) {
@@ -7,9 +7,7 @@ export class DhdconfApp {
     }
 
     init() {
-        injectCitationStyle(this.app?.csl)  //  NOTE: csl not available if user logged out, see editor.js
-        return ensureCSS([
-            staticUrl("css/dhdconf.css")
-        ])
+        injectCitationStyle(this.app?.csl) //  NOTE: csl not available if user logged out, see editor.js
+        return ensureCSS([staticUrl("css/dhdconf.css")])
     }
 }

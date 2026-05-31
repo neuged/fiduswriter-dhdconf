@@ -1,4 +1,12 @@
-export const header = (authors, title, date, keywords, subtitle, abstract, publicationStmt) => `
+export const header = (
+    authors,
+    title,
+    date,
+    keywords,
+    subtitle,
+    abstract,
+    publicationStmt,
+) => `
 <teiHeader>
     <fileDesc>
         <titleStmt>

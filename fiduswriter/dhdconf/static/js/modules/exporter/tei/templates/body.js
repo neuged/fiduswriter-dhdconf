@@ -1,4 +1,4 @@
-export const body = (text) => `
+export const body = text => `
 <body>
     ${text}
 </body>

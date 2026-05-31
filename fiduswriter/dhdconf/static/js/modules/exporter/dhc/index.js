@@ -1,9 +1,12 @@
 import download from "downloadjs"
 
-import {ZipFileCreator} from "../tools/zip"
+import { ZipFileCreator } from "../tools/zip"
 
-import {DhdConfHtmlExporter, DhdConfDocxExporter} from "../../dhdconf/exporter"
-import {TEIExporter} from "../tei"
+import {
+    DhdConfHtmlExporter,
+    DhdConfDocxExporter,
+} from "../../dhdconf/exporter"
+import { TEIExporter } from "../tei"
 
 class HtmlExporterWithoutDownload extends DhdConfHtmlExporter {
     download(blob) {
@@ -24,30 +27,30 @@ class TEIExporterWithoutDownload extends TEIExporter {
 }
 
 export async function exportDHC({
-        doc,
-        docForDocx,
-        bibDB,
-        imageDB,
-        csl,
-        updated,
-        documentStyles,
-        docxTemplateUrl,
-        teiSettings
-    }){
+    doc,
+    docForDocx,
+    bibDB,
+    imageDB,
+    csl,
+    updated,
+    documentStyles,
+    docxTemplateUrl,
+    teiSettings,
+}) {
     const htmlExporter = new HtmlExporterWithoutDownload(
         doc,
         bibDB,
         imageDB,
         csl,
         updated,
-        documentStyles
+        documentStyles,
     )
     const docxExporter = new DocxExporterWithoutDownload(
         docForDocx,
         docxTemplateUrl,
         bibDB,
         imageDB,
-        csl
+        csl,
     )
     const teiExporter = new TEIExporterWithoutDownload(
         doc,
@@ -55,7 +58,7 @@ export async function exportDHC({
         imageDB,
         csl,
         updated,
-        teiSettings
+        teiSettings,
     )
 
     await htmlExporter.init()
@@ -63,8 +66,10 @@ export async function exportDHC({
     const docxBlob = await docxExporter.init()
 
     const slug = teiExporter.slug
-    const docxFile = {filename: `${slug}.docx`, contents: docxBlob}
-    const htmlFile = htmlExporter.textFiles.find((i) => i.filename === "document.html")
+    const docxFile = { filename: `${slug}.docx`, contents: docxBlob }
+    const htmlFile = htmlExporter.textFiles.find(
+        i => i.filename === "document.html",
+    )
     htmlFile.filename = `${slug}.html`
 
     const zipFile = new ZipFileCreator(
@@ -72,7 +77,7 @@ export async function exportDHC({
         [...htmlExporter.httpFiles, ...teiExporter.httpFiles],
         htmlExporter.includeZips,
         undefined,
-        updated
+        updated,
     )
     zipFile.init().then(blob => {
         download(blob, `${teiExporter.slug}.dhc`, "application/zip")

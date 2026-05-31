@@ -7,22 +7,23 @@
 function extractAuthors(docContents) {
     const authors = docContents.content
         ?.find(part => part.type === "contributors_part")
-        ?.content
-        ?.filter(item => item.type === "contributor")
+        ?.content?.filter(item => item.type === "contributor")
         .map(author => author.attrs)
     return authors || []
 }
 
 function extractCitations(node, citations = []) {
     switch (node.type) {
-    case "citation":
-        citations.push(JSON.parse(JSON.stringify(node.attrs)))
-        break
-    case "footnote":
-        node.attrs.footnote.forEach(child => extractCitations(child, citations))
-        break
-    default:
-        break
+        case "citation":
+            citations.push(JSON.parse(JSON.stringify(node.attrs)))
+            break
+        case "footnote":
+            node.attrs.footnote.forEach(child =>
+                extractCitations(child, citations),
+            )
+            break
+        default:
+            break
     }
     if (node.content) {
         node.content.forEach(child => extractCitations(child, citations))
@@ -87,15 +88,15 @@ function extractImageIDs(docContents) {
 function extractTagList(docContents, id) {
     const tags = docContents.content
         ?.find(part => part.type === "tags_part" && part.attrs?.id === id)
-        ?.content
-        ?.filter(item => item.type === "tag")
+        ?.content?.filter(item => item.type === "tag")
         .map(kw => kw.attrs.tag)
     return tags || []
 }
 
 function extractOrcidIds(docContents) {
-    const orcidIds = extractTagList(docContents, "orcidIds")
-        .map(s => s?.match(/^\d{4}-\S+$/) ? s : "")
+    const orcidIds = extractTagList(docContents, "orcidIds").map(s =>
+        s?.match(/^\d{4}-\S+$/) ? s : "",
+    )
     return orcidIds || []
 }
 
@@ -114,19 +115,18 @@ function extractAbstract(docContents) {
 function extractTitle(docContents) {
     const title = docContents.content
         ?.find(part => part.type === "title")
-        ?.content
-        ?.find(item => item.type === "text")
-        ?.text
+        ?.content?.find(item => item.type === "text")?.text
     return title || ""
 }
 
 function extractSubtitle(docContents) {
     const subtitle = docContents.content
-        ?.find(part => part.type === "heading_part" && part.attrs.id === "subtitle")
-        ?.content
-        ?.find(part => part.type === "heading1")
-        ?.content
-        ?.filter(item => item.type === "text")
+        ?.find(
+            part =>
+                part.type === "heading_part" && part.attrs.id === "subtitle",
+        )
+        ?.content?.find(part => part.type === "heading2")
+        ?.content?.filter(item => item.type === "text")
         .map(item => item.text)
         .join("")
     return subtitle || ""
@@ -152,7 +152,7 @@ function extract(docContents, _docSettings) {
     const tags = {
         contributionTypes: extractTagList(docContents, "contributionTypes"),
         keywords: extractTagList(docContents, "keywords"),
-        topics: extractTagList(docContents, "topics")
+        topics: extractTagList(docContents, "topics"),
     }
     const orcidIds = extractOrcidIds(docContents)
     const body = extractBody(docContents)
@@ -185,6 +185,6 @@ export {
     extractBody,
     extractSubtitle,
     extractTitle,
-    extractTextNodes
+    extractTextNodes,
 }
 export default extract

@@ -1,1 +1,1 @@
-export {DhdconfMenu} from "../../modules/dhdconf/menu"
+export { DhdconfMenu } from "../../modules/dhdconf/menu"

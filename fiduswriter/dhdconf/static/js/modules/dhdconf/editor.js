@@ -1,8 +1,8 @@
-import {addAlert, getJson} from "../../modules/common"
+import { addAlert, getJson } from "../../modules/common"
 
-import {config} from "./config"
-import {DhdConfHtmlExporter, DhdConfDocxExporter} from "./exporter"
-import {injectCitationStyle} from "./citationstyle";
+import { config } from "./config"
+import { DhdConfHtmlExporter, DhdConfDocxExporter } from "./exporter"
+import { injectCitationStyle } from "./citationstyle"
 
 function showSucces() {
     addAlert("success", gettext("Export finished"))
@@ -36,15 +36,15 @@ export class DhdconfEditor {
                 order: 1,
                 action: editor => {
                     const exporter = new DhdConfHtmlExporter(
-                        editor.getDoc({changes: "acceptAllNoInsertions"}),
+                        editor.getDoc({ changes: "acceptAllNoInsertions" }),
                         editor.mod.db.bibDB,
                         editor.mod.db.imageDB,
                         editor.app.csl,
                         editor.docInfo.updated,
-                        editor.mod.documentTemplate.documentStyles
+                        editor.mod.documentTemplate.documentStyles,
                     )
                     exporter.init().then(showSucces, showError)
-                }
+                },
             },
             {
                 title: gettext("TEI"),
@@ -52,20 +52,24 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to a TEI file"),
                 order: 2,
                 action: editor => {
-                    import("../exporter/tei").then(({TEIExporter}) => {
-                        getJson("/api/dhdconf/tei_export_settings").then(settings => {
-                            const exporter = new TEIExporter(
-                                editor.getDoc({changes: "acceptAllNoInsertions"}),
-                                editor.mod.db.bibDB,
-                                editor.mod.db.imageDB,
-                                editor.app.csl,
-                                editor.docInfo.updated,
-                                settings
-                            )
-                            exporter.init().then(showSucces, showError)
-                        })
+                    import("../exporter/tei").then(({ TEIExporter }) => {
+                        getJson("/api/dhdconf/tei_export_settings").then(
+                            settings => {
+                                const exporter = new TEIExporter(
+                                    editor.getDoc({
+                                        changes: "acceptAllNoInsertions",
+                                    }),
+                                    editor.mod.db.bibDB,
+                                    editor.mod.db.imageDB,
+                                    editor.app.csl,
+                                    editor.docInfo.updated,
+                                    settings,
+                                )
+                                exporter.init().then(showSucces, showError)
+                            },
+                        )
                     })
-                }
+                },
             },
             {
                 title: gettext("DOCX"),
@@ -81,7 +85,7 @@ export class DhdconfEditor {
                         editor.app.csl,
                     )
                     docxExporter.init().then(showSucces, showError)
-                }
+                },
             },
             {
                 title: gettext("DHC (HTML + TEI + DOCX)"),
@@ -89,27 +93,37 @@ export class DhdconfEditor {
                 tooltip: gettext("Export the document to a DHC archive"),
                 order: 3,
                 action: editor => {
-                    import("../exporter/dhc").then(({exportDHC}) => {
-                        getJson("/api/dhdconf/tei_export_settings").then(teiSettings => {
-                            exportDHC({
-                                doc: editor.getDoc({changes: "acceptAllNoInsertions"}),
-                                docForDocx: editor.getDoc(),
-                                bibDB: editor.mod.db.bibDB,
-                                imageDB: editor.mod.db.imageDB,
-                                csl: editor.app.csl,
-                                updated: editor.docInfo.updated,
-                                documentStyles: editor.mod.documentTemplate.documentStyles,
-                                docxTemplateUrl: staticUrl(config.docxTemplateLocation),
-                                teiSettings: teiSettings
-                            }).then(showSucces, showError)
-                        })
+                    import("../exporter/dhc").then(({ exportDHC }) => {
+                        getJson("/api/dhdconf/tei_export_settings").then(
+                            teiSettings => {
+                                exportDHC({
+                                    doc: editor.getDoc({
+                                        changes: "acceptAllNoInsertions",
+                                    }),
+                                    docForDocx: editor.getDoc(),
+                                    bibDB: editor.mod.db.bibDB,
+                                    imageDB: editor.mod.db.imageDB,
+                                    csl: editor.app.csl,
+                                    updated: editor.docInfo.updated,
+                                    documentStyles:
+                                        editor.mod.documentTemplate
+                                            .documentStyles,
+                                    docxTemplateUrl: staticUrl(
+                                        config.docxTemplateLocation,
+                                    ),
+                                    teiSettings: teiSettings,
+                                }).then(showSucces, showError)
+                            },
+                        )
                     })
-                }
+                },
             },
         ]
 
         if (config.removeUniversalActionsFromTrackChangesMenu) {
-            const changesMenu = menus.find(menu => menu.title === gettext("Track changes"))
+            const changesMenu = menus.find(
+                menu => menu.title === gettext("Track changes"),
+            )
             changesMenu.content = changesMenu.content.filter(item => {
                 return !(
                     item.title === gettext("Accept all") ||

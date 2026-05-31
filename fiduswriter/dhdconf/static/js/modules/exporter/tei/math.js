@@ -1,20 +1,17 @@
-
 /* cf. exporter/docx/math.js */
 export class TeiExporterMath {
-
     constructor() {
         this.mathLive = null
     }
 
     init() {
         // dynamic import needed to not break jest as mathlive expects browser context
-        return import("mathlive").then(
-            MathLive => this.mathLive = MathLive
-        )
+        return import("mathlive").then(MathLive => (this.mathLive = MathLive))
     }
 
     latexToMathML(latex) {
-        const mathml = this.mathLive.convertLatexToMathMl(latex)
+        const mathml = this.mathLive
+            .convertLatexToMathMl(latex)
             .replace(/&InvisibleTimes;/g, "&#8290;")
             .replace(/&ApplyFunction;/g, "&#x2061;")
             .replace(/&PlusMinus;/g, "&#177;")

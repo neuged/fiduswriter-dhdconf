@@ -1,1 +1,1 @@
-export {DhdconfBibliographyOverview} from "../../modules/dhdconf/overviews"
+export { DhdconfBibliographyOverview } from "../../modules/dhdconf/overviews"

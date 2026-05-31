@@ -1,5 +1,5 @@
-import {activateWait, deactivateWait, addAlert, postJson} from "../common"
-import {config} from "./config"
+import { activateWait, deactivateWait, addAlert, postJson } from "../common"
+import { config } from "./config"
 
 function removeMenuItem(items, predicate) {
     const idx = items.findIndex(predicate)
@@ -12,15 +12,17 @@ function hideMenuElement(items, predicate) {
     // Some menu items (ids: cat_selector, new_document) are expected to exist by other
     // parts of fiduswriter. Since we cannot remove them, we set an invalid type
     // which renders an empty tag (see common/overview_menu.js, dhdconf.css)
-    items.filter(predicate).forEach((item) => {
+    items.filter(predicate).forEach(item => {
         item.type = "hidden_overview_menu_entry"
     })
 }
 
 function removeCategoriesFromMenu(menu) {
-    hideMenuElement(menu, (entry) => entry.id === "cat_selector")
-    removeMenuItem(menu, (entry) =>
-        [gettext("Edit Categories"), gettext("Edit categories")].includes(entry.title)
+    hideMenuElement(menu, entry => entry.id === "cat_selector")
+    removeMenuItem(menu, entry =>
+        [gettext("Edit Categories"), gettext("Edit categories")].includes(
+            entry.title,
+        ),
     )
 }
 
@@ -48,7 +50,6 @@ export class DhdconfImagesOverview {
     }
 }
 
-
 export class DhdconfDocumentsOverview {
     constructor(overview) {
         this.overview = overview
@@ -57,12 +58,21 @@ export class DhdconfDocumentsOverview {
     init() {
         const content = this.overview.menu.model.content
         if (config.removeFolderCreationOption) {
-            removeMenuItem(content, (entry) => entry.title === gettext("Create new folder"))
+            removeMenuItem(
+                content,
+                entry => entry.title === gettext("Create new folder"),
+            )
         }
         if (config.removeDocumenCreationOptions) {
-            removeMenuItem(content, (entry) => entry.title === gettext("Upload FIDUS document"))
-            removeMenuItem(content, (entry) => entry.title === gettext("Import document"))
-            hideMenuElement(content, (entry) => entry.id === "new_document")
+            removeMenuItem(
+                content,
+                entry => entry.title === gettext("Upload FIDUS document"),
+            )
+            removeMenuItem(
+                content,
+                entry => entry.title === gettext("Import document"),
+            )
+            hideMenuElement(content, entry => entry.id === "new_document")
             // the "New document" button gets recreated after plugin intialization so
             // we activate a bit of custom css to actually hide it
             // (see: documents/overview/index.js, dhdconf.css)
@@ -87,8 +97,8 @@ export class DhdconfDocumentsOverview {
                         this.showSuccess(data)
                         return this.refreshDocuments()
                     })
-                    .catch(
-                        response => response.json().then(data => this.showError(data))
+                    .catch(response =>
+                        response.json().then(data => this.showError(data)),
                     )
                     .finally(() => {
                         this.addUnvalidatedEmailsAlert(unvalidatedEmails)
@@ -128,13 +138,17 @@ export class DhdconfDocumentsOverview {
 
     addUnvalidatedEmailsAlert(emails) {
         if (emails) {
-            emails.forEach(email => addAlert("warning", [
-                    gettext("Email"),
-                    `"${email}"`,
-                    gettext("is not validated with ConfTool."),
-                    gettext("Connected submissions might not be shown.")
-                ].join(" ")
-            ))
+            emails.forEach(email =>
+                addAlert(
+                    "warning",
+                    [
+                        gettext("Email"),
+                        `"${email}"`,
+                        gettext("is not validated with ConfTool."),
+                        gettext("Connected submissions might not be shown."),
+                    ].join(" "),
+                ),
+            )
         }
     }
 }

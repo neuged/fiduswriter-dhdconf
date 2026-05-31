@@ -1,1 +1,1 @@
-export {DhdconfApp} from "../../modules/dhdconf/app"
+export { DhdconfApp } from "../../modules/dhdconf/app"
