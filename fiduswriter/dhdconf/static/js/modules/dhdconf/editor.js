@@ -4,6 +4,8 @@ import { config } from "./config"
 import { DhdConfHtmlExporter, DhdConfDocxExporter } from "./exporter"
 import { injectCitationStyle } from "./citationstyle"
 
+import { languageCitationSyncPlugin } from "./language_citation"
+
 function showSucces() {
     addAlert("success", gettext("Export finished"))
 }
@@ -16,6 +18,10 @@ function showError(e) {
 export class DhdconfEditor {
     constructor(editor) {
         this.editor = editor
+        this.editor.statePlugins = [
+            [languageCitationSyncPlugin],
+            ...this.editor.statePlugins,
+        ]
     }
 
     async init() {
