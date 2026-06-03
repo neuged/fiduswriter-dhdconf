@@ -144,5 +144,14 @@ export class DhdconfEditor {
                 return item.title !== gettext("Share")
             })
         }
+
+        if (config.removeCitationStyleMenu) {
+            const settingsMenu = menus.find(
+                menu => menu.title === gettext("Settings")
+            )
+            settingsMenu.content = settingsMenu.content.filter(item => {
+                return item.title !== gettext("Citation Style")
+            })
+        }
     }
 }

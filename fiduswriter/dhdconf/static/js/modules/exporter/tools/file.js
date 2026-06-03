@@ -20,9 +20,7 @@ const slugify = (str, isTitle) => {
 }
 
 export const createSlug = str => {
-    console.log("el tñiutlo es:", str)
     str = slugify(str, true)
-    console.log("el tñiutlo trasnforamdo es:", str)
 
     if (str.length > 128) {
         str = str.substring(0, 128)

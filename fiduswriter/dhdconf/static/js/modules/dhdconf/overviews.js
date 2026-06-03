@@ -57,12 +57,14 @@ export class DhdconfDocumentsOverview {
 
     init() {
         const content = this.overview.menu.model.content
+
         if (config.removeFolderCreationOption) {
             removeMenuItem(
                 content,
                 entry => entry.title === gettext("Create new folder")
             )
         }
+
         if (config.removeDocumenCreationOptions) {
             removeMenuItem(
                 content,
