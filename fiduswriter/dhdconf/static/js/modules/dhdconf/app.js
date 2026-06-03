@@ -1,5 +1,5 @@
-import { ensureCSS } from "../common"
-import { injectCitationStyle } from "./citationstyle"
+import {ensureCSS} from "../common"
+import {injectCitationStyle} from "./citationstyle"
 
 export class DhdconfApp {
     constructor(app) {

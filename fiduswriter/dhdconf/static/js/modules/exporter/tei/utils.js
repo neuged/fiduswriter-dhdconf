@@ -33,11 +33,11 @@ function wrapText(tagName, content, attrs = {}) {
 }
 
 function linkRef(target, text) {
-    return wrap("ref", text, { target })
+    return wrap("ref", text, {target})
 }
 
 function linkPtr(target) {
-    return tag("ptr", { target })
+    return tag("ptr", {target})
 }
 
 const LINK_REGEX =
@@ -72,4 +72,4 @@ function escapeXmlText(text) {
     })
 }
 
-export { tag, wrap, wrapText, linkPtr, linkRef, linkify, escapeXmlText }
+export {tag, wrap, wrapText, linkPtr, linkRef, linkify, escapeXmlText}

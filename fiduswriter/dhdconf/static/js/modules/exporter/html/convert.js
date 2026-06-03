@@ -1,10 +1,10 @@
-import { convertLatexToMathMl } from "mathlive"
+import {convertLatexToMathMl} from "mathlive"
 import pretty from "pretty"
 
-import { escapeText } from "../../common"
-import { CATS } from "../../schema/i18n"
-import { HTMLExporterCitations } from "./citations"
-import { displayNumber } from "./tools"
+import {escapeText} from "../../common"
+import {CATS} from "../../schema/i18n"
+import {HTMLExporterCitations} from "./citations"
+import {displayNumber} from "./tools"
 
 export class HTMLExporterConvert {
     constructor(
@@ -25,8 +25,8 @@ export class HTMLExporterConvert {
             idPrefix = "",
             footnoteOffset = 0,
             affiliationOffset = 0,
-            figureOffset = {},
-        } = {},
+            figureOffset = {}
+        } = {}
     ) {
         this.docTitle = docTitle
         this.docSettings = docSettings
@@ -61,19 +61,19 @@ export class HTMLExporterConvert {
             abstract: false,
             keywords: [],
             copyright: {
-                licenses: [],
+                licenses: []
             },
-            toc: [],
+            toc: []
         }
         this.features = {
             math: false,
-            bibliography: false,
+            bibliography: false
         }
         this.citations = {
             type: "",
             bibCSS: "",
             bibHTML: "",
-            citationTexts: [],
+            citationTexts: []
         }
         this.citInfos = []
         this.citationCount = 0
@@ -91,7 +91,7 @@ export class HTMLExporterConvert {
         const citationProcessor = new HTMLExporterCitations(
             this.docSettings,
             this.bibDB,
-            this.csl,
+            this.csl
         )
         const citations = await citationProcessor.init(this.citInfos)
         this.citations = citations
@@ -106,15 +106,15 @@ export class HTMLExporterConvert {
             this.extraStyleSheets.push({
                 filename: this.relativeUrls ? "css/bibliography.css" : null,
                 contents: pretty(this.citations.bibCSS, {
-                    ocd: true,
-                }),
+                    ocd: true
+                })
             })
         }
         if (this.features.math) {
             this.extraStyleSheets.push({
                 filename: this.relativeUrls
                     ? "css/mathlive.css"
-                    : staticUrl("css/libs/mathlive/mathlive.css"),
+                    : staticUrl("css/libs/mathlive/mathlive.css")
             })
         }
         const body = this.assembleBody()
@@ -127,13 +127,13 @@ export class HTMLExporterConvert {
             settings: this.docSettings,
             lang: this.docSettings.language.split("-")[0],
             xhtml: this.xhtml,
-            epub: this.epub,
+            epub: this.epub
         })
         return {
             html,
             imageIds: this.imageIds,
             extraStyleSheets: this.extraStyleSheets,
-            metaData: this.metaData,
+            metaData: this.metaData
         }
     }
 
@@ -166,7 +166,7 @@ export class HTMLExporterConvert {
                     id: node.attrs.id,
                     title: (node.content || [])
                         .map(subNode => this.walkJson(subNode))
-                        .join(""),
+                        .join("")
                 })
                 break
             }
@@ -213,7 +213,7 @@ export class HTMLExporterConvert {
                     docTitle: true,
                     level: 1,
                     id: "title",
-                    title: title,
+                    title: title
                 })
                 break
             }
@@ -261,7 +261,7 @@ export class HTMLExporterConvert {
             head += this.metaData.copyright.licenses
                 .map(
                     license =>
-                        `<link rel="license" href="${escapeText(license.url)}"${this.endSlash}>`, // TODO: Add this.metaData.copyright.license.start info if present
+                        `<link rel="license" href="${escapeText(license.url)}"${this.endSlash}>` // TODO: Add this.metaData.copyright.license.start info if present
                 )
                 .join("")
         }
@@ -282,7 +282,7 @@ export class HTMLExporterConvert {
                 if (!sheet.filename && !sheet.contents) {
                     console.warn(
                         "No filename or contents for stylesheet.",
-                        sheet,
+                        sheet
                     )
                     return ""
                 }
@@ -342,12 +342,12 @@ export class HTMLExporterConvert {
                             const nameParts = []
                             if (contributor.firstname) {
                                 nameParts.push(
-                                    `<span class="firstname">${escapeText(contributor.firstname)}</span>`,
+                                    `<span class="firstname">${escapeText(contributor.firstname)}</span>`
                                 )
                             }
                             if (contributor.lastname) {
                                 nameParts.push(
-                                    `<span class="lastname">${escapeText(contributor.lastname)}</span>`,
+                                    `<span class="lastname">${escapeText(contributor.lastname)}</span>`
                                 )
                             }
                             if (nameParts.length) {
@@ -371,7 +371,7 @@ export class HTMLExporterConvert {
 
                                 const affNumberDisplay = displayNumber(
                                     affNumber,
-                                    this.affiliationNumbering,
+                                    this.affiliationNumbering
                                 )
                                 output += `<a class="affiliation" href="#aff-${affNumber}"${this.epub ? ' epub:type="noteref"' : ""}>${affNumberDisplay}</a>`
                             }
@@ -413,7 +413,7 @@ export class HTMLExporterConvert {
                 content += this.metaData.toc
                     .map(
                         item =>
-                            `<h${item.level}><a href="#${item.id}">${item.title}</a></h${item.level}>`,
+                            `<h${item.level}><a href="#${item.id}">${item.title}</a></h${item.level}>`
                     )
                     .join("")
                 end += "</div>"
@@ -471,7 +471,7 @@ export class HTMLExporterConvert {
                 const footnoteNumber = ++this.fnCounter
                 const footnoteNumberDisplay = displayNumber(
                     footnoteNumber,
-                    this.footnoteNumbering,
+                    this.footnoteNumbering
                 )
                 content += `<a class="footnote"${this.epub ? ' epub:type="noteref"' : ""} href="#fn-${footnoteNumber}">${footnoteNumberDisplay}</a>`
                 options = Object.assign({}, options)
@@ -482,12 +482,12 @@ export class HTMLExporterConvert {
                             type: "footnotecontainer",
                             attrs: {
                                 id: `fn-${footnoteNumber}`,
-                                label: footnoteNumberDisplay, // Note: it's unclear whether the footnote number is required as a label
+                                label: footnoteNumberDisplay // Note: it's unclear whether the footnote number is required as a label
                             },
-                            content: node.attrs.footnote,
+                            content: node.attrs.footnote
                         },
-                        options,
-                    ),
+                        options
+                    )
                 )
                 break
             }
@@ -502,7 +502,7 @@ export class HTMLExporterConvert {
                     strong = node.marks.find(mark => mark.type === "strong")
                     em = node.marks.find(mark => mark.type === "em")
                     underline = node.marks.find(
-                        mark => mark.type === "underline",
+                        mark => mark.type === "underline"
                     )
                     hyperlink = node.marks.find(mark => mark.type === "link")
                     anchor = node.marks.find(mark => mark.type === "anchor")
@@ -556,7 +556,7 @@ export class HTMLExporterConvert {
                 } else {
                     content += `<a class="footnote"${this.epub ? 'epub:type="noteref" ' : ""} href="#fn-${++this.fnCounter}">${this.fnCounter}</a>`
                     this.footnotes.push(
-                        `<aside class="footnote"${this.epub ? 'epub:type="footnote" ' : ""} id="fn-${this.fnCounter}"><p id="${this.idPrefix}p-${++this.parCounter}">(${this.fnCounter}) ${citationText}</p></aside>`,
+                        `<aside class="footnote"${this.epub ? 'epub:type="footnote" ' : ""} id="fn-${this.fnCounter}"><p id="${this.idPrefix}p-${++this.parCounter}">(${this.fnCounter}) ${citationText}</p></aside>`
                     )
                 }
                 break
@@ -597,7 +597,7 @@ export class HTMLExporterConvert {
                     end = "</figure>" + end
 
                     const equation = node.content.find(
-                        node => node.type === "figure_equation",
+                        node => node.type === "figure_equation"
                     )?.attrs.equation
 
                     if (image && copyright?.holder) {
@@ -611,7 +611,7 @@ export class HTMLExporterConvert {
                         figureFooter += copyright.licenses
                             .map(
                                 license =>
-                                    `<span class="license"><a rel="license"${license.start ? ` data-start="${license.start}"` : ""}>${escapeText(license.url)}</a></span>`,
+                                    `<span class="license"><a rel="license"${license.start ? ` data-start="${license.start}"` : ""}>${escapeText(license.url)}</a></span>`
                             )
                             .join("")
                         figureFooter += "</small></footer>"
@@ -745,11 +745,11 @@ export class HTMLExporterConvert {
             back += `<div id="${this.idPrefix}back">`
             if (Object.keys(this.affiliations).length) {
                 back += `<section id="${this.idPrefix}affiliations" class="affiliations">${Object.entries(
-                    this.affiliations,
+                    this.affiliations
                 )
                     .map(
                         ([name, id]) =>
-                            `<aside class="affiliation" id="aff-${id}"${this.epub ? 'epub:type="footnote"' : ""}><label>${displayNumber(id, this.affiliationNumbering)}</label> <div>${escapeText(name)}</div></aside>`,
+                            `<aside class="affiliation" id="aff-${id}"${this.epub ? 'epub:type="footnote"' : ""}><label>${displayNumber(id, this.affiliationNumbering)}</label> <div>${escapeText(name)}</div></aside>`
                     )
                     .join("")}</section>`
             }

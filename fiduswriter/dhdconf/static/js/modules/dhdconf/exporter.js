@@ -1,27 +1,27 @@
 import download from "downloadjs"
 
-import { createSlug, createSlugLastName } from "../exporter/tools/file"
+import {createSlug, createSlugLastName} from "../exporter/tools/file"
 
-import { HTMLExporter } from "../exporter/html"
-import { DOCXExporter } from "../exporter/docx"
-import { config } from "./config"
+import {HTMLExporter} from "../exporter/html"
+import {DOCXExporter} from "../exporter/docx"
+import {config} from "./config"
 
 export class DhdConfHtmlExporter extends HTMLExporter {
     init() {
-        this.styleSheets.push({ url: staticUrl("css/dhdconf_export_html.css") })
+        this.styleSheets.push({url: staticUrl("css/dhdconf_export_html.css")})
         this.converterOptions.affiliationNumbering = "decimal"
         return super.init()
     }
 
     download(blob) {
         const lastNameSlug = createSlugLastName(
-            this.metaData.authors[0].attrs.lastname,
+            this.metaData.authors[0].attrs.lastname
         )
         const ownSlug = createSlug(this.docTitle)
         return download(
             blob,
             `${lastNameSlug}-${ownSlug}.html.zip`,
-            this.mimeType,
+            this.mimeType
         )
     }
 }

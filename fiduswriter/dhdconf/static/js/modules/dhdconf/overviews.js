@@ -1,5 +1,5 @@
-import { activateWait, deactivateWait, addAlert, postJson } from "../common"
-import { config } from "./config"
+import {activateWait, deactivateWait, addAlert, postJson} from "../common"
+import {config} from "./config"
 
 function removeMenuItem(items, predicate) {
     const idx = items.findIndex(predicate)
@@ -21,8 +21,8 @@ function removeCategoriesFromMenu(menu) {
     hideMenuElement(menu, entry => entry.id === "cat_selector")
     removeMenuItem(menu, entry =>
         [gettext("Edit Categories"), gettext("Edit categories")].includes(
-            entry.title,
-        ),
+            entry.title
+        )
     )
 }
 
@@ -60,17 +60,17 @@ export class DhdconfDocumentsOverview {
         if (config.removeFolderCreationOption) {
             removeMenuItem(
                 content,
-                entry => entry.title === gettext("Create new folder"),
+                entry => entry.title === gettext("Create new folder")
             )
         }
         if (config.removeDocumenCreationOptions) {
             removeMenuItem(
                 content,
-                entry => entry.title === gettext("Upload FIDUS document"),
+                entry => entry.title === gettext("Upload FIDUS document")
             )
             removeMenuItem(
                 content,
-                entry => entry.title === gettext("Import document"),
+                entry => entry.title === gettext("Import document")
             )
             hideMenuElement(content, entry => entry.id === "new_document")
             // the "New document" button gets recreated after plugin intialization so
@@ -98,14 +98,14 @@ export class DhdconfDocumentsOverview {
                         return this.refreshDocuments()
                     })
                     .catch(response =>
-                        response.json().then(data => this.showError(data)),
+                        response.json().then(data => this.showError(data))
                     )
                     .finally(() => {
                         this.addUnvalidatedEmailsAlert(unvalidatedEmails)
                         deactivateWait()
                     })
             },
-            order: 1,
+            order: 1
         })
     }
 
@@ -145,9 +145,9 @@ export class DhdconfDocumentsOverview {
                         gettext("Email"),
                         `"${email}"`,
                         gettext("is not validated with ConfTool."),
-                        gettext("Connected submissions might not be shown."),
-                    ].join(" "),
-                ),
+                        gettext("Connected submissions might not be shown.")
+                    ].join(" ")
+                )
             )
         }
     }

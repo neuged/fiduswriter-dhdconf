@@ -1,12 +1,12 @@
-import { tag, wrap, linkify, linkRef, linkPtr, wrapText } from "./utils"
+import {tag, wrap, linkify, linkRef, linkPtr, wrapText} from "./utils"
 
 test("create empty <br /> tag", () => {
     expect(tag("br")).toBe("<br />")
 })
 
 test("create empty ref tag with attributes", () => {
-    expect(tag("ref", { n: 1, target: "ftn1" })).toBe(
-        '<ref n="1" target="ftn1" />',
+    expect(tag("ref", {n: 1, target: "ftn1"})).toBe(
+        '<ref n="1" target="ftn1" />'
     )
 })
 
@@ -19,55 +19,55 @@ test("wrapText escapes xml", () => {
 })
 
 test("wrap with attributes", () => {
-    expect(wrap("hi", "hello", { rend: "italic" })).toBe(
-        '<hi rend="italic">hello</hi>',
+    expect(wrap("hi", "hello", {rend: "italic"})).toBe(
+        '<hi rend="italic">hello</hi>'
     )
 })
 
 test("link ref", () => {
     expect(linkRef("http://example.com", "text")).toBe(
-        '<ref target="http://example.com">text</ref>',
+        '<ref target="http://example.com">text</ref>'
     )
 })
 
 test("link ptr", () => {
     expect(linkPtr("http://example.com")).toBe(
-        '<ptr target="http://example.com" />',
+        '<ptr target="http://example.com" />'
     )
 })
 
 test("linkify http", () => {
     expect(linkify("pre http://example.com/123 post")).toBe(
-        'pre <ref target="http://example.com/123">http://example.com/123</ref> post',
+        'pre <ref target="http://example.com/123">http://example.com/123</ref> post'
     )
 })
 
 test("linkify https", () => {
     expect(linkify("pre https://example.com/123 post")).toBe(
-        'pre <ref target="https://example.com/123">https://example.com/123</ref> post',
+        'pre <ref target="https://example.com/123">https://example.com/123</ref> post'
     )
 })
 
 test("linkify preserves trailing punctuation", () => {
     expect(linkify("https://example.com/123.")).toBe(
-        '<ref target="https://example.com/123">https://example.com/123</ref>.',
+        '<ref target="https://example.com/123">https://example.com/123</ref>.'
     )
 })
 
 test("linkify transforms doi", () => {
     expect(linkify("pre doi:10.1000/182 post")).toBe(
-        'pre <ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref> post',
+        'pre <ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref> post'
     )
 })
 
 test("linkify preserves trailing punctuation on doi", () => {
     expect(linkify("doi:10.1000/182, post")).toBe(
-        '<ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref>, post',
+        '<ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref>, post'
     )
 })
 
 test("linkify gracefully handles dois given as links", () => {
     expect(linkify("doi:https://doi.org/10.1000/182")).toBe(
-        'doi:<ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref>',
+        'doi:<ref target="https://doi.org/10.1000/182">https://doi.org/10.1000/182</ref>'
     )
 })

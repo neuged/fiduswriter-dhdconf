@@ -1,12 +1,9 @@
 import download from "downloadjs"
 
-import { ZipFileCreator } from "../tools/zip"
+import {ZipFileCreator} from "../tools/zip"
 
-import {
-    DhdConfHtmlExporter,
-    DhdConfDocxExporter,
-} from "../../dhdconf/exporter"
-import { TEIExporter } from "../tei"
+import {DhdConfHtmlExporter, DhdConfDocxExporter} from "../../dhdconf/exporter"
+import {TEIExporter} from "../tei"
 
 class HtmlExporterWithoutDownload extends DhdConfHtmlExporter {
     download(blob) {
@@ -35,7 +32,7 @@ export async function exportDHC({
     updated,
     documentStyles,
     docxTemplateUrl,
-    teiSettings,
+    teiSettings
 }) {
     const htmlExporter = new HtmlExporterWithoutDownload(
         doc,
@@ -43,14 +40,14 @@ export async function exportDHC({
         imageDB,
         csl,
         updated,
-        documentStyles,
+        documentStyles
     )
     const docxExporter = new DocxExporterWithoutDownload(
         docForDocx,
         docxTemplateUrl,
         bibDB,
         imageDB,
-        csl,
+        csl
     )
     const teiExporter = new TEIExporterWithoutDownload(
         doc,
@@ -58,7 +55,7 @@ export async function exportDHC({
         imageDB,
         csl,
         updated,
-        teiSettings,
+        teiSettings
     )
 
     await htmlExporter.init()
@@ -66,9 +63,9 @@ export async function exportDHC({
     const docxBlob = await docxExporter.init()
 
     const slug = teiExporter.slug
-    const docxFile = { filename: `${slug}.docx`, contents: docxBlob }
+    const docxFile = {filename: `${slug}.docx`, contents: docxBlob}
     const htmlFile = htmlExporter.textFiles.find(
-        i => i.filename === "document.html",
+        i => i.filename === "document.html"
     )
     htmlFile.filename = `${slug}.html`
 
@@ -77,7 +74,7 @@ export async function exportDHC({
         [...htmlExporter.httpFiles, ...teiExporter.httpFiles],
         htmlExporter.includeZips,
         undefined,
-        updated,
+        updated
     )
     zipFile.init().then(blob => {
         download(blob, `${teiExporter.slug}.dhc`, "application/zip")

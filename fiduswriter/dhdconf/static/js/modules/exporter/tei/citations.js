@@ -1,8 +1,8 @@
-import { DOMSerializer, DOMParser } from "prosemirror-model"
+import {DOMSerializer, DOMParser} from "prosemirror-model"
 
-import { cslBibSchema } from "../../bibliography/schema/csl_bib"
-import { FormatCitations } from "../../citations/format"
-import { BIBLIOGRAPHY_HEADERS } from "../../schema/i18n"
+import {cslBibSchema} from "../../bibliography/schema/csl_bib"
+import {FormatCitations} from "../../citations/format"
+import {BIBLIOGRAPHY_HEADERS} from "../../schema/i18n"
 
 export class TeiCitationsExporter {
     constructor(csl, bibDB, settings) {
@@ -26,7 +26,7 @@ export class TeiCitationsExporter {
             this.bibliographyHeader,
             this.bibDB,
             false,
-            this.lang,
+            this.lang
         )
         await this.fm.init()
     }
@@ -38,12 +38,12 @@ export class TeiCitationsExporter {
     get bibliography() {
         if (!this.parsedBibliography) {
             // parse the citeproc produced bibliography back into objects
-            const bibNode = cslBibSchema.nodeFromJSON({ type: "cslbib" })
+            const bibNode = cslBibSchema.nodeFromJSON({type: "cslbib"})
             const cslSerializer = DOMSerializer.fromSchema(cslBibSchema)
             const dom = cslSerializer.serializeNode(bibNode)
             dom.innerHTML = this.fm.bibliography[1].join("")
             this.parsedBibliography = DOMParser.fromSchema(cslBibSchema)
-                .parse(dom, { topNode: bibNode })
+                .parse(dom, {topNode: bibNode})
                 .toJSON()
         }
         return this.parsedBibliography

@@ -1,4 +1,4 @@
-import { config } from "./config"
+import {config} from "./config"
 
 export async function injectCitationStyle(csl) {
     /*
@@ -22,7 +22,7 @@ export async function injectCitationStyle(csl) {
         if (response?.wasInjected) {
             return Promise.resolve()
         }
-        return fetch(staticUrl(config.citationStyleLocation), { method: "GET" })
+        return fetch(staticUrl(config.citationStyleLocation), {method: "GET"})
             .then(response => response.json())
             .then(response => {
                 Object.keys(csl.styles).forEach(styleLocation => {

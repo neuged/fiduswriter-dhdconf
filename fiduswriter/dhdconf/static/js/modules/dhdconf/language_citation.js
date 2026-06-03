@@ -5,7 +5,7 @@
 // https://github.com/fiduswriter/fiduswriter/issues/1404
 // https://prosemirror.net/docs/ref/
 
-import { Plugin, PluginKey } from "prosemirror-state"
+import {Plugin, PluginKey} from "prosemirror-state"
 
 const key = new PluginKey("language_citation")
 
@@ -34,13 +34,13 @@ export const languageCitationSyncPlugin = () => {
                     // Return a new transaction to update the attribute
                     return newState.tr.setDocAttribute(
                         "citation_style",
-                        targetCitationStyle,
+                        targetCitationStyle
                     )
                 }
             }
 
             // No changes needed
             return null
-        },
+        }
     })
 }

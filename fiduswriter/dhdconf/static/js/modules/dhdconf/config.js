@@ -27,5 +27,5 @@ export const config = {
 
     // The static path to our citation style definition and which style to override
     citationStyleLocation: "assets/dhdconf.csljson",
-    citationStyleKey: "chicago-author-date-de",
+    citationStyleKey: "chicago-author-date-de"
 }

@@ -1,18 +1,18 @@
 import download from "downloadjs"
 
-import { createSlug, createSlugLastName } from "../tools/file"
-import { removeHidden } from "../tools/doc_content"
-import { ZipFileCreator } from "../tools/zip"
+import {createSlug, createSlugLastName} from "../tools/file"
+import {removeHidden} from "../tools/doc_content"
+import {ZipFileCreator} from "../tools/zip"
 
 import convert from "./convert"
 import {
     extractBody,
     extractCitations,
     extractImageIDs,
-    extractAuthors,
+    extractAuthors
 } from "./extract"
-import { TeiCitationsExporter } from "./citations"
-import { TeiExporterMath } from "./math"
+import {TeiCitationsExporter} from "./citations"
+import {TeiExporterMath} from "./math"
 
 export class TEIExporter {
     constructor(doc, bibDB, imageDB, csl, updated, settings = {}) {
@@ -24,7 +24,7 @@ export class TEIExporter {
 
         // we have to create the slug with the first author!
         this.lastNameSlug = createSlugLastName(
-            extractAuthors(this.doc.content)[0].lastname,
+            extractAuthors(this.doc.content)[0].lastname
         )
 
         this.slug = this.lastNameSlug + "-" + createSlug(doc.title)
@@ -56,17 +56,17 @@ export class TEIExporter {
                 this.imageDB,
                 this.citeExp,
                 this.mathExp,
-                this.settings,
-            ),
+                this.settings
+            )
         )
-        this.textFiles = [{ filename: `${this.slug}.tei.xml`, contents: tei }]
+        this.textFiles = [{filename: `${this.slug}.tei.xml`, contents: tei}]
 
         const images = extractImageIDs(this.docContent, this.imageDB)
         this.httpFiles = images.map(id => {
             const entry = this.imageDB.db[id]
             return {
                 filename: `images/${entry.image.split("/").pop()}`,
-                url: entry.image,
+                url: entry.image
             }
         })
     }
@@ -77,7 +77,7 @@ export class TEIExporter {
             this.httpFiles,
             undefined,
             undefined,
-            this.updated,
+            this.updated
         )
         return zipper.init().then(blob => this.download(blob))
     }

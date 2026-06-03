@@ -5,7 +5,7 @@ export const header = (
     keywords,
     subtitle,
     abstract,
-    publicationStmt,
+    publicationStmt
 ) => `
 <teiHeader>
     <fileDesc>

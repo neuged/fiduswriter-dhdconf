@@ -19,7 +19,7 @@ function extractCitations(node, citations = []) {
             break
         case "footnote":
             node.attrs.footnote.forEach(child =>
-                extractCitations(child, citations),
+                extractCitations(child, citations)
             )
             break
         default:
@@ -95,7 +95,7 @@ function extractTagList(docContents, id) {
 
 function extractOrcidIds(docContents) {
     const orcidIds = extractTagList(docContents, "orcidIds").map(s =>
-        s?.match(/^\d{4}-\S+$/) ? s : "",
+        s?.match(/^\d{4}-\S+$/) ? s : ""
     )
     return orcidIds || []
 }
@@ -122,8 +122,7 @@ function extractTitle(docContents) {
 function extractSubtitle(docContents) {
     const subtitle = docContents.content
         ?.find(
-            part =>
-                part.type === "heading_part" && part.attrs.id === "subtitle",
+            part => part.type === "heading_part" && part.attrs.id === "subtitle"
         )
         ?.content?.find(part => part.type === "heading2")
         ?.content?.filter(item => item.type === "text")
@@ -152,7 +151,7 @@ function extract(docContents, _docSettings) {
     const tags = {
         contributionTypes: extractTagList(docContents, "contributionTypes"),
         keywords: extractTagList(docContents, "keywords"),
-        topics: extractTagList(docContents, "topics"),
+        topics: extractTagList(docContents, "topics")
     }
     const orcidIds = extractOrcidIds(docContents)
     const body = extractBody(docContents)
@@ -170,7 +169,7 @@ function extract(docContents, _docSettings) {
         subtitle,
         title,
         citations,
-        date: currentDate,
+        date: currentDate
     }
 }
 
@@ -185,6 +184,6 @@ export {
     extractBody,
     extractSubtitle,
     extractTitle,
-    extractTextNodes,
+    extractTextNodes
 }
 export default extract
