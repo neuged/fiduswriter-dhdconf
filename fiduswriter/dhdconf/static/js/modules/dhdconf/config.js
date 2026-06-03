@@ -13,6 +13,9 @@ export const config = {
     removeCategoryOptionsFromBibliography: true,
     removeCategoryOptionsFromImagesOverview: true,
 
+    // Whether to show "Create new folder" in the folder document overview
+    removeCitationStyleMenu: true,
+
     // Whether to remove "Accept All", "Reject All" from the change tracking menu
     removeUniversalActionsFromTrackChangesMenu: true,
 
