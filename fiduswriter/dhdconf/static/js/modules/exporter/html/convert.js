@@ -315,8 +315,6 @@ export class HTMLExporterConvert {
             case "doc":
                 break
             case "title":
-                start += `<div class="doc-part doc-title" id="${this.idPrefix}title">`
-                end = "</div>" + end
                 break
             case "heading_part":
                 start += `<div class="doc-part doc-heading doc-${node.attrs.id} ${node.attrs.metadata || "other"}" id="${this.idPrefix}${node.attrs.id}"${node.attrs.language ? ` lang="${node.attrs.language}"` : ""}>`
@@ -724,7 +722,13 @@ export class HTMLExporterConvert {
 
         if (!content.length && node.content) {
             node.content.forEach(child => {
-                content += this.walkJson(child, options)
+                // NOTE: this is too hacky. We do no want to have title because we already
+                // have visibleTitle coming from the heading_parts. Maybe better is to use CSS
+                if (child.type === "title") {
+                    content = ""
+                } else {
+                    content += this.walkJson(child, options)
+                }
             })
         }
 
