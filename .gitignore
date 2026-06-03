@@ -23,3 +23,4 @@ fiduswriter/fiduswriter.sqlite3
 
 /.idea
 .aider*
+.prettierrc
