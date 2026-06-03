@@ -21,10 +21,10 @@ export class HTMLExporterConvert {
             epub = false,
             relativeUrls = true, // Whether to use relative urls for images, css files, etc. Is used when bundled in HTML. Not in print.
             footnoteNumbering = "decimal",
-            affiliationNumbering = "alpha",
+            // affiliationNumbering = "alpha",
             idPrefix = "",
             footnoteOffset = 0,
-            affiliationOffset = 0,
+            // affiliationOffset = 0,
             figureOffset = {}
         } = {}
     ) {
@@ -40,12 +40,12 @@ export class HTMLExporterConvert {
         this.epub = epub
         this.relativeUrls = relativeUrls
         this.footnoteNumbering = footnoteNumbering
-        this.affiliationNumbering = affiliationNumbering
+        // this.affiliationNumbering = affiliationNumbering
 
         this.endSlash = this.xhtml ? "/" : ""
         this.imageIds = []
         this.categoryCounter = {} // counters for each type of figure (figure/table/photo)
-        this.affiliations = {} // affiliations of authors and editors
+        // this.affiliations = {} // affiliations of authors and editors. We do not use them now.
         this.orcidIds = []
         this.parCounter = 0
         this.headingCounter = 0
@@ -54,7 +54,7 @@ export class HTMLExporterConvert {
         this.orderedListLengths = []
         this.footnotes = []
         this.fnCounter = footnoteOffset
-        this.affCounter = affiliationOffset
+        // this.affCounter = affiliationOffset
         this.metaData = {
             title: this.docTitle,
             authors: [],
@@ -325,7 +325,6 @@ export class HTMLExporterConvert {
                 break
             case "contributors_part":
                 if (node.content) {
-                    // console.log("este esl contenido del nodo:", node.content)
                     start += `<div class="doc-part doc-contributors doc-${node.attrs.id} ${node.attrs.metadata || "other"}" id="${this.idPrefix}${node.attrs.id}"${node.attrs.language ? ` lang="${node.attrs.language}"` : ""}>`
                     end = "</div>" + end
                     let counter = 0
@@ -336,7 +335,7 @@ export class HTMLExporterConvert {
                         // we have to get the orcid before the counter gets increased!!
                         let orcid = this.orcidIds[counter]
                         if (contributor.firstname || contributor.lastname) {
-                            output += `<div><span id="${this.idPrefix}${node.attrs.id}-${counter++}" class="person">`
+                            output += `<div id="${this.idPrefix}${node.attrs.id}-${counter++}" class="person">`
                             const nameParts = []
                             if (contributor.firstname) {
                                 nameParts.push(
@@ -351,33 +350,13 @@ export class HTMLExporterConvert {
                             if (nameParts.length) {
                                 output += `<span class="name">${nameParts.join(" ")}</span>`
                             }
-
-                            if (contributor.institution) {
-                                let affNumber
-                                if (
-                                    this.affiliations[contributor.institution]
-                                ) {
-                                    affNumber =
-                                        this.affiliations[
-                                            contributor.institution
-                                        ]
-                                } else {
-                                    affNumber = ++this.affCounter
-                                    this.affiliations[contributor.institution] =
-                                        affNumber
-                                }
-
-                                const affNumberDisplay = displayNumber(
-                                    affNumber,
-                                    this.affiliationNumbering
-                                )
-                                output += `<a class="affiliation" href="#aff-${affNumber}"${this.epub ? ' epub:type="noteref"' : ""}>${affNumberDisplay}</a>`
-                            }
-                            output += "</span>"
-
                             if (orcid) {
                                 output += `  (<a href="https://orcid.org/${orcid}" aria-label="View ORCID record - ${orcid}" class="orcid">https://orcid.org/${orcid}</a>)`
                             }
+                            if (contributor.institution) {
+                                output += `<p class="affiliation">${escapeText(contributor.institution)}</p>`
+                            }
+
                             output += "</div>"
                         } else if (contributor.institution) {
                             // There is an affiliation but no first/last name. We take this
@@ -723,7 +702,7 @@ export class HTMLExporterConvert {
         if (!content.length && node.content) {
             node.content.forEach(child => {
                 // NOTE: this is too hacky. We do no want to have title because we already
-                // have visibleTitle coming from the heading_parts. Maybe better is to use CSS
+                // have visibleTitle coming from the heading_parts. Maybe better is to use CSS.
                 if (child.type === "title") {
                     content = ""
                 } else {
@@ -741,22 +720,9 @@ export class HTMLExporterConvert {
 
     assembleBack() {
         let back = ""
-        if (
-            this.footnotes.length ||
-            this.citations.bibHTML.length ||
-            Object.keys(this.affiliations).length
-        ) {
+        if (this.footnotes.length || this.citations.bibHTML.length) {
             back += `<div id="${this.idPrefix}back">`
-            if (Object.keys(this.affiliations).length) {
-                back += `<section id="${this.idPrefix}affiliations" class="affiliations">${Object.entries(
-                    this.affiliations
-                )
-                    .map(
-                        ([name, id]) =>
-                            `<aside class="affiliation" id="aff-${id}"${this.epub ? 'epub:type="footnote"' : ""}><label>${displayNumber(id, this.affiliationNumbering)}</label> <div>${escapeText(name)}</div></aside>`
-                    )
-                    .join("")}</section>`
-            }
+
             if (this.footnotes.length) {
                 back += `<section class="fnlist footnotes" role="doc-footnotes" id="${this.idPrefix}footnotes">${this.footnotes.join("")}</section>`
             }
