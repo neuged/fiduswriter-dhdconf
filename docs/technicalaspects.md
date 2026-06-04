@@ -75,3 +75,26 @@ of the installed plugins because of the way Fiduswriter import files to
 be transpiled. See the details
 [here](https://github.com/fiduswriter/fiduswriter/issues/1388). 
 
+## Our changes 
+
+### Changing language changes citation style
+
+For our plugin we want to add the following feature: changing the
+language of the document changes also the citation style. The only two
+work languages are English and German and each has a citation style
+associated. We need therefore a kind of toggle mechanism. 
+
+Two changes are necessary.
+
+The first one is a more "aesthetic" one. We remove from the menu the
+ability to change manually the citation style. See [this
+commit](https://github.com/DHd-Verband/fiduswriter-dhcon/commit/5a7805152c6b40f6766eecf7ed349ab93bb0c213). 
+
+The second one is more involved. For capturing changes in the menu, we
+have to create a plugin for prosemirror. See the discussion
+[here](https://github.com/fiduswriter/fiduswriter/issues/1404) and the
+[documentation of prosemirror](https://prosemirror.net/docs/ref/). See
+the details [in this
+commit](https://github.com/DHd-Verband/fiduswriter-dhcon/commit/7d0edc07480736e4ec2bcf1f37f219c200bb6d92).
+
+
