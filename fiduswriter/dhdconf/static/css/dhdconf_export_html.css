@@ -13,12 +13,13 @@ div > .doc-orcidIds {
     visibility: hidden;
 }
 
-.affiliation > div {
+/* Footnote paragraphs got a <p>... */
+.footnote > p {
     display: inline;
 }
 
-/* Footnote paragraphs got a <p>... */
-.footnote > p {
+/* Table cells paragraphs got a <p>... */
+td > p {
     display: inline;
 }
 

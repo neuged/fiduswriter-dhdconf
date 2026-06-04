@@ -16,11 +16,13 @@ export const languageCitationSyncPlugin = () => {
             const oldLang = oldState.doc.attrs.language
             const newLang = newState.doc.attrs.language
 
+            console.log("antiguo:", oldState)
+
             // Only react when the language attribute actually changes
             if (oldLang !== newLang) {
                 let targetCitationStyle
                 if (newLang === "en-US" || newLang === "en-GB") {
-                    targetCitationStyle = "chicago-author-date-16th-edition"
+                    targetCitationStyle = "chicago-author-date"
                 } else if (newLang === "de-DE") {
                     targetCitationStyle = "chicago-author-date-de"
                 }
@@ -33,7 +35,7 @@ export const languageCitationSyncPlugin = () => {
                 ) {
                     // Return a new transaction to update the attribute
                     return newState.tr.setDocAttribute(
-                        "citation_style",
+                        "citationstyle",
                         targetCitationStyle
                     )
                 }
