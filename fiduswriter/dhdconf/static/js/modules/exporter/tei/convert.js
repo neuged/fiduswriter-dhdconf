@@ -73,6 +73,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
     let citeCount = 0 // the number of citations we have encountered
     let inFootnote = false // paragraphs in footnotes do not need <p>
     let inList = false // paragraphs in lists do not need <p>
+    let inTableCell = false // table cells do not need <p>
 
     const headingCounts = [0, 0, 0, 0, 0, 0, 0, 0] // For heading prefixes (1.1,…)
     const footnotesTEI = []
@@ -154,6 +155,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
         /* Handle table nodes and all their contents */
         if (item.type === "table") {
             let caption = ""
+            inTableCell = true
             if (item.attrs.caption) {
                 const captionTEI = item.content
                     .find(it => it.type === "table_caption")
@@ -245,9 +247,10 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
                 return tag("lb")
             }
 
-            if (inFootnote || inList) {
+            if (inFootnote || inList || inTableCell) {
                 inFootnote = false
                 inList = false
+                inTableCell = false
                 return item.content.map(text).join("")
             }
 
