@@ -2,7 +2,7 @@
 *~
 dist/
 build/
-fiduswriter_pandoc.egg-info/
+fiduswriter_dhdconf.egg-info/
 build/
 __pycache__/
 venv/
