@@ -14,6 +14,11 @@ body[data-hide-new-document-option='true'] .fw-overview-menu-item.new_document {
     visibility: hidden;
 }
 
+.doc-visibleTitle,
+[contenteditable="false"] {
+    cursor: not-allowed !important;
+}
+
 /*
   Document style overrides for headings
   Styles "ACM" and "Springer" produce a weird effect where a h2 is bigger than an h1
