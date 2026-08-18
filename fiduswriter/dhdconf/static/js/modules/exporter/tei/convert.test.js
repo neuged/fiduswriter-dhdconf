@@ -244,7 +244,7 @@ test("render footnotes (inside the main text)", () => {
         }])
     ).toStrictEqual([
         "<ref n=\"1\" target=\"ftn1\" />",
-        "<div type=\"notes\"><note n=\"1\" rend=\"footnote text\" xml:id=\"ftn1\"><p>note of the foot</p></note></div>"
+        "<div type=\"notes\"><note n=\"1\" rend=\"footnote text\" xml:id=\"ftn1\">note of the foot</note></div>"
     ])
 })
 
@@ -271,8 +271,8 @@ test("consecutive footnotes (inside the main text) must be numbered", () => {
     ).toStrictEqual([
         "<ref n=\"1\" target=\"ftn1\" /><ref n=\"2\" target=\"ftn2\" />",
         "<div type=\"notes\">" +
-            "<note n=\"1\" rend=\"footnote text\" xml:id=\"ftn1\"><p>note of the foot</p></note>\n" +
-            "<note n=\"2\" rend=\"footnote text\" xml:id=\"ftn2\"><p>foot of the note</p></note>" +
+            "<note n=\"1\" rend=\"footnote text\" xml:id=\"ftn1\">note of the foot</note>\n" +
+            "<note n=\"2\" rend=\"footnote text\" xml:id=\"ftn2\">foot of the note</note>" +
         "</div>"
     ])
 })
@@ -358,8 +358,8 @@ test("render a simple table", () => {
         }
     ]
     const expected = "<table>" +
-                   "<row><cell><p>1</p></cell><cell><p>2</p></cell></row>" +
-                   "<row><cell><p>3</p></cell><cell><p>4</p></cell></row>" +
+                   "<row><cell>1</cell><cell>2</cell></row>" +
+                   "<row><cell>3</cell><cell>4</cell></row>" +
                    "</table>"
     expect(richText(content)).toStrictEqual([expected, ""])
 })
@@ -394,9 +394,9 @@ test("render a table with caption", () => {
             ]
         }
     ]
-    const expected = "<table><head><p>caption</p></head>" +
-                   "<row><cell><p>1</p></cell><cell><p>2</p></cell></row>" +
-                   "<row><cell><p>3</p></cell><cell><p>4</p></cell></row>" +
+    const expected = "<table><head>caption</head>" +
+                   "<row><cell>1</cell><cell>2</cell></row>" +
+                   "<row><cell>3</cell><cell>4</cell></row>" +
                    "</table>"
     expect(richText(content)).toStrictEqual([expected, ""])
 })
@@ -429,8 +429,8 @@ test("render a table with header row", () => {
         }
     ]
     const expected = "<table>" +
-                   "<row role=\"label\"><cell role=\"label\"><p>1</p></cell><cell role=\"label\"><p>2</p></cell></row>" +
-                   "<row><cell><p>3</p></cell><cell><p>4</p></cell></row>" +
+                   "<row role=\"label\"><cell role=\"label\">1</cell><cell role=\"label\">2</cell></row>" +
+                   "<row><cell>3</cell><cell>4</cell></row>" +
                    "</table>"
     expect(richText(content)).toStrictEqual([expected, ""])
 })
@@ -463,8 +463,8 @@ test("render a table with colspan and rowspan", () => {
         }
     ]
     const expected = '<table>' +
-        '<row><cell cols="2"><p>1,2</p></cell><cell rows="2"><p>3,6</p></cell></row>' +
-        '<row><cell><p>4</p></cell><cell><p>5</p></cell></row>' +
+        '<row><cell cols="2">1,2</cell><cell rows="2">3,6</cell></row>' +
+        '<row><cell>4</cell><cell>5</cell></row>' +
         '</table>'
     expect(richText(content)).toStrictEqual([expected, ""])
 })
@@ -568,8 +568,8 @@ test("render a simple unordered list", () => {
         }
     ]
     const expected = "<list type=\"unordered\">"
-                 + "<item><p>ein Listenpunkt</p></item>"
-                 + "<item><p>noch einer</p></item>"
+                 + "<item>ein Listenpunkt</item>"
+                 + "<item>noch einer</item>"
                  + "</list>"
     expect(richText(content)).toStrictEqual([expected, ""])
 })
@@ -611,8 +611,8 @@ test("render a simple ordered list", () => {
         }
     ]
     const expected = "<list type=\"ordered\">"
-                 + "<item><p>erster Listenpunkt.</p></item>"
-                 + "<item><p>zweiter Listenpunkt</p></item>"
+                 + "<item>erster Listenpunkt.</item>"
+                 + "<item>zweiter Listenpunkt</item>"
                  + "</list>"
     expect(richText(content)).toStrictEqual([expected, ""])
 })

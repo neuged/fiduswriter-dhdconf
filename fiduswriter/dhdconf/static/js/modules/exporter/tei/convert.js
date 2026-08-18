@@ -70,6 +70,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
     let fnCount = 0     // the number of footnotes we have encountered
     let figCount = 0    // the number of figures we have encountered
     let citeCount = 0   // the number of citations we have encountered
+    let wrapagraph = 0  // the depth of elements not to wrap in <p> tag
     const headingCounts = [0, 0, 0, 0, 0, 0, 0, 0]  // For heading prefixes (1.1,…)
     const footnotesTEI = []
 
@@ -101,6 +102,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
          * is only needed at the bottom of the text. */
         if (item.type === "footnote") {
             fnCount += 1
+            wrapagraph += 1
             footnotesTEI.push(wrap(
                 "note",
                 item.attrs.footnote.map(c => f(c)).join(""),
@@ -134,6 +136,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
 
         /* Handle table nodes and all their contents */
         if (item.type === "table") {
+            wrapagraph += 1
             let caption = ""
             if (item.attrs.caption) {
                 const captionTEI = item.content.find(it => it.type === "table_caption").content
@@ -153,7 +156,12 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
                     if (it.attrs?.colspan > 1) {
                         attrs.cols = it.attrs.colspan
                     }
-                    return wrap("cell", it.content.map(c => f(c)).join(""), attrs)
+                    return wrap("cell", it.content
+                        .map(c => {
+                            wrapagraph += 1
+                            return f(c)
+                        })
+                        .join(""), attrs)
                 }).join("")
                 const isLabel = row.content.filter(c => c.type === "table_header").length === row.content.length
                 return isLabel ? wrap("row", rowTEI, {role: "label"}) : wrap("row", rowTEI)
@@ -177,6 +185,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
         if (item.type === "ordered_list") {
             const items = item.content.filter(c => c.type === "list_item")
                 .map(li => {
+                    wrapagraph += 1
                     const liTEI = li.content.map(ic => f(ic)).join("")
                     return wrap("item", liTEI)
                 })
@@ -188,6 +197,7 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
         if (item.type === "bullet_list") {
             const items = item.content.filter(c => c.type === "list_item")
                 .map(li => {
+                    wrapagraph += 1
                     const liTEI = li.content.map(ic => f(ic)).join("")
                     return wrap("item", liTEI)
                 })
@@ -205,7 +215,15 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
             if (item.content === undefined) {
                 return tag("lb")
             }
-            return wrap("p", item.content.map(c => f(c)).join(""))
+
+            const content = item.content.map(c => f(c)).join("")
+
+            if (wrapagraph > 0) {
+                wrapagraph -= 1
+                return content
+            }
+
+            return wrap("p", content)
         }
 
         if (item.type.startsWith("heading")) {
