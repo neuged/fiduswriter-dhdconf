@@ -42,6 +42,7 @@ class Command(BaseCommand):
             p / "node_modules" / ".bin" / "jest",
             "--no-cache",
             "--passWithNoTests",
+            "--verbose",
         ]
         return_value = call(command_array)
         if return_value > 0:
