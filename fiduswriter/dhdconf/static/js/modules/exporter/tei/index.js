@@ -1,23 +1,25 @@
 import download from "downloadjs"
 
-import {createSlug} from "../tools/file"
+import {authorSlug, titleSlug} from "../tools/slug"
 import {removeHidden} from "../tools/doc_content"
 import {ZipFileCreator} from "../tools/zip"
 
 import convert from "./convert"
-import {extractBody, extractCitations, extractImageIDs} from "./extract"
+import {extractAuthors, extractBody, extractCitations, extractImageIDs} from "./extract"
 import {TeiCitationsExporter} from "./citations"
 import {TeiExporterMath} from "./math"
 
 export class TEIExporter {
     constructor(doc, bibDB, imageDB, csl, updated, settings={}) {
+        const author = authorSlug(extractAuthors(doc.content)[0])
+        const title = titleSlug(doc.title)
+
         this.doc = doc
         this.bibDB = bibDB
         this.imageDB = imageDB
         this.csl = csl
         this.updated = updated
-
-        this.slug = createSlug(doc.title)
+        this.slug = `${author}_${title}`
         this.citeExp = new TeiCitationsExporter(csl, bibDB, doc.settings)
         this.mathExp = new TeiExporterMath()
 
