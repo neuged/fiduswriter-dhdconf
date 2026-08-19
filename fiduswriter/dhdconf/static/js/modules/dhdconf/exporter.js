@@ -1,3 +1,4 @@
+import "../exporter/html/patcher"
 import download from "downloadjs"
 
 import {authorSlug, titleSlug} from "../exporter/tools/slug"

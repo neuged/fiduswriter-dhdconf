@@ -1,3 +1,29 @@
-.tag ~ .tag::before {
+#footnotes p {
+    display: contents;
+}
+
+.doc-part.doc-authors .lastname {
+    font-weight: bold;
+}
+
+.doc-part.doc-contributionTypes::before {
+    content: 'Format\A';
+    font-weight: 700;
+}
+
+.doc-part.doc-orcidIds {
+    display: none;
+}
+
+.doc-part.doc-tags {
+    margin-bottom: .5em;
+}
+
+.doc-part.doc-tags > .tag ~ .tag::before {
     content: " \2013  ";
+}
+
+.doc-part.doc-topics::before {
+    content: 'Topics\A';
+    font-weight: 700;
 }
