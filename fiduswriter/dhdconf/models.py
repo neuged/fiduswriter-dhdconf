@@ -1,10 +1,8 @@
-from allauth.account.models import EmailAddress
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.crypto import get_random_string
 
-from document.models import Document, AccessRight
-from user.models import UserInvite
+from document.models import Document
 
 UserModel = get_user_model()
 
@@ -17,18 +15,6 @@ class ConftoolUser(UserModel):
 class ConftoolDocument(Document):
     conftool_id = models.PositiveBigIntegerField(unique=True)
     synchronized = models.DateTimeField()
-
-
-class ConftoolEmail(EmailAddress):
-    pass
-
-
-class ConftoolUserInvite(UserInvite):
-    pass
-
-
-class ConftoolAccessRight(AccessRight):
-    pass
 
 
 class ImportLog(models.Model):

@@ -18,7 +18,7 @@ from dhdconf.conftool.api import (
 )
 from dhdconf.conftool.auth import ConftoolBackend
 from dhdconf.conftool.importing import import_emails, import_paper
-from dhdconf.models import ConftoolUser, ConftoolEmail, ConftoolDocument, ImportLog
+from dhdconf.models import ConftoolUser, ConftoolDocument, ImportLog
 from user.models import User
 from document.consumers import WebsocketConsumer
 from document import prosemirror
@@ -143,19 +143,12 @@ class ImportEmailAddressTest(TestCase):
         self.assertEqual(self.user.emailaddress_set.first().email, "c2@example.com")
         self.assertEqual(self.user.emailaddress_set.first().primary, True)
 
-    def test_importing_emails_does_not_replace_non_conftool_emails(self):
-        EmailAddress.objects.create(user=self.user, email="other@example.com")
-        import_emails(self.data)
-        emails = self.user.emailaddress_set
-        self.assertEqual(emails.count(), 3)
-        self.assertTrue(emails.filter(email="other@example.com").exists())
-
 
 class ImportPaperTest(TestCase):
 
     def setUp(self):
         self.user = _user_factory()
-        self.email = ConftoolEmail.objects.create(
+        self.email = EmailAddress.objects.create(
             user=self.user, email="author1@example.com", verified=True
         )
         self.data = ExportPaperResponse(
@@ -208,7 +201,7 @@ class ImportPaperTestWithActiveEditorSession(TestCase):
 
     def setUp(self):
         self.user = _user_factory()
-        self.email = ConftoolEmail.objects.create(
+        self.email = EmailAddress.objects.create(
             user=self.user, email="author1@example.com", verified=True
         )
         self.data = ExportPaperResponse(

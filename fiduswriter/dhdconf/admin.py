@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from dhdconf.models import ConftoolUser, ConftoolDocument, ConftoolEmail, ConftoolAccessRight, ConftoolUserInvite, \
-    ImportLog
+from dhdconf.models import ConftoolUser, ConftoolDocument, ImportLog
 
 
 @admin.register(ConftoolUser)
@@ -16,21 +15,6 @@ class ConftoolDocumentAdmin(admin.ModelAdmin):
         "id",
         "title",
     )
-
-
-@admin.register(ConftoolEmail)
-class ConftoolEmailAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(ConftoolUserInvite)
-class ConftoolUserInviteAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(ConftoolAccessRight)
-class ConftoolAccessRightAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(ImportLog)

@@ -10,7 +10,9 @@ from django.db import transaction
 from dhdconf.conftool.api import UserInfoResponse, ExportUserResponse, ExportPaperResponse
 from dhdconf.document import ensure_dhd_document_template
 from dhdconf.document.content import DhdDocumentContentUpdate
-from dhdconf.models import ConftoolUser, ConftoolEmail, ConftoolDocument, ConftoolUserInvite, ConftoolAccessRight
+from dhdconf.models import ConftoolUser, ConftoolDocument
+from document.models import AccessRight
+from user.models import UserInvite
 
 
 @transaction.atomic
@@ -42,8 +44,8 @@ def import_emails(data: ExportUserResponse):
             continue
         email = email.lower()
         address = (
-            ConftoolEmail.objects.filter(email=email, user=user).first()
-            or ConftoolEmail(email=email, user=user)
+            EmailAddress.objects.filter(email=email, user=user).first()
+            or EmailAddress(email=email, user=user)
         )
         address.verified = validated
         address.primary = False
@@ -52,14 +54,14 @@ def import_emails(data: ExportUserResponse):
         for address in addresses:
             address.save()
         ids = [a.pk for a in addresses]
-        ConftoolEmail.objects.filter(user=user).exclude(pk__in=ids).delete()
+        EmailAddress.objects.filter(user=user).exclude(pk__in=ids).delete()
         if len(addresses) > 0:
             addresses[0].set_as_primary()
         _accept_invites(user, [a.email for a in addresses if a.verified])
 
 
 def _accept_invites(user, verified_emails: List[str]):
-    for cui in ConftoolUserInvite.objects.filter(email__in=verified_emails):
+    for cui in UserInvite.objects.filter(email__in=verified_emails):
         cui.to = user
         cui.save()
         # apply() uses generic relations which need the un-extended model
@@ -111,7 +113,7 @@ def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):
             if holder not in list(document.owner.contacts.all()):
                 document.owner.contacts.add(holder)
         else:
-            holder, _ = ConftoolUserInvite.objects.get_or_create(
+            holder, _ = UserInvite.objects.get_or_create(
                 email=email,
                 username=email,
                 by=document.owner,
@@ -119,7 +121,7 @@ def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):
             holder_type = ContentType.objects.get(app_label="user", model="userinvite")
             invites.append(holder.pk)
 
-        access_right, _ = ConftoolAccessRight.objects.get_or_create(
+        access_right, _ = AccessRight.objects.get_or_create(
             document=document,
             holder_id=holder.id,
             holder_type=holder_type,
@@ -127,8 +129,8 @@ def _synchronize_access_rights(document: ConftoolDocument, emails: list[str]):
         )
         rights.append(access_right.pk)
     # only leave those invites and access rights we just set up
-    others = ConftoolUserInvite.objects.filter(email__in=emails).exclude(pk__in=invites)
+    others = UserInvite.objects.filter(email__in=emails).exclude(pk__in=invites)
     for invite in others:
         invite.userinvite_ptr.document_rights.clear()
         invite.delete()
-    ConftoolAccessRight.objects.filter(document=document).exclude(pk__in=rights).delete()
+    AccessRight.objects.filter(document=document).exclude(pk__in=rights).delete()
