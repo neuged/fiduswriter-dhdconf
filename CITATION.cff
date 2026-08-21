@@ -11,11 +11,17 @@ authors:
   - given-names: David
     family-names: Neugebauer
     orcid: 'https://orcid.org/0009-0002-2136-2097'
+  - given-names: Igor
+    family-names: Sosa Mayor
+    orcid: 'https://orcid.org/0000-0003-3645-8454'
+  - given-names: Philip
+    family-names: Schildkamp
+    orcid: 'https://orcid.org/0000-0003-0209-2837'
 repository-code: 'https://github.com/DHd-Verband/fiduswriter-dhcon'
 abstract: >-
   A fiduswriter plugin for conferences organized with
   conftool
 license: AGPL-3.0
-commit: df68ea9
-version: 0.4.0
-date-released: '2025-09-25'
+commit: 6a78769
+version: 0.5.2
+date-released: '2026-08-21'
