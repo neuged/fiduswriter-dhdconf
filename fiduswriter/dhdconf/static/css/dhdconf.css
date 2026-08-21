@@ -39,3 +39,8 @@ body[data-hide-new-document-option='true'] .fw-overview-menu-item.new_document {
 .doc-heading_part > h3 {
     font-size: 1.7rem !important;
 }
+
+/* Hide the password reset link */
+#lost-passwd {
+    display: none !important;
+}
