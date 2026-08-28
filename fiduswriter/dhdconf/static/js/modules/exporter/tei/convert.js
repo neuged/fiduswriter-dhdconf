@@ -136,7 +136,6 @@ function richText(richTextContent, imgDB, citationTexts, mathExporter) {
 
         /* Handle table nodes and all their contents */
         if (item.type === "table") {
-            wrapagraph += 1
             let caption = ""
             if (item.attrs.caption) {
                 const captionTEI = item.content.find(it => it.type === "table_caption").content
