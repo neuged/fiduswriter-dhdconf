@@ -6,6 +6,12 @@
     font-weight: bold;
 }
 
+.doc-part.doc-body table,
+.doc-part.doc-body table td,
+.doc-part.doc-body table th {
+  border: 1px solid black;
+}
+
 .doc-part.doc-contributionTypes::before {
     content: 'Format\A';
     font-weight: 700;
